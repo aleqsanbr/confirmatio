@@ -46,14 +46,15 @@ import com.example.confirmatio.R
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun Practices() {
+fun Practices(navigateToPractice: (Int) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Column() {
             Title("Упражнения для борьбы с тревогой");
-            PagingScreen()
+            PagingScreen(navigateToPractice)
         }
     }
 }
@@ -62,7 +63,7 @@ fun Practices() {
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun PagingScreen() {
+fun PagingScreen(navigateToPractice: (Int) -> Unit) {
     val coroutineScope = rememberCoroutineScope()//will use for animation
     val pagerState = rememberPagerState(
         initialPage = 0,
@@ -74,15 +75,15 @@ fun PagingScreen() {
     val tabRowItems = listOf<TabItem>(
         TabItem(
             title = "О будущем",
-            screen = { ListColumn(generateList(1)) },
+            screen = { ListColumn(generateList(1), navigateToPractice) },
         ),
         TabItem(
             title = "О текущих задачах",
-            screen = { ListColumn(generateList(2)) },
+            screen = { ListColumn(generateList(2), navigateToPractice) },
         ),
         TabItem(
             title = "С ведением записей",
-            screen = { ListColumn(generateList(3)) },
+            screen = { ListColumn(generateList(3), navigateToPractice) },
         )
     )
 
@@ -106,8 +107,6 @@ fun PagingScreen() {
                         text = item.title,
                         color = textColor,
 
-                        //  modifier = Modifier.padding(0.dp),
-                        //modifier = Modifier.height(50.dp).wrapContentHeight(align = Alignment.Bottom),
                     )},
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } }

@@ -2,6 +2,7 @@ package com.example.confirmatio.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,11 +31,11 @@ import androidx.compose.ui.unit.sp
 import com.example.confirmatio.R
 
 
-
-data class CardModel(val title:String, val description:String, val image: Painter, val color:Color)
+data class CardModel(val title:String, val description:String,
+                     val image: Painter, val color:Color, val id:Int)
 
 @Composable
-fun ListColumn(cards : List<CardModel>) {
+fun ListColumn(cards : List<CardModel>,navigateToPractice: (Int) -> Unit) {
     val cardsList = remember { mutableStateListOf<CardModel>() }
     for(card in cards) {
         cardsList.add(card)
@@ -51,7 +52,7 @@ fun ListColumn(cards : List<CardModel>) {
 
     ) {
         items(cardsList) { model ->
-            CardItem(model = model)
+            CardItem(model = model, navigateToPractice)
         }
 
     }
@@ -59,12 +60,12 @@ fun ListColumn(cards : List<CardModel>) {
 
 
 @Composable
-fun CardItem(model: CardModel) {
+fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
     //val context = LocalContext.current
     Card (
         modifier = Modifier
             .fillMaxSize()
-            //.clickable { selectedPractice(model.id) }
+            .clickable{navigateToPractice(model.id) }
             .padding(20.dp, 0.dp)
             .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
             .padding(5.dp)
@@ -113,39 +114,39 @@ fun generateList(id : Int) : List<CardModel> {
     if (id == 1) {
         return listOf(
             CardModel("\"У меня есь мысль, что...\"", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA092E1E1)
+                painterResource(id = R.drawable.question_icon), Color(0xA092E1E1), 1
             ),
             CardModel("Техника \"Пирог\"", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA)
+                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA), 2
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92)
+                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92), 3
             )
         )
     }
     else if (id == 2) {
         return listOf(
             CardModel("Мозговой штурм", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92)
+                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92), 4
             ),
             CardModel("Техника \"Горячие мысли\"", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA092E1E1)
+                painterResource(id = R.drawable.cake_icon), Color(0xA092E1E1), 5
             ),
             CardModel("Ловушки сознания", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA0E192AA)
+                painterResource(id = R.drawable.question_icon), Color(0xA0E192AA), 6
             )
         )
     }
     else {
         return listOf(
             CardModel("Ловушки сознания", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA)
+                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA), 6
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA0E1BD92)
+                painterResource(id = R.drawable.question_icon), Color(0xA0E1BD92), 3
             ),
             CardModel("Ведение записей", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA092E1E1)
+                painterResource(id = R.drawable.note_icon), Color(0xA092E1E1),7
             )
         )
     }
