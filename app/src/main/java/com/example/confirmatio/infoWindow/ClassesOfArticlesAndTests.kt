@@ -1,5 +1,4 @@
 package com.example.confirmatio.infoWindow
-
 data class articles(
     val imageId: Int,
     val title: String
