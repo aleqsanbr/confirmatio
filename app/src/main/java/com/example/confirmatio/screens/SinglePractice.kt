@@ -11,22 +11,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.example.confirmatio.practices.PieTechnique
 
 @Composable
 fun SinglePractice(
     practiceId: Int,
     navigateUp: () -> Unit)
 {
-    Column(modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,)
-    {
-        Text(text = "Screen id ${practiceId}")
-        Button(onClick = navigateUp) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "get back"
+    when(practiceId) {
+       2 ->  PieTechnique(navigateUp)
+
+        else ->
+        {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
             )
+            {
+                Text(text = "Screen id ${practiceId}")
+                Button(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "get back"
+                    )
+                }
+            }
         }
     }
 }
+
