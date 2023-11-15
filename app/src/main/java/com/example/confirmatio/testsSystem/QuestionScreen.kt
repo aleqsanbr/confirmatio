@@ -41,6 +41,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import com.example.confirmatio.NavigateUpButton
 
 @Composable
 fun QuestionScreen(
@@ -54,7 +55,11 @@ fun QuestionScreen(
         //horizontalAlignment = Alignment.CenterHorizontally,
         )
     {
+        Box {
             QuestionCard(manager)
+            NavigateUpButton(navigateUp)
+        }
+
     }
 }
 
@@ -67,7 +72,9 @@ fun QuestionCard(
     val radioOptions = manager.getOptions()
     var selectedOption by remember { mutableStateOf(radioOptions[0])}
     Column (
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ){

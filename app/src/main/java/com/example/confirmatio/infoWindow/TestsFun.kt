@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,7 +33,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -45,7 +43,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TestsFun(lst: List<tests>, navigateToPractice: (Int) -> Unit) {
+fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
     val lazyListStateArticles = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListStateArticles)
     val visibleIndex by remember {
@@ -79,7 +77,7 @@ fun TestsFun(lst: List<tests>, navigateToPractice: (Int) -> Unit) {
             ) {
                 itemsIndexed(lst) { index, item ->
                     Layout(
-                        modifier = Modifier.clickable{navigateToPractice(1)},
+                        modifier = Modifier.clickable{navigateToTest(1)},
                         content = {
                             val shape = RoundedCornerShape(20.dp)
                             Box(

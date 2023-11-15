@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.confirmatio.navigation.InfoDestinations.TEST_ID
 import com.example.confirmatio.screens.Info
+import com.example.confirmatio.screens.TestInfo
 import com.example.confirmatio.testsSystem.QuestionScreen
 import com.example.confirmatio.testsSystem.TestManager
 
@@ -22,6 +23,19 @@ fun InfoNavigation() {
             Info(actions.navigateToTest)
         }
         composable(
+            "${InfoDestinations.TEST_INFO_ROUTE}/{$TEST_ID}",
+            arguments = listOf(
+                navArgument(InfoDestinations.TEST_ID) {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            //val manager = TestManager(arguments.getInt(InfoDestinations.TEST_ID))
+            //QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
+            TestInfo(arguments.getInt(InfoDestinations.TEST_ID),actions.navigateToQuestions,navigateUp = actions.navigateUp)
+        }
+        composable(
             "${InfoDestinations.TEST_ROUTE}/{$TEST_ID}",
             arguments = listOf(
                 navArgument(InfoDestinations.TEST_ID) {
@@ -30,7 +44,7 @@ fun InfoNavigation() {
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            val manager = TestManager(arguments.getInt(InfoDestinations.TEST_ID))
+            val manager = TestManager(arguments.getInt(TEST_ID))
             QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
         }
 
@@ -42,6 +56,9 @@ private class Actions(
     navController: NavHostController
 ) {
     val navigateToTest: (Int) -> Unit = { Id: Int ->
+        navController.navigate("${InfoDestinations.TEST_INFO_ROUTE}/$Id")
+    }
+    val navigateToQuestions: (Int) -> Unit = { Id: Int ->
         navController.navigate("${InfoDestinations.TEST_ROUTE}/$Id")
     }
     val navigateUp: () -> Unit = {
@@ -53,6 +70,7 @@ object InfoDestinations {
    const val INITIAL = "info_screen"
    const val ARTICLE_ROUTE = "article_screen"
     const val ARTICLE_ID = "article_id"
+    const val TEST_INFO_ROUTE = "test_info_screen"
     const val TEST_ROUTE = "test_screen"
     const val TEST_ID = "test_id"
 
