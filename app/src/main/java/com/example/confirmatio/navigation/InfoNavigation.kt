@@ -13,6 +13,7 @@ import com.example.confirmatio.screens.Info
 import com.example.confirmatio.screens.TestInfo
 import com.example.confirmatio.testsSystem.QuestionScreen
 import com.example.confirmatio.testsSystem.TestManager
+import com.example.confirmatio.testsSystem.TestResultScreen
 
 @Composable
 fun InfoNavigation() {
@@ -45,7 +46,14 @@ fun InfoNavigation() {
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
             val manager = TestManager(arguments.getInt(TEST_ID))
-            QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
+            QuestionScreen(manager = manager, navigateUp = actions.navigateUp, actions.navigateToResults)
+        }
+        composable(
+            "${InfoDestinations.RESULTS_ROUTE}",
+
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            TestResultScreen(actions.navigateToStart)
         }
 
     }
@@ -61,6 +69,12 @@ private class Actions(
     val navigateToQuestions: (Int) -> Unit = { Id: Int ->
         navController.navigate("${InfoDestinations.TEST_ROUTE}/$Id")
     }
+    val navigateToResults: () -> Unit = {  ->
+        navController.navigate("${InfoDestinations.RESULTS_ROUTE}")
+    }
+    val navigateToStart: () -> Unit = {
+        navController.navigate(InfoDestinations.INITIAL)
+    }
     val navigateUp: () -> Unit = {
         navController.navigateUp()
     }
@@ -69,9 +83,10 @@ private class Actions(
 object InfoDestinations {
    const val INITIAL = "info_screen"
    const val ARTICLE_ROUTE = "article_screen"
-    const val ARTICLE_ID = "article_id"
-    const val TEST_INFO_ROUTE = "test_info_screen"
-    const val TEST_ROUTE = "test_screen"
-    const val TEST_ID = "test_id"
+   const val ARTICLE_ID = "article_id"
+   const val TEST_INFO_ROUTE = "test_info_screen"
+   const val TEST_ROUTE = "test_screen"
+   const val TEST_ID = "test_id"
+   const val RESULTS_ROUTE = "results_screen"
 
 }

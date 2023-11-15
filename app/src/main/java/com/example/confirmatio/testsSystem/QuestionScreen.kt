@@ -46,7 +46,8 @@ import com.example.confirmatio.NavigateUpButton
 @Composable
 fun QuestionScreen(
     manager: TestManager,
-    navigateUp: () -> Unit)
+    navigateUp: () -> Unit,
+    navigateToResults : () -> Unit)
 {
     manager.startTest()
     //var mutableState by remember { mutableStateOf(manager.cur_q) }
@@ -56,7 +57,7 @@ fun QuestionScreen(
         )
     {
         Box {
-            QuestionCard(manager)
+            QuestionCard(manager, navigateToResults)
             NavigateUpButton(navigateUp)
         }
 
@@ -66,7 +67,8 @@ fun QuestionScreen(
 
 @Composable
 fun QuestionCard(
-    manager: TestManager
+    manager: TestManager,
+    navigateToResults : () -> Unit
 ) {
     var mutableState by remember { mutableStateOf(manager.cur_q) }
     val radioOptions = manager.getOptions()
@@ -158,6 +160,9 @@ fun QuestionCard(
                        manager.cur_q +=1
                        mutableState += 1
                        selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
+                   }
+                   else {
+                        navigateToResults()
                    }
 
 
