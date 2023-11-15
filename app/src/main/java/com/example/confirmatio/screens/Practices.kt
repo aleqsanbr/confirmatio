@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.confirmatio.R
+import com.example.confirmatio.Title
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 
@@ -58,6 +59,7 @@ fun Practices(navigateToPractice: (Int) -> Unit) {
         }
     }
 }
+
 
 
 
@@ -124,16 +126,7 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
 }
 
 
-@Composable
-fun Title(title : String) {
-    Text(
-        text = title,
-        fontSize = 7.em,
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Medium,
-        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 20.dp)
-    )
-}
+
 
 
 data class TabItem (

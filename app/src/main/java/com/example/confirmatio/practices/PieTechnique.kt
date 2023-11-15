@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
 
 
@@ -92,30 +93,7 @@ fun PieTechnique(navigateUp: () -> Unit) {
         )
         Spacer(modifier = Modifier.padding(5.dp))
     }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(10.dp),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.End
-    ) {
-        Button(
-            onClick = navigateUp,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Gray.copy(alpha = 0.2f),
-                contentColor = Color.Black.copy(alpha = 0.3f)
-            ),
-            modifier = Modifier
-                .size(70.dp)
-            //  .clip(CircleShape)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "get back"
-            )
-        }
-    }
+    NavigateUpButton(navigateUp)
 }
 
 @Composable

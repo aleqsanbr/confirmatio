@@ -54,33 +54,7 @@ fun QuestionScreen(
         //horizontalAlignment = Alignment.CenterHorizontally,
         )
     {
-        Box {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End
-            ) {
-                Button(onClick = navigateUp,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Gray.copy(alpha = 0.2f),
-                        contentColor = Color.Black.copy(alpha = 0.3f)
-                    ),
-                    modifier = Modifier
-                        .size(70.dp)
-                    //  .clip(CircleShape)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "get back"
-                    )
-                }
-            }
             QuestionCard(manager)
-        }
-
     }
 }
 
