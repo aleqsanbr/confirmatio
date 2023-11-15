@@ -1,0 +1,59 @@
+package com.example.confirmatio.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.confirmatio.navigation.InfoDestinations.TEST_ID
+import com.example.confirmatio.screens.Info
+import com.example.confirmatio.testsSystem.QuestionScreen
+import com.example.confirmatio.testsSystem.TestManager
+
+@Composable
+fun InfoNavigation() {
+    val navController = rememberNavController()
+    val actions = remember(navController) { Actions(navController) }
+    NavHost(navController = navController, startDestination = InfoDestinations.INITIAL) {
+        composable(InfoDestinations.INITIAL) {
+            Info(actions.navigateToTest)
+        }
+        composable(
+            "${InfoDestinations.TEST_ROUTE}/{$TEST_ID}",
+            arguments = listOf(
+                navArgument(InfoDestinations.TEST_ID) {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            val manager = TestManager(arguments.getInt(InfoDestinations.TEST_ID))
+            QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
+        }
+
+    }
+}
+
+
+private class Actions(
+    navController: NavHostController
+) {
+    val navigateToTest: (Int) -> Unit = { Id: Int ->
+        navController.navigate("${InfoDestinations.TEST_ROUTE}/$Id")
+    }
+    val navigateUp: () -> Unit = {
+        navController.navigateUp()
+    }
+}
+
+object InfoDestinations {
+   const val INITIAL = "info_screen"
+   const val ARTICLE_ROUTE = "article_screen"
+    const val ARTICLE_ID = "article_id"
+    const val TEST_ROUTE = "test_screen"
+    const val TEST_ID = "test_id"
+
+}

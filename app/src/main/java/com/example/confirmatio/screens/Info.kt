@@ -19,9 +19,9 @@ import com.example.confirmatio.infoWindow.TestsFun
 import com.example.confirmatio.infoWindow.articles
 import com.example.confirmatio.infoWindow.tests
 
-@Preview
+
 @Composable
-fun Info() {
+fun Info(navigateToPractice: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .background(Color.Transparent)
@@ -41,7 +41,7 @@ fun Info() {
             tests(R.drawable.test_2, "Image 2"),
             tests(R.drawable.test_3, "Image 3")
         )
-        TestsFun(lstTests)
+        TestsFun(lstTests,navigateToPractice)
 
     }
 }

@@ -7,6 +7,7 @@ package com.example.confirmatio.infoWindow
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,8 +43,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TestsFun(lst: List<tests>) {
+fun TestsFun(lst: List<tests>, navigateToPractice: (Int) -> Unit) {
     val lazyListStateArticles = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListStateArticles)
     val visibleIndex by remember {
@@ -77,6 +79,7 @@ fun TestsFun(lst: List<tests>) {
             ) {
                 itemsIndexed(lst) { index, item ->
                     Layout(
+                        modifier = Modifier.clickable{navigateToPractice(1)},
                         content = {
                             val shape = RoundedCornerShape(20.dp)
                             Box(

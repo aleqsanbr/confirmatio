@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.confirmatio.navigation.InfoNavigation
 import com.example.confirmatio.navigation.PracticesNavigation
 
 sealed class NavRoutes(val route: String) {
@@ -143,7 +144,7 @@ fun NavigationHost(navController: NavHostController) {
             PracticesNavigation()
         }
         composable(NavRoutes.Info.route) {
-            Info()
+            InfoNavigation()
         }
         composable(NavRoutes.Diary.route) {
             Diary()
