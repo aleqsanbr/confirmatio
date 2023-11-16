@@ -1,6 +1,7 @@
 package com.example.confirmatio.testsSystem
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -39,12 +41,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import com.example.confirmatio.NavigateUpButton
+import com.example.confirmatio.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -144,7 +149,7 @@ fun QuestionCard(
                horizontalArrangement = Arrangement.SpaceBetween,
            ) {
                Button(
-                   modifier = Modifier.padding(0.dp,15.dp,0.dp,0.dp),
+                   modifier = Modifier.width(IntrinsicSize.Min).width(135.dp).padding(0.dp,15.dp,0.dp,0.dp),
                    onClick = {
                    if(manager.cur_q - 1 >= 1) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
@@ -156,12 +161,25 @@ fun QuestionCard(
 
 
                }) {
-                   Text(
-                       text = "Previous"
-                   )
+                   Row (
+                       modifier = Modifier.fillMaxWidth(),
+                       horizontalArrangement = Arrangement.SpaceBetween
+                   ) {
+                       Image(
+                           imageVector = Icons.Default.ArrowBack,
+                           contentDescription = "Previous",
+                           modifier = Modifier.size(20.dp),
+                           colorFilter = ColorFilter.tint(Color.White)
+                       )
+                       Text(
+                           text = "Назад",
+                           color = Color.White
+                       )
+                   }
+
                }
                Button(
-                   modifier = Modifier.padding(0.dp,15.dp,0.dp,0.dp),
+                   modifier = Modifier.width(IntrinsicSize.Min).width(135.dp).padding(0.dp,15.dp,0.dp,0.dp),
                    onClick = {
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
@@ -177,9 +195,31 @@ fun QuestionCard(
 
 
                }) {
-                   Text(
-                       text = "Next"
-                   )
+
+                   Row (
+                       modifier = Modifier.fillMaxWidth(),
+                       horizontalArrangement = Arrangement.SpaceBetween
+                   ) {
+                       if(manager.cur_q < manager.amountOfQuestions()) {
+                           Text(
+                               text = "Вперед",
+                               color = Color.White
+                           )
+                       }
+                       else {
+                           Text(
+                               text = "Результат",
+                               color = Color.White
+                           )
+                       }
+
+                       Image(
+                           imageVector = Icons.Default.ArrowForward,
+                           contentDescription = "Next",
+                           modifier = Modifier.size(20.dp),
+                           colorFilter = ColorFilter.tint(Color.White)
+                       )
+                   }
                }
            }
        }
