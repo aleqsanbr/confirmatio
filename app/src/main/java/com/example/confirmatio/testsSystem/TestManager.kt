@@ -44,6 +44,10 @@ class TestManager(
             test.qa_map[test.getQuestion(q_ind)] = a_pos
         }
     }
+
+    fun getProgress() : Float {
+        return cur_q.toFloat() / test.q_count;
+    }
     fun updateProgress() {
         if(cur_q > progress) progress+=1
     }

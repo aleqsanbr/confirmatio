@@ -23,17 +23,20 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
@@ -42,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import com.example.confirmatio.NavigateUpButton
+import kotlinx.coroutines.launch
 
 @Composable
 fun QuestionScreen(
@@ -84,10 +88,16 @@ fun QuestionCard(
            modifier = Modifier.width(IntrinsicSize.Min),
        ) {
            Text(
-               modifier = Modifier.padding(vertical = 40.dp),
+               modifier = Modifier.padding(0.dp, 40.dp, 0.dp, 0.dp),
                text = "Вопрос ${mutableState}/${manager.amountOfQuestions()}",
                fontSize = 8.em,
                fontWeight = FontWeight.Bold
+           )
+           LinearProgressIndicator(
+               modifier = Modifier.fillMaxWidth()
+                   .padding(0.dp, 20.dp)
+                   .heightIn(10.dp, 20.dp),
+               progress = manager.getProgress()
            )
            Column (
                modifier = Modifier
