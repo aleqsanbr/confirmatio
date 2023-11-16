@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.confirmatio.navigation.InfoDestinations.TEST_ID
 import com.example.confirmatio.screens.Info
-import com.example.confirmatio.screens.TestInfo
+import com.example.confirmatio.screens.TestInfoScreen
 import com.example.confirmatio.testsSystem.QuestionScreen
 import com.example.confirmatio.testsSystem.TestManager
 import com.example.confirmatio.testsSystem.TestResultScreen
@@ -34,7 +34,7 @@ fun InfoNavigation() {
             val arguments = requireNotNull(backStackEntry.arguments)
             //val manager = TestManager(arguments.getInt(InfoDestinations.TEST_ID))
             //QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
-            TestInfo(arguments.getInt(InfoDestinations.TEST_ID),actions.navigateToQuestions,navigateUp = actions.navigateUp)
+            TestInfoScreen(arguments.getInt(InfoDestinations.TEST_ID),actions.navigateToQuestions,navigateUp = actions.navigateUp)
         }
         composable(
             "${InfoDestinations.TEST_ROUTE}/{$TEST_ID}",
