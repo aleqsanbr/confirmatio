@@ -3,6 +3,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Card
@@ -84,7 +87,7 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
             screen = { ListColumn(generateList(2), navigateToPractice) },
         ),
         TabItem(
-            title = "С ведением записей",
+            title = "С записями",
             screen = { ListColumn(generateList(3), navigateToPractice) },
         )
     )
@@ -95,14 +98,27 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
         androidx.compose.material.TabRow(
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.Transparent,
+            indicator = { TabRowDefaults.Indicator(
+                modifier = Modifier
+                    .tabIndicatorOffset(it[pagerState.currentPage]),
+                color = if(!isSystemInDarkTheme()) Color.Black else Color.White,
+                height = TabRowDefaults.IndicatorHeight * 1.5F
+            )},
             divider = {},
 
             ) {
             tabRowItems.forEachIndexed {index, item ->
                 val selected = pagerState.currentPage == index
                 val textColor : Color
-                if (selected) textColor = Color.Black
-                else textColor = Color.Gray
+                if(!isSystemInDarkTheme()) {
+                    if (selected) textColor = Color.Black
+                    else textColor = Color.Gray
+                }
+                else {
+                    if (selected) textColor = Color.White
+                    else textColor = Color.Gray
+                }
+
                 Tab(
                     modifier = Modifier.padding(5.dp),
                     text = { Text(
@@ -118,7 +134,6 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
         }
         HorizontalPager(
             state = pagerState,
-
         ) {
             tabRowItems[pagerState.currentPage].screen()
         }

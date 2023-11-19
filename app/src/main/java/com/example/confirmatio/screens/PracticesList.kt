@@ -3,6 +3,7 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,11 +24,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.CustomColor1
+import com.example.compose.CustomColor2
+import com.example.compose.CustomColor3
+import com.example.compose.dark_CustomColor1
+import com.example.compose.dark_CustomColor1Container
+import com.example.compose.dark_CustomColor2
+import com.example.compose.dark_CustomColor2Container
+import com.example.compose.dark_CustomColor3
+import com.example.compose.dark_CustomColor3Container
+import com.example.compose.md_theme_dark_onBackground
+import com.example.compose.md_theme_dark_onSurfaceVariant
+import com.example.compose.md_theme_light_onBackground
+import com.example.compose.md_theme_light_onSurfaceVariant
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.R
 
 
@@ -65,7 +81,7 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
     Card (
         modifier = Modifier
             .fillMaxSize()
-            .clickable{navigateToPractice(model.id) }
+            .clickable { navigateToPractice(model.id) }
             .padding(20.dp, 0.dp)
             .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
             .padding(5.dp)
@@ -89,11 +105,13 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                     modifier = Modifier.padding(15.dp, 0.dp),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color.Black,
+                    color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+
 
                     )
                 Text(text = model.description,
                     modifier = Modifier.padding(15.dp, 0.dp),
+                    color = if(!isSystemInDarkTheme()) md_theme_light_onSurfaceVariant else md_theme_dark_onSurfaceVariant,
                     fontSize = 13.sp
                 )
             }
@@ -102,7 +120,8 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                 contentDescription = "Question Icon",
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 25.dp, 0.dp)
-                    .size(80.dp)
+                    .size(80.dp),
+                colorFilter = ColorFilter.tint(if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground),
 
             )
         }
@@ -111,42 +130,57 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
 
 @Composable
 fun generateList(id : Int) : List<CardModel> {
+    val color1 : Color
+    val color2 : Color
+    val color3 : Color
+    if(!isSystemInDarkTheme()){
+        color1 = CustomColor1
+        color2 = CustomColor2
+        color3 = CustomColor3
+    }
+    else {
+        color1 = dark_CustomColor1Container
+        color2 = dark_CustomColor2Container
+        color3 = dark_CustomColor3Container
+    }
+
+
     if (id == 1) {
         return listOf(
             CardModel("\"У меня есь мысль, что...\"", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA092E1E1), 1
+                painterResource(id = R.drawable.question_icon), color1, 1
             ),
             CardModel("Техника \"Пирог\"", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA), 2
+                painterResource(id = R.drawable.cake_icon), color2, 2
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92), 3
+                painterResource(id = R.drawable.note_icon), color3, 3
             )
         )
     }
     else if (id == 2) {
         return listOf(
             CardModel("Мозговой штурм", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA0E1BD92), 4
+                painterResource(id = R.drawable.note_icon), color2, 4
             ),
             CardModel("Техника \"Горячие мысли\"", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA092E1E1), 5
+                painterResource(id = R.drawable.cake_icon), color3, 5
             ),
             CardModel("Ловушки сознания", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA0E192AA), 6
+                painterResource(id = R.drawable.question_icon), color1, 6
             )
         )
     }
     else {
         return listOf(
             CardModel("Ловушки сознания", "Description",
-                painterResource(id = R.drawable.cake_icon), Color(0xA0E192AA), 6
+                painterResource(id = R.drawable.cake_icon), color3, 6
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.question_icon), Color(0xA0E1BD92), 3
+                painterResource(id = R.drawable.question_icon), color1, 3
             ),
             CardModel("Ведение записей", "Description",
-                painterResource(id = R.drawable.note_icon), Color(0xA092E1E1),7
+                painterResource(id = R.drawable.note_icon),color2,7
             )
         )
     }
