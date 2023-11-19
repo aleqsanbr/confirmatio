@@ -3,6 +3,7 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +24,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.example.compose.md_theme_dark_onSecondaryContainer
+import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_onSecondaryContainer
+import com.example.compose.md_theme_light_secondary
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.Title
 
@@ -66,13 +73,13 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
         modifier = Modifier
             .widthIn(200.dp, 400.dp)
             .padding(20.dp, 0.dp)
-            .background(color = Color(0x96E8D1B6), shape = RoundedCornerShape(20.dp)),
+            .background(color = if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, shape = RoundedCornerShape(20.dp)),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = Color(0xFFF7D0A4),
+                    color =  if(!isSystemInDarkTheme()) Color(0x44506352) else Color(0x44B7CCB8) ,
                     shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)
                 ),
         ) {
@@ -81,7 +88,8 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
                 contentDescription = "icon",
                 modifier = Modifier
                     .padding(10.dp)
-                    .size(25.dp)
+                    .size(25.dp),
+                colorFilter = ColorFilter.tint(if(!isSystemInDarkTheme()) md_theme_light_onSecondaryContainer else md_theme_dark_onSecondaryContainer)
 
             )
             Column(

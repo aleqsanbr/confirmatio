@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,6 +49,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import com.example.compose.md_theme_dark_secondary
+import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_onSecondary
+import com.example.compose.md_theme_light_secondary
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
 import kotlinx.coroutines.launch
@@ -99,16 +105,18 @@ fun QuestionCard(
                fontWeight = FontWeight.Bold
            )
            LinearProgressIndicator(
-               modifier = Modifier.fillMaxWidth()
+               modifier = Modifier
+                   .fillMaxWidth()
                    .padding(0.dp, 20.dp)
                    .heightIn(10.dp, 20.dp),
+               color = if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondary,
                progress = manager.getProgress()
            )
            Column (
                modifier = Modifier
                    .widthIn(300.dp, 400.dp)
                    .padding(0.dp)
-                   .background(Color(0xFFEEEBF4), RoundedCornerShape(20.dp))
+                   .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
 
                ) {
@@ -149,7 +157,11 @@ fun QuestionCard(
                horizontalArrangement = Arrangement.SpaceBetween,
            ) {
                Button(
-                   modifier = Modifier.width(IntrinsicSize.Min).width(135.dp).padding(0.dp,15.dp,0.dp,0.dp),
+                   modifier = Modifier
+                       .width(IntrinsicSize.Min)
+                       .width(135.dp)
+                       .padding(0.dp, 15.dp, 0.dp, 0.dp),
+                   colors = ButtonDefaults.buttonColors(containerColor = if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q - 1 >= 1) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
@@ -179,7 +191,11 @@ fun QuestionCard(
 
                }
                Button(
-                   modifier = Modifier.width(IntrinsicSize.Min).width(135.dp).padding(0.dp,15.dp,0.dp,0.dp),
+                   modifier = Modifier
+                       .width(IntrinsicSize.Min)
+                       .width(135.dp)
+                       .padding(0.dp, 15.dp, 0.dp, 0.dp),
+                   colors = ButtonDefaults.buttonColors(containerColor =if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
