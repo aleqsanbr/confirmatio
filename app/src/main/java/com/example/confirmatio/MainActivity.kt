@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme
@@ -12,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.confirmatio.ui.theme.ConfirmatioTheme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,8 +32,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.compose.ConfirmatioTheme
+import com.example.compose.md_theme_dark_onSecondary
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.navigation.InfoNavigation
 import com.example.confirmatio.navigation.PracticesNavigation
 
@@ -99,6 +104,9 @@ fun MainScreen() {
     Scaffold(
         topBar = { TopAppBar(
             title = { Text("Confirmatio") },
+            colors = if(!isSystemInDarkTheme())
+                TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
+            else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
             navigationIcon = {
                 Image(
                     painter = painterResource(R.drawable.logo),
