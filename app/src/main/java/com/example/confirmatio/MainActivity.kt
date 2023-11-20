@@ -31,8 +31,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.ConfirmatioTheme
@@ -40,6 +43,12 @@ import com.example.compose.md_theme_dark_onSecondary
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.navigation.InfoNavigation
 import com.example.confirmatio.navigation.PracticesNavigation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 
 sealed class NavRoutes(val route: String) {
     object Practices : NavRoutes("practices")
@@ -50,14 +59,23 @@ sealed class NavRoutes(val route: String) {
 }
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ConfirmatioTheme {
-                // A surface container using the 'background' color from the theme
+                val useDarkTheme: Boolean = isSystemInDarkTheme()
+                val systemUiController = rememberSystemUiController()
+                val background_status_color = colorScheme.onSecondary
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = background_status_color,
+                        darkIcons = !useDarkTheme,
+                    )
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = background_status_color
                 ) {
                     MainScreen()
                 }
