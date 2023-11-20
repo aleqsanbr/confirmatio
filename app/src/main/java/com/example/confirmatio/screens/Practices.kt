@@ -56,7 +56,9 @@ fun Practices(navigateToPractice: (Int) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column() {
+        Column(modifier = Modifier
+            .padding(vertical = 20.dp)
+            .fillMaxWidth()) {
             Title("Упражнения для борьбы с тревогой");
             PagingScreen(navigateToPractice)
         }

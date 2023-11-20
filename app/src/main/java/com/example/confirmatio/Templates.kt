@@ -18,17 +18,43 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun Title(title : String) {
+//    Text(
+//        text = title,
+//        fontSize = 7.em,
+//        fontFamily = FontFamily.SansSerif,
+//        fontWeight = FontWeight.Medium,
+//        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 20.dp)
+//    )
     Text(
         text = title,
-        fontSize = 7.em,
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Medium,
-        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 20.dp)
+        fontSize = 30.sp,
+        fontWeight = FontWeight(500),
+        lineHeight = 1.2.em,
+        modifier = Modifier
+            .padding(horizontal = 15.dp, vertical = 10.dp)
+            .fillMaxWidth(1f),
+        textAlign = TextAlign.Left,
+    )
+}
+
+@Composable
+fun SubTitle(title : String) {
+    Text(
+        text = title,
+        fontSize = 20.sp,
+        fontWeight = FontWeight(200),
+        lineHeight = 1.2.em,
+        modifier = Modifier
+            .padding(horizontal = 15.dp, vertical = 0.dp)
+            .fillMaxWidth(1f),
+        textAlign = TextAlign.Left,
     )
 }
 

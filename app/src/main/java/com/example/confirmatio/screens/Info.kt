@@ -4,9 +4,12 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.example.confirmatio.R
 import com.example.confirmatio.infoWindow.ArticlesFun
 import com.example.confirmatio.infoWindow.TestsFun
@@ -19,6 +22,8 @@ fun Info(navigateToTest: (Int) -> Unit, navigateToArticle: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .background(Color.Transparent)
+            .padding(vertical = 20.dp)
+            .fillMaxWidth()
     )
     {
         var lstArticles = listOf(
@@ -28,7 +33,7 @@ fun Info(navigateToTest: (Int) -> Unit, navigateToArticle: (Int) -> Unit) {
         )
         ArticlesFun(lstArticles,navigateToArticle)
 
-      //  Spacer(modifier = Modifier.padding(5.dp))
+      //Spacer(modifier = Modifier.padding(5.dp))
 
         var lstTests = listOf(
             tests(R.drawable.test_1, "Image 1"),

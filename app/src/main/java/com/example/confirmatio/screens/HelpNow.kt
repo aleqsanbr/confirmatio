@@ -20,6 +20,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.example.confirmatio.SubTitle
+import com.example.confirmatio.Title
 
 @Composable
 fun HelpNow() {
@@ -31,27 +33,8 @@ fun HelpNow() {
                 .padding(vertical = 20.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = "Чувствуете тревогу?",
-                fontSize = 30.sp,
-                fontWeight = FontWeight(500),
-                lineHeight = 1.2.em,
-                modifier = Modifier
-                    .padding(horizontal = 15.dp, vertical = 10.dp)
-                    .fillMaxWidth(1f),
-                textAlign = TextAlign.Left,
-            )
-            Text(
-                text = "Выберите технику",
-                fontSize = 20.sp,
-                fontWeight = FontWeight(200),
-                lineHeight = 1.2.em,
-                modifier = Modifier
-                    .padding(horizontal = 15.dp, vertical = 0.dp)
-                    .fillMaxWidth(1f),
-                textAlign = TextAlign.Left,
-            )
-
+            Title("Чувствуете тревогу?")
+            SubTitle("Выберите технику")
         }
 
 
