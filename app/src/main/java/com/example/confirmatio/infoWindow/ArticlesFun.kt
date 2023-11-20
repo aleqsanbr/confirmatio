@@ -1,10 +1,13 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
+    ExperimentalFoundationApi::class
+)
 
 package com.example.confirmatio.infoWindow
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ArticlesFun(lst: List<articles>) {
+fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
     val lazyListStateArticles = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListStateArticles)
     val visibleIndex by remember {
@@ -80,6 +83,7 @@ fun ArticlesFun(lst: List<articles>) {
             ) {
                 itemsIndexed(lst) { index, item ->
                     Layout(
+                        modifier = Modifier.clickable{navigateToArticle(index)},
                         content = {
                             val shape = RoundedCornerShape(20.dp)
                             Box(

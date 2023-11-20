@@ -15,7 +15,7 @@ import com.example.confirmatio.infoWindow.tests
 
 
 @Composable
-fun Info(navigateToTest: (Int) -> Unit) {
+fun Info(navigateToTest: (Int) -> Unit, navigateToArticle: (Int) -> Unit) {
     Column(
         modifier = Modifier
             .background(Color.Transparent)
@@ -26,7 +26,7 @@ fun Info(navigateToTest: (Int) -> Unit) {
             articles(R.drawable.article_2, "Image 2"),
             articles(R.drawable.article_3, "Image 3")
         )
-        ArticlesFun(lstArticles)
+        ArticlesFun(lstArticles,navigateToArticle)
 
       //  Spacer(modifier = Modifier.padding(5.dp))
 

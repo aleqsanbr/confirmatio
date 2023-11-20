@@ -8,8 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.confirmatio.navigation.InfoDestinations.ARTICLE_ID
 import com.example.confirmatio.navigation.InfoDestinations.TEST_ID
 import com.example.confirmatio.screens.Info
+import com.example.confirmatio.screens.SingleArticle
+import com.example.confirmatio.screens.SinglePractice
 import com.example.confirmatio.screens.TestInfoScreen
 import com.example.confirmatio.testsSystem.QuestionScreen
 import com.example.confirmatio.testsSystem.TestManager
@@ -21,7 +24,7 @@ fun InfoNavigation() {
     val actions = remember(navController) { Actions(navController) }
     NavHost(navController = navController, startDestination = InfoDestinations.INITIAL) {
         composable(InfoDestinations.INITIAL) {
-            Info(actions.navigateToTest)
+            Info(actions.navigateToTest, actions.navigateToArticle)
         }
         composable(
             "${InfoDestinations.TEST_INFO_ROUTE}/{$TEST_ID}",
@@ -56,6 +59,20 @@ fun InfoNavigation() {
             TestResultScreen(actions.navigateToStart)
         }
 
+        composable(
+            "${InfoDestinations.ARTICLE_ROUTE}/{$ARTICLE_ID}",
+            arguments = listOf(
+                navArgument(InfoDestinations.ARTICLE_ID) {
+                    type = NavType.IntType
+                }
+            )
+        ) { backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            SingleArticle(
+                articleId = arguments.getInt(ARTICLE_ID),
+                navigateUp = actions.navigateUp
+            )        }
+
     }
 }
 
@@ -65,6 +82,9 @@ private class Actions(
 ) {
     val navigateToTest: (Int) -> Unit = { Id: Int ->
         navController.navigate("${InfoDestinations.TEST_INFO_ROUTE}/$Id")
+    }
+    val navigateToArticle: (Int) -> Unit = { Id: Int ->
+        navController.navigate("${InfoDestinations.ARTICLE_ROUTE}/$Id")
     }
     val navigateToQuestions: (Int) -> Unit = { Id: Int ->
         navController.navigate("${InfoDestinations.TEST_ROUTE}/$Id")
