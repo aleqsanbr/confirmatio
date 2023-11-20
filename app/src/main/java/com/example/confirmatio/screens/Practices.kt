@@ -1,4 +1,5 @@
 package com.example.confirmatio.screens
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,16 +57,12 @@ fun Practices(navigateToPractice: (Int) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column(modifier = Modifier
-            .padding(vertical = 20.dp)
-            .fillMaxWidth()) {
+        Column(modifier = Modifier.padding(0.dp, 20.dp, 0.dp, 0.dp)) {
             Title("Упражнения для борьбы с тревогой");
             PagingScreen(navigateToPractice)
         }
     }
 }
-
-
 
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
@@ -76,7 +73,7 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-       3
+        3
     }//store page state
 
     val tabRowItems = listOf<TabItem>(
@@ -94,40 +91,43 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
         )
     )
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize()
     ) {
         androidx.compose.material.TabRow(
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.Transparent,
-            indicator = { TabRowDefaults.Indicator(
-                modifier = Modifier
-                    .tabIndicatorOffset(it[pagerState.currentPage]),
-                color = if(!isSystemInDarkTheme()) Color.Black else Color.White,
-                height = TabRowDefaults.IndicatorHeight * 1.5F
-            )},
+            indicator = {
+                TabRowDefaults.Indicator(
+                    modifier = Modifier
+                        .tabIndicatorOffset(it[pagerState.currentPage]),
+                    color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    height = TabRowDefaults.IndicatorHeight * 1.5F
+                )
+            },
             divider = {},
 
             ) {
-            tabRowItems.forEachIndexed {index, item ->
+            tabRowItems.forEachIndexed { index, item ->
                 val selected = pagerState.currentPage == index
-                val textColor : Color
-                if(!isSystemInDarkTheme()) {
+                val textColor: Color
+                if (!isSystemInDarkTheme()) {
                     if (selected) textColor = Color.Black
                     else textColor = Color.Gray
-                }
-                else {
+                } else {
                     if (selected) textColor = Color.White
                     else textColor = Color.Gray
                 }
 
                 Tab(
                     modifier = Modifier.padding(5.dp),
-                    text = { Text(
-                        text = item.title,
-                        color = textColor,
+                    text = {
+                        Text(
+                            text = item.title,
+                            color = textColor,
 
-                    )},
+                            )
+                    },
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } }
 
@@ -143,11 +143,8 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
 }
 
 
-
-
-
-data class TabItem (
-    val title : String,
-    val screen: @Composable ()->Unit//Tab Screen(can also take params)
+data class TabItem(
+    val title: String,
+    val screen: @Composable () -> Unit//Tab Screen(can also take params)
 )
 
