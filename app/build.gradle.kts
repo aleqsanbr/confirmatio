@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -18,6 +19,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        kapt {
+            arguments {arg("room.schemaLocation", "$projectDir/schemas")}
+        }
     }
 
     buildTypes {
@@ -30,11 +35,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_18
+        targetCompatibility = JavaVersion.VERSION_18
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "18"
     }
     buildFeatures {
         compose = true
@@ -72,5 +77,9 @@ dependencies {
 
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")// Pager
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Pager Indicators
+
+    implementation("androidx.room:room-runtime:2.6.0") // Библиотека "Room"
+    kapt( "androidx.room:room-compiler:2.6.0")// Кодогенератор
+    implementation ("androidx.room:room-ktx:2.6.0") // Дополнительно для Kotlin Coroutines, Kotlin Flows
 
 }
