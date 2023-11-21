@@ -1,6 +1,7 @@
 package com.example.confirmatio.infoWindow
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import com.example.compose.md_theme_dark_onSecondary
+import com.example.compose.md_theme_dark_onSecondaryContainer
+import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_onSecondaryContainer
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.R
 
 @Composable
@@ -43,7 +49,7 @@ fun DotsIndicator(
                         .height(height)
                         .width(width)
                         .clip(shape)
-                        .background(color = colorResource(R.color.MediumPurple))
+                        .background(color = if(!isSystemInDarkTheme()) md_theme_dark_secondaryContainer else md_theme_dark_onSecondaryContainer)
                 )
             } else {
                 Box(
@@ -51,7 +57,7 @@ fun DotsIndicator(
                         .height(height)
                         .width(width)
                         .clip(shape)
-                        .background(color = Color.LightGray)
+                        .background(color = if(!isSystemInDarkTheme()) md_theme_dark_onSecondaryContainer else md_theme_dark_secondaryContainer) // md_theme_dark_onSecondaryContainer
                 )
             }
             if (index != totalDots - 1) {

@@ -3,6 +3,7 @@ package com.example.confirmatio.practices
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
 
@@ -138,14 +141,14 @@ fun actionCard(content: String) {
         modifier = Modifier
             .height(220.dp)
             .fillMaxWidth()
-            .background(color = colorResource(R.color.softPink), shape = shape)
+            .background(color = if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, shape = shape)
             .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center
     ) {
 
         Text(
             text = content,
-            color = Black,
+            color = if(!isSystemInDarkTheme()) Color.Black else Color.White,
             fontSize = 20.sp, modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 10.dp)
 
