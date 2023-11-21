@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -36,6 +37,7 @@ import com.example.compose.md_theme_light_secondary
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.Title
+import com.example.confirmatio.testsSystem.TestLoader
 
 @Composable
 fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: () -> Unit) {
@@ -45,12 +47,10 @@ fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: 
             .verticalScroll(ScrollState(0)),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Title("Шкала Спилберга")
-        InfoCard(title = "Описание теста", "Шкала тревоги Спилбергера-Ханина (State-Trait Anxiety Inventory, STAI) является информативным способом самооценки как уровня тревожности в данный момент (реактивная тревожность, как состояние), так и личностной тревожности (как устойчивая характеристика человека).",icon = Icons.Outlined.Info)
+        Title(TestLoader.getTestName(testId, LocalContext.current), true)
+        InfoCard(title = "Описание теста", TestLoader.getInfo(testId, LocalContext.current),icon = Icons.Outlined.Info)
         Spacer(modifier = Modifier.padding(15.dp))
-        InfoCard(title = "Перед началом теста", "В первом блоке (20 вопросов):Прочитайте внимательно каждое из приведенных предложений.Выбирайте ответ в зависимости от того, как вы себя чувствуете в данный момент.\n" +
-                "Во втором блоке (20 вопросов):Прочитайте внимательно каждое из приведенных предложений.Выбирайте ответ в зависимости от того, как вы себя чувствуете обычно.\n" +
-                "Над вопросами долго не задумывайтесь, правильных и неправильных ответов здесь нет.",icon = Icons.Outlined.Star)
+        InfoCard(title = "Перед началом теста", TestLoader.getTestDescription(testId, LocalContext.current),icon = Icons.Outlined.Star)
         FilledTonalButton(onClick = { navigateToQuestions(testId) },
            modifier = Modifier.padding(0.dp, 15.dp),
             colors = ButtonDefaults.buttonColors(containerColor =Color(0xFFBAEEC3),contentColor=Color.Black,

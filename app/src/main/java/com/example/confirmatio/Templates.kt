@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Title(title : String) {
+fun Title(title : String, isCentered : Boolean = false) {
 //    Text(
 //        text = title,
 //        fontSize = 7.em,
@@ -40,7 +40,7 @@ fun Title(title : String) {
         modifier = Modifier
             .padding(horizontal = 15.dp, vertical = 10.dp)
             .fillMaxWidth(1f),
-        textAlign = TextAlign.Left,
+        textAlign = if(isCentered) TextAlign.Center else TextAlign.Left,
     )
 }
 

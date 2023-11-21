@@ -62,11 +62,20 @@ class TestLoader(
     }
     companion object {
         fun getTestName(id : Int, context : Context): String {
-
             //context.assets.open("test${test_id}.csv").bufferedReader()
             val bufferedReader = context.assets.open("test${id}.csv").bufferedReader()
             val csvParser = CSVParser(bufferedReader, CSVFormat.DEFAULT)
             return csvParser.first().get(1)
+        }
+        fun getTestDescription(id : Int, context : Context): String {
+            val bufferedReader = context.assets.open("test${id}.csv").bufferedReader()
+            val csvParser = CSVParser(bufferedReader, CSVFormat.DEFAULT)
+            return csvParser.first().get(5)
+        }
+        fun getInfo(id : Int, context : Context): String {
+            val bufferedReader = context.assets.open("test${id}.csv").bufferedReader()
+            val csvParser = CSVParser(bufferedReader, CSVFormat.DEFAULT)
+            return csvParser.first().get(4)
         }
     }
 }

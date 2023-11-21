@@ -74,7 +74,6 @@ fun QuestionScreen(
     {
         Box {
             QuestionCard(manager, navigateToResults)
-            NavigateUpButton(navigateUp)
         }
 
     }
