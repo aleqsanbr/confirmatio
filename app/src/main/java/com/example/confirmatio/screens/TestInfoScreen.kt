@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +16,13 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,6 +45,32 @@ import com.example.confirmatio.testsSystem.TestLoader
 
 @Composable
 fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: () -> Unit) {
+    when(testId) {
+        1 -> ScreenContent(testId, navigateToQuestions, navigateUp)
+        else -> Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        )
+        {
+            Text(text = "Данный тест еще не реализован!",
+                fontSize = 4.em)
+            Button(onClick = navigateUp) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "get back"
+                )
+            }
+        }
+
+
+    }
+
+
+}
+
+@Composable
+fun ScreenContent(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,9 +82,9 @@ fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: 
         Spacer(modifier = Modifier.padding(15.dp))
         InfoCard(title = "Перед началом теста", TestLoader.getTestDescription(testId, LocalContext.current),icon = Icons.Outlined.Star)
         FilledTonalButton(onClick = { navigateToQuestions(testId) },
-           modifier = Modifier.padding(0.dp, 15.dp),
+            modifier = Modifier.padding(0.dp, 15.dp),
             colors = ButtonDefaults.buttonColors(containerColor =Color(0xFFBAEEC3),contentColor=Color.Black,
-                   disabledContainerColor =Color(0xFFCFD5D0),  disabledContentColor=Color(0xFFA2AAA2))
+                disabledContainerColor =Color(0xFFCFD5D0),  disabledContentColor=Color(0xFFA2AAA2))
         ) {
             Text(
                 text = "Начать тест",
@@ -63,23 +93,23 @@ fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: 
         }
     }
     NavigateUpButton(navigateUp)
-
-
 }
-
 @Composable
 fun InfoCard(title:String,text:String, icon : ImageVector) {
     Column(
         modifier = Modifier
             .widthIn(200.dp, 400.dp)
             .padding(20.dp, 0.dp)
-            .background(color = if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, shape = RoundedCornerShape(20.dp)),
+            .background(
+                color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                shape = RoundedCornerShape(20.dp)
+            ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color =  if(!isSystemInDarkTheme()) Color(0x44506352) else Color(0x44B7CCB8) ,
+                    color = if (!isSystemInDarkTheme()) Color(0x44506352) else Color(0x44B7CCB8),
                     shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)
                 ),
         ) {

@@ -77,7 +77,7 @@ fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
             ) {
                 itemsIndexed(lst) { index, item ->
                     Layout(
-                        modifier = Modifier.clickable{navigateToTest(1)},
+                        modifier = Modifier.clickable{navigateToTest(index+1)},
                         content = {
                             val shape = RoundedCornerShape(20.dp)
                             Box(
