@@ -2,6 +2,7 @@ package com.example.confirmatio.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -48,7 +49,7 @@ fun InfoNavigation() {
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            val manager = TestManager(arguments.getInt(TEST_ID))
+            val manager = TestManager(arguments.getInt(TEST_ID), LocalContext.current)
             QuestionScreen(manager = manager, navigateUp = actions.navigateUp, actions.navigateToResults)
         }
         composable(

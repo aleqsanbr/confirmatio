@@ -1,7 +1,8 @@
 package com.example.confirmatio.testsSystem
 
 class Test (
-   val q_count : Int,
+    val name : String,
+    val q_count : Int,
    val q_pool : List<Question>
 ){
 

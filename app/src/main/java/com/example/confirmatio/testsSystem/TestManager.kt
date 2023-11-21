@@ -1,13 +1,15 @@
 package com.example.confirmatio.testsSystem
 
+import android.content.Context
 import android.util.Log
 
 class TestManager(
-    val  test_id : Int
+    val  test_id : Int,
+    val context : Context
 ) {
     var cur_q : Int = 1
         set(n : Int) {field = n}
-    val loader : TestLoader = TestLoader(test_id)
+    val loader : TestLoader = TestLoader(test_id, context)
     var progress : Int = 0;
     lateinit var test : Test
 
@@ -17,7 +19,7 @@ class TestManager(
     }
 
     fun loadTest() {
-        test = Test(loader.getCount(), loader.loadQuestions())
+        test = Test(loader.getTestName(), loader.getQuestionsCount(), loader.loadQuestions())
     }
 
     fun loadQAPairs() {
