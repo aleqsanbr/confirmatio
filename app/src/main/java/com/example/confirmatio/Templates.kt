@@ -64,7 +64,7 @@ fun NavigateUpButton(navigateUp: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(30.dp),
+            .padding(10.dp),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.End
     ) {
@@ -75,7 +75,7 @@ fun NavigateUpButton(navigateUp: () -> Unit) {
                 contentColor = Color.Black.copy(alpha = 0.3f)
             ),
             modifier = Modifier
-                .size(700.dp)
+                .size(70.dp)
             //  .clip(CircleShape)
         ) {
             Icon(

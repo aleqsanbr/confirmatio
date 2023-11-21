@@ -1,6 +1,12 @@
 package com.example.confirmatio.screens
 
 import android.widget.ToggleButton
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +35,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -42,7 +49,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+
 
 
 @Composable
@@ -101,20 +111,54 @@ fun SegmentedButtons() {
 
 @Composable
 fun BigRoundButton(text: String) {
-    Button(
-        onClick = { },
-        shape = CircleShape,
-        colors = ButtonDefaults.buttonColors(colorScheme.primaryContainer),
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f)
-            .padding(16.dp)
-    ) {
-        Text(
-            text = text,
-            fontSize = 48.sp,
-            modifier = Modifier.padding(8.dp)
+
+    val infiniteTransition = rememberInfiniteTransition()
+
+    val sizeValue by infiniteTransition.animateFloat(
+        initialValue = (LocalConfiguration.current.screenWidthDp.dp-70.dp).value,
+        targetValue = (LocalConfiguration.current.screenWidthDp.dp-25.dp).value,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart,
         )
+    )
+
+    val colorValue by infiniteTransition.animateFloat(
+        initialValue = 0.6f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart,
+        )
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(contentAlignment = Alignment.Center)
+        {
+            Box(
+                modifier = Modifier
+                    .size(sizeValue.dp)
+                    .clip(shape = RoundedCornerShape(percent = 50))
+                    .background(color = colorScheme.primaryContainer.copy(alpha = colorValue))
+            )
+            Button(
+                onClick = { },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(colorScheme.primaryContainer),
+                modifier = Modifier
+                    .size(LocalConfiguration.current.screenWidthDp.dp-70.dp)
+                    .aspectRatio(1f)
+                ) {
+                Text(
+                    text = text,
+                    fontSize = 48.sp,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
     }
 }
 
@@ -133,7 +177,7 @@ fun HelpNow() {
             Row(modifier = Modifier.padding(horizontal = 15.dp, vertical = 25.dp)) {
                 SegmentedButtons()
             }
-            BigRoundButton(text = "Старт")
+           BigRoundButton(text = "Старт")
         }
     }
 }
