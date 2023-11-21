@@ -73,4 +73,5 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")// Pager
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Pager Indicators
 
+    implementation("org.apache.commons:commons-csv:1.5")
 }

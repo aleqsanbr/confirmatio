@@ -49,6 +49,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.sp
 import com.example.compose.md_theme_dark_secondary
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_onSecondary
@@ -99,9 +100,9 @@ fun QuestionCard(
            modifier = Modifier.width(IntrinsicSize.Min),
        ) {
            Text(
-               modifier = Modifier.padding(0.dp, 40.dp, 0.dp, 0.dp),
+               modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 0.dp),
                text = "Вопрос ${mutableState}/${manager.amountOfQuestions()}",
-               fontSize = 8.em,
+               fontSize = 35.sp,
                fontWeight = FontWeight.Bold
            )
            LinearProgressIndicator(
@@ -114,23 +115,23 @@ fun QuestionCard(
            )
            Column (
                modifier = Modifier
-                   .widthIn(300.dp, 400.dp)
+                   .widthIn(300.dp, 450.dp)
                    .padding(0.dp)
                    .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
 
                ) {
                Text(
-                   modifier = Modifier.padding(vertical = 8.dp),
+                   modifier = Modifier.padding(vertical = 6.dp),
                    text = manager.getQuestion().q_text,
-                   fontSize = 6.em,
-                   fontWeight = FontWeight.Medium
+                   fontSize = 25.sp,
+                   fontWeight = FontWeight.Medium,
                )
 
 
                Column(
-                   modifier = Modifier.padding(vertical = 10.dp, horizontal = 0.dp),
-                   verticalArrangement = Arrangement.spacedBy(10.dp),
+                   modifier = Modifier.padding(vertical = 8.dp, horizontal = 0.dp),
+                   verticalArrangement = Arrangement.spacedBy(8.dp),
                    horizontalAlignment = Alignment.Start
 
                ) {
@@ -145,8 +146,8 @@ fun QuestionCard(
                            )
                            Text(
                                text = option,
-                               style = MaterialTheme.typography.bodyMedium,
-                               modifier = Modifier.padding(start = 8.dp)
+                               modifier = Modifier.padding(start = 6.dp),
+                               fontSize = 19.sp
                            )
                        }
                    }
@@ -157,6 +158,7 @@ fun QuestionCard(
                horizontalArrangement = Arrangement.SpaceBetween,
            ) {
                Button(
+                   enabled = manager.cur_q > 1,
                    modifier = Modifier
                        .width(IntrinsicSize.Min)
                        .width(135.dp)
@@ -185,7 +187,8 @@ fun QuestionCard(
                        )
                        Text(
                            text = "Назад",
-                           color = Color.White
+                           color = Color.White,
+                           fontSize = 17.sp
                        )
                    }
 
@@ -219,13 +222,15 @@ fun QuestionCard(
                        if(manager.cur_q < manager.amountOfQuestions()) {
                            Text(
                                text = "Вперед",
-                               color = Color.White
+                               color = Color.White,
+                               fontSize = 17.sp
                            )
                        }
                        else {
                            Text(
                                text = "Результат",
-                               color = Color.White
+                               color = Color.White,
+                               fontSize = 17.sp
                            )
                        }
 
