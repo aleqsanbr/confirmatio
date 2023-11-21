@@ -123,7 +123,7 @@ fun QuestionCard(
                Text(
                    modifier = Modifier.padding(vertical = 6.dp),
                    text = manager.getQuestion().q_text,
-                   fontSize = 25.sp,
+                   fontSize = 22.sp,
                    fontWeight = FontWeight.Medium,
                )
 
@@ -176,7 +176,8 @@ fun QuestionCard(
                }) {
                    Row (
                        modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.SpaceBetween
+                       horizontalArrangement = Arrangement.SpaceBetween,
+                       verticalAlignment = Alignment.CenterVertically
                    ) {
                        Image(
                            imageVector = Icons.Default.ArrowBack,
@@ -216,7 +217,8 @@ fun QuestionCard(
 
                    Row (
                        modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.SpaceBetween
+                       horizontalArrangement = Arrangement.SpaceBetween,
+                       verticalAlignment = Alignment.CenterVertically
                    ) {
                        if(manager.cur_q < manager.amountOfQuestions()) {
                            Text(

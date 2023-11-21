@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import com.example.compose.md_theme_dark_onSecondaryContainer
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_onSecondaryContainer
@@ -54,7 +55,7 @@ fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: 
         )
         {
             Text(text = "Данный тест еще не реализован!",
-                fontSize = 4.em)
+                fontSize = 15.sp)
             Button(onClick = navigateUp) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -88,11 +89,12 @@ fun ScreenContent(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: (
         ) {
             Text(
                 text = "Начать тест",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp
             )
         }
     }
-    NavigateUpButton(navigateUp)
+    //NavigateUpButton(navigateUp)
 }
 @Composable
 fun InfoCard(title:String,text:String, icon : ImageVector) {
@@ -131,7 +133,7 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
                     text = title,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    fontSize = 4.5.em
+                    fontSize = 18.sp
                 )
             }
 
@@ -140,6 +142,7 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
         Text(
             text =text,
             modifier = Modifier.padding(10.dp),
+            fontSize = 13.sp
             //textAlign = TextAlign.Justify
         )
     }
