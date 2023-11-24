@@ -1,5 +1,6 @@
 package com.example.confirmatio
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -116,7 +117,7 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 31) Color.Green else if(value < 45) Color.Yellow else Color.Red
+            color = if(value < 31) Color.Green else if(value < 45) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))

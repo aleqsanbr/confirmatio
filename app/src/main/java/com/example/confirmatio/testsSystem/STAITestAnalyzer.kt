@@ -110,7 +110,7 @@ class STAITestAnalyzer(val test : Test) {
                         text = LOW_ANX
                     )
                 }
-                else if ((total_points1 + total_points2 / 2) > 44) {
+                else if ((total_points1 + total_points2) / 2 > 44) {
                     Text(
                         modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 0.dp),
                         fontSize = 20.sp,
