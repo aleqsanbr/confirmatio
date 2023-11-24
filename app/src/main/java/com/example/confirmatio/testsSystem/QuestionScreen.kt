@@ -124,10 +124,9 @@ fun QuestionCard(
                    .padding(0.dp)
                    .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
-
                ) {
                Text(
-                   modifier = Modifier.padding(vertical = 6.dp),
+                   modifier = Modifier.padding(10.dp, 10.dp,10.dp, 5.dp),
                    text = manager.getQuestion().q_text,
                    fontSize = 22.sp,
                    fontWeight = FontWeight.Medium,
