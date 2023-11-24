@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.compose.md_theme_dark_secondary
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_onSecondary
@@ -63,9 +64,11 @@ import kotlinx.coroutines.launch
 fun QuestionScreen(
     manager: TestManager,
     navigateUp: () -> Unit,
-    navigateToResults : () -> Unit)
+    navigateToResults : () -> Unit,
+    putInts : (List<Int>) ->Unit
+)
 {
-    manager.startTest()
+    //manager.startTest()
     //var mutableState by remember { mutableStateOf(manager.cur_q) }
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -73,7 +76,7 @@ fun QuestionScreen(
         )
     {
         Box {
-            QuestionCard(manager, navigateToResults)
+            QuestionCard(manager, navigateToResults, putInts)
         }
 
     }
@@ -83,8 +86,10 @@ fun QuestionScreen(
 @Composable
 fun QuestionCard(
     manager: TestManager,
-    navigateToResults : () -> Unit
+    navigateToResults : () -> Unit,
+    putInts : (List<Int>) ->Unit
 ) {
+    var managerState   by remember { mutableStateOf(manager) }
     var mutableState by remember { mutableStateOf(manager.cur_q) }
     val radioOptions = manager.getOptions()
     var selectedOption by remember { mutableStateOf(radioOptions[0])}
@@ -115,6 +120,7 @@ fun QuestionCard(
            Column (
                modifier = Modifier
                    .widthIn(300.dp, 450.dp)
+                   .heightIn(400.dp, 700.dp)
                    .padding(0.dp)
                    .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
@@ -209,7 +215,30 @@ fun QuestionCard(
                        selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
                    }
                    else {
-                        navigateToResults()
+                      /* val lst = ArrayList<QAPair>()
+                       var j = 1
+                       for(i in manager.test.qa_map.keys) {
+                           lst.add(QAPair(j, manager.test.qa_map[i]!!))
+                           j+=1
+                       }
+                       val qalst : QAPairList? = QAPairList(lst)
+
+                       Log.d("DEBUG RESULTS", "+++++++++ lst size${lst.size}")
+                       if (qalst != null) {
+                           Log.d("DEBUG RESULTS", "+++++++++ qapair lst size${qalst.list?.size}")
+                       }
+
+                       navController.currentBackStackEntry?.arguments?.putParcelable("qa",qalst)*/
+
+                       val param1 = STAITestAnalyzer.countTotalPointsFirstHalf(manager.test)
+                       val param2 = STAITestAnalyzer.countTotalPointsSecondHalf(manager.test)
+//                       Log.d("DEBUG RESULTS", "+++++++++ qs param1 = ${param1}; param2 = ${param1}")
+//
+//                       navController.currentBackStackEntry?.arguments?.putInt("param1", param1)
+//                       navController.currentBackStackEntry?.arguments?.putInt("param2", param2)
+                       putInts(listOf(TestID.STAI.id, param1, param2))
+                       navigateToResults()
+
                    }
 
 

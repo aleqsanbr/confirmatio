@@ -18,3 +18,14 @@ class Test (
     }
 
 }
+
+enum class TestID (val id : Int){
+    STAI(1), None(2);
+}
+
+fun getTestId(id : Int) : TestID {
+    when(id) {
+        1 -> return TestID.STAI
+        else -> return TestID.None
+    }
+}

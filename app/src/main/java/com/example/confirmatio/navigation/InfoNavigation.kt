@@ -1,5 +1,6 @@
 package com.example.confirmatio.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -13,11 +14,12 @@ import com.example.confirmatio.navigation.InfoDestinations.ARTICLE_ID
 import com.example.confirmatio.navigation.InfoDestinations.TEST_ID
 import com.example.confirmatio.screens.Info
 import com.example.confirmatio.screens.SingleArticle
-import com.example.confirmatio.screens.SinglePractice
 import com.example.confirmatio.screens.TestInfoScreen
 import com.example.confirmatio.testsSystem.QuestionScreen
+import com.example.confirmatio.testsSystem.TestID
 import com.example.confirmatio.testsSystem.TestManager
 import com.example.confirmatio.testsSystem.TestResultScreen
+import com.example.confirmatio.testsSystem.getTestId
 
 @Composable
 fun InfoNavigation() {
@@ -49,15 +51,36 @@ fun InfoNavigation() {
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            val manager = TestManager(arguments.getInt(TEST_ID), LocalContext.current)
-            QuestionScreen(manager = manager, navigateUp = actions.navigateUp, actions.navigateToResults)
+            val manager = TestManager(getTestId(arguments.getInt(TEST_ID)), LocalContext.current)
+            manager.startTest()
+            QuestionScreen(manager = manager, navigateUp = actions.navigateUp, actions.navigateToResults, actions.saveResultsAsArguments)
         }
         composable(
             "${InfoDestinations.RESULTS_ROUTE}",
 
         ) { backStackEntry ->
-            val arguments = requireNotNull(backStackEntry.arguments)
-            TestResultScreen(actions.navigateToStart)
+           /* val qalst: QAPairList? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                navController.previousBackStackEntry!!.arguments!!.getParcelable("qa", QAPairList::class.java)
+            } else {
+                @Suppress("DEPRECATION") navController.previousBackStackEntry!!.arguments!!.getParcelable("qa")
+            }
+            */
+           /* var param0  = navController.previousBackStackEntry?.arguments?.getInt("param0")
+            var param1  = navController.previousBackStackEntry?.arguments?.getInt("param1")
+            var param2  = navController.previousBackStackEntry?.arguments?.getInt("param2")*/
+            var param0 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param0")
+            var param1 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param1")
+            var param2 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param2")
+            if (param1 == null) {
+                Log.d("DEBUG RESULTS", "+++++++++ param1 is null")
+                param1 = 10
+            }
+            if (param2 == null) {
+                Log.d("DEBUG RESULTS", "+++++++++ param2 is null")
+                param2 = 10
+            }
+            Log.d("DEBUG RESULTS", "+++++++++ param1 = ${param1}; param2 = ${param2}")
+            TestResultScreen(listOf(TestID.STAI.id, param1, param2), actions.navigateToStart)
         }
 
         composable(
@@ -90,7 +113,7 @@ private class Actions(
     val navigateToQuestions: (Int) -> Unit = { Id: Int ->
         navController.navigate("${InfoDestinations.TEST_ROUTE}/$Id")
     }
-    val navigateToResults: () -> Unit = {  ->
+    val navigateToResults: () -> Unit = {
         navController.navigate("${InfoDestinations.RESULTS_ROUTE}")
     }
     val navigateToStart: () -> Unit = {
@@ -98,6 +121,11 @@ private class Actions(
     }
     val navigateUp: () -> Unit = {
         navController.navigateUp()
+    }
+    val saveResultsAsArguments: (List<Int>) -> Unit = { lst ->
+        for(i in lst.indices) {
+            navController.currentBackStackEntry?.savedStateHandle?.set("param${i}", lst[i])
+        }
     }
 }
 

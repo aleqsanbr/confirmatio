@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 
 class TestManager(
-    val  test_id : Int,
+    val  test_id : TestID,
     val context : Context
 ) {
     var cur_q : Int = 1

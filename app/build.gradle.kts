@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -74,4 +75,6 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Pager Indicators
 
     implementation("org.apache.commons:commons-csv:1.5")
+
+    implementation("com.google.code.gson:gson:2.9.0")
 }
