@@ -94,7 +94,7 @@ class STAITestAnalyzer(val test : Test) {
                         " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
                 CustomText(text = "Баллы личностоной тревожности : **${total_points2}**" +
-                        " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
+                        " (${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
 
                 if((total_points1 + total_points2) / 2 < 31) {
@@ -110,7 +110,7 @@ class STAITestAnalyzer(val test : Test) {
                         text = LOW_ANX
                     )
                 }
-                else if ((total_points1 + total_points2) > 44) {
+                else if ((total_points1 + total_points2 / 2) > 44) {
                     Text(
                         modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 0.dp),
                         fontSize = 20.sp,
