@@ -48,21 +48,26 @@ import com.example.confirmatio.testsSystem.TestLoader
 fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: () -> Unit) {
     when(testId) {
         1 -> ScreenContent(testId, navigateToQuestions, navigateUp)
-        else -> Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        )
-        {
-            Text(text = "Данный тест еще не реализован!",
-                fontSize = 15.sp)
-            Button(onClick = navigateUp) {
-                Icon(
+        else ->
+            Column(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            )
+            {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    text = "Данный тест еще не реализован!",
+                    fontSize = 23.sp
+                )
+                Button(onClick = navigateUp,)
+                {Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "get back"
                 )
+                }
             }
-        }
 
 
     }
