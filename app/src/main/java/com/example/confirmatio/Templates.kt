@@ -29,20 +29,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Title(title : String, isCentered : Boolean = false) {
-//    Text(
-//        text = title,
-//        fontSize = 7.em,
-//        fontFamily = FontFamily.SansSerif,
-//        fontWeight = FontWeight.Medium,
-//        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 20.dp)
-//    )
     Text(
         text = title,
         fontSize = 30.sp,
         fontWeight = FontWeight(500),
         lineHeight = 1.2.em,
         modifier = Modifier
-            .padding(horizontal = 15.dp, vertical = 10.dp)
+            .padding(15.dp, 30.dp, 15.dp, 15.dp)
             .fillMaxWidth(1f),
         textAlign = if(isCentered) TextAlign.Center else TextAlign.Left,
     )

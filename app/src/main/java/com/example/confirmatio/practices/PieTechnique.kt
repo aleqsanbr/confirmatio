@@ -48,6 +48,7 @@ import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
+import com.example.confirmatio.Title
 
 
 @Composable
@@ -58,7 +59,7 @@ fun PieTechnique(navigateUp: () -> Unit) {
             .verticalScroll(ScrollState(0))
     ) {
 
-        nameOfPractice("Техника \"Пирог\"")
+        Title("Техника \"Пирог\"")
 
         headings("Описание")
 

@@ -24,7 +24,6 @@ fun Settings() {
     ) {
         Column(
             modifier = Modifier
-                .padding(0.dp, 20.dp, 0.dp, 0.dp)
                 .fillMaxWidth()
         ) {
             Title("Настройки")
