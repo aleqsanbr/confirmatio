@@ -102,18 +102,18 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                     .width(190.dp)
             ) {
                 Text(text = model.title,
-                    modifier = Modifier.padding(15.dp, 0.dp),
-                    fontSize = 18.sp,
+                    modifier = Modifier.padding(15.dp,0.dp, 5.dp, 0.dp),
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Medium,
                     color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
 
 
                     )
-                Text(text = model.description,
+               /* Text(text = model.description,
                     modifier = Modifier.padding(15.dp, 0.dp),
                     color = if(!isSystemInDarkTheme()) md_theme_light_onSurfaceVariant else md_theme_dark_onSurfaceVariant,
                     fontSize = 13.sp
-                )
+                )*/
             }
             Image(
                 painter = model.image,

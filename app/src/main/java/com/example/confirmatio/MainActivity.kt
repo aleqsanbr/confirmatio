@@ -99,7 +99,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
                     }
                 },
                 icon = {

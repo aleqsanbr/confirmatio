@@ -17,8 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import com.example.confirmatio.practices.PieTechnique
 
 @Composable
@@ -32,15 +34,19 @@ fun SinglePractice(
         else ->
         {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             )
             {
-                Text(text = "Данная практика еще не реализована!",
-                    fontSize = 4.em)
-                Button(onClick = navigateUp) {
-                    Icon(
+                Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
+                    text = "Данная практика еще не реализована!",
+                    fontSize = 23.sp
+                )
+                Button(onClick = navigateUp,)
+                {Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "get back"
                     )
