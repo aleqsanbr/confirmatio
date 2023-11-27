@@ -173,11 +173,11 @@ fun StartButton(text: String, onButtonClick: () -> Unit) {
 @Composable
 fun NotImplemented(name: String) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(modifier = Modifier.padding(50.dp))
+        Spacer(modifier = Modifier.padding(30.dp))
         CustomText(text = "Not implemented. $name", modifier = Modifier.padding(20.dp).align(
             Alignment.CenterHorizontally
         ), fontSize = 20.sp)
-        Spacer(modifier = Modifier.padding(50.dp))
+        Spacer(modifier = Modifier.padding(30.dp))
         Icon(
             imageVector = Icons.Outlined.Warning,
             contentDescription = "",
