@@ -50,6 +50,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.confirmatio.screens.HelpNowMethods.Breathing
 import com.example.confirmatio.screens.HelpNowMethods.Grounding
+import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingProcess
 import com.example.confirmatio.screens.HelpNowMethods.Meditation
 
 @Composable
@@ -116,6 +117,7 @@ fun HelpNow() {
         composable("grounding") { Grounding(navController) }
         composable("breathing") { Breathing() }
         composable("meditation") { Meditation() }
+        composable("grounding_process") { GroundingProcess() }
     }
 }
 

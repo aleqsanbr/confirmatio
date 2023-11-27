@@ -62,13 +62,3 @@ fun Grounding(navController: NavHostController) {
         }
     }
 }
-
-@Composable
-fun GroundingNavigation() {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = "grounding") {
-        composable("grounding") { Grounding(navController) }
-        composable("grounding_process") { GroundingProcess() }
-    }
-}
