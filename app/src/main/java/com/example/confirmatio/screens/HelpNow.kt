@@ -113,7 +113,7 @@ fun HelpNow() {
 
     NavHost(navController = navController, startDestination = "helpNow") {
         composable("helpNow") { HelpNowContent(navController) }
-        composable("grounding") { Grounding() }
+        composable("grounding") { Grounding(navController) }
         composable("breathing") { Breathing() }
         composable("meditation") { Meditation() }
     }

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import java.io.Console
 
 @Composable
 fun Title(title : String, isCentered : Boolean = false) {
@@ -140,4 +142,26 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         fontSize = fontSize,
         text = annotatedString
     )
+}
+
+@Composable
+fun StartButton(text: String, onButtonClick: () -> Unit) {
+    FilledTonalButton(
+        onClick = {
+                onButtonClick()
+        },
+        modifier = Modifier.padding(0.dp, 10.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFBAEEC3),
+            contentColor = Color.Black,
+            disabledContainerColor = Color(0xFFCFD5D0),
+            disabledContentColor = Color(0xFFA2AAA2)
+        )
+    ) {
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            fontSize = 20.sp,
+        )
+    }
 }
