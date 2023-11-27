@@ -19,21 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.confirmatio.CustomText
+import com.example.confirmatio.NotImplemented
 
 @Composable
 fun Breathing() {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Spacer(modifier = Modifier.padding(50.dp))
-        CustomText(text = "Not implemented. Breathing", modifier = Modifier.padding(20.dp).align(
-            Alignment.CenterHorizontally
-        ), fontSize = 20.sp)
-        Spacer(modifier = Modifier.padding(50.dp))
-        Icon(
-            imageVector = Icons.Outlined.Warning,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(150.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-    }
+    NotImplemented(name = "Breathing")
 }

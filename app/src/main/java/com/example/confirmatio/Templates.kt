@@ -3,16 +3,20 @@ package com.example.confirmatio
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -162,6 +166,24 @@ fun StartButton(text: String, onButtonClick: () -> Unit) {
             text = text,
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
+        )
+    }
+}
+
+@Composable
+fun NotImplemented(name: String) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Spacer(modifier = Modifier.padding(50.dp))
+        CustomText(text = "Not implemented. $name", modifier = Modifier.padding(20.dp).align(
+            Alignment.CenterHorizontally
+        ), fontSize = 20.sp)
+        Spacer(modifier = Modifier.padding(50.dp))
+        Icon(
+            imageVector = Icons.Outlined.Warning,
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.size(150.dp)
+                .align(Alignment.CenterHorizontally)
         )
     }
 }
