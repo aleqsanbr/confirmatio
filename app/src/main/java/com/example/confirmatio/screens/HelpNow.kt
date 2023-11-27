@@ -1,6 +1,7 @@
 package com.example.confirmatio.screens
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Ease
 import androidx.compose.animation.core.EaseInOut
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -57,13 +58,13 @@ import com.example.confirmatio.screens.HelpNowMethods.Meditation
 @Composable
 fun BigRoundButton(text: String, onButtonClick: () -> Unit) {
 
-    val infiniteTransition = rememberInfiniteTransition()
+    val infiniteTransition = rememberInfiniteTransition(label = "")
 
     val sizeValue by infiniteTransition.animateFloat(
         initialValue = (LocalConfiguration.current.screenWidthDp.dp-70.dp).value,
         targetValue = (LocalConfiguration.current.screenWidthDp.dp-25.dp).value,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 3000, easing = EaseInOut),
+            animation = tween(durationMillis = 2000, easing = Ease),
             repeatMode = RepeatMode.Restart,
         ), label = ""
     )
@@ -72,12 +73,12 @@ fun BigRoundButton(text: String, onButtonClick: () -> Unit) {
         initialValue = 0.6f,
         targetValue = 0f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 3000, easing = EaseInOut),
+            animation = tween(durationMillis = 2000, easing = Ease),
             repeatMode = RepeatMode.Restart,
         ), label = ""
     )
     Row(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = Modifier.fillMaxSize(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
