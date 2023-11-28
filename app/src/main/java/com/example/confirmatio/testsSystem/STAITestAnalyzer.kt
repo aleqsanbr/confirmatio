@@ -36,7 +36,7 @@ class STAITestAnalyzer(val test : Test) {
             )
             Text(
                 fontSize = 20.sp,
-                text = "Баллы личностоной тревожности : ${total_points2}" +
+                text = "Баллы личностной тревожности : ${total_points2}" +
                         "(${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})"
             )
             Text(
@@ -74,9 +74,6 @@ class STAITestAnalyzer(val test : Test) {
 
         @Composable
         fun getResults(total_points1: Int, total_points2 : Int) {
-            /*var total_points1 = countTotalPointsFirstHalf()
-            var total_points2 = countTotalPointsSecondHalf()*/
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -93,7 +90,7 @@ class STAITestAnalyzer(val test : Test) {
                 CustomText(text = "Баллы ситуативной тревожности : **${total_points1}**" +
                         " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-                CustomText(text = "Баллы личностоной тревожности : **${total_points2}**" +
+                CustomText(text = "Баллы личностной тревожности : **${total_points2}**" +
                         " (${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
 

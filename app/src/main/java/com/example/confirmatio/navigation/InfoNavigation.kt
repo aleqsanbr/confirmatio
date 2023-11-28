@@ -38,8 +38,6 @@ fun InfoNavigation() {
             )
         ) { backStackEntry ->
             val arguments = requireNotNull(backStackEntry.arguments)
-            //val manager = TestManager(arguments.getInt(InfoDestinations.TEST_ID))
-            //QuestionScreen(manager = manager, navigateUp = actions.navigateUp)
             TestInfoScreen(arguments.getInt(InfoDestinations.TEST_ID),actions.navigateToQuestions,navigateUp = actions.navigateUp)
         }
         composable(
@@ -59,27 +57,15 @@ fun InfoNavigation() {
             "${InfoDestinations.RESULTS_ROUTE}",
 
         ) { backStackEntry ->
-           /* val qalst: QAPairList? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                navController.previousBackStackEntry!!.arguments!!.getParcelable("qa", QAPairList::class.java)
-            } else {
-                @Suppress("DEPRECATION") navController.previousBackStackEntry!!.arguments!!.getParcelable("qa")
-            }
-            */
-           /* var param0  = navController.previousBackStackEntry?.arguments?.getInt("param0")
-            var param1  = navController.previousBackStackEntry?.arguments?.getInt("param1")
-            var param2  = navController.previousBackStackEntry?.arguments?.getInt("param2")*/
             var param0 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param0")
             var param1 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param1")
             var param2 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param2")
             if (param1 == null) {
-                Log.d("DEBUG RESULTS", "+++++++++ param1 is null")
                 param1 = 10
             }
             if (param2 == null) {
-                Log.d("DEBUG RESULTS", "+++++++++ param2 is null")
                 param2 = 10
             }
-            Log.d("DEBUG RESULTS", "+++++++++ param1 = ${param1}; param2 = ${param2}")
             TestResultScreen(listOf(TestID.STAI.id, param1, param2), actions.navigateToStart)
         }
 

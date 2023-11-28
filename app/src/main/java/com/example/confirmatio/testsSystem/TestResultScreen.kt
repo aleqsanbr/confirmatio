@@ -20,7 +20,6 @@ fun TestResultScreen(
     results : List<Int>,
     navigateToStart: () -> Unit)
  {
-     val textMeasurer = rememberTextMeasurer()
      if(results != null) {
          when(results[0]) {
              TestID.STAI.id ->
@@ -62,7 +61,7 @@ fun TestResultScreen(
              ){
                  Text(
                      modifier = Modifier,
-                     text = "NULL LIST Вы прошли тест!\nРезультаты появятся позже...",
+                     text = "Вы прошли тест!\nРезультаты появятся позже...",
                      fontSize = 8.em,
                      style = TextStyle(lineHeight = 40.sp)
                  )

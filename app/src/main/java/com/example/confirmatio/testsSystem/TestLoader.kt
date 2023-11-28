@@ -21,15 +21,6 @@ class TestLoader(
     fun loadQuestions() : List<Question> {
         when(test_id) {
             TestID.STAI ->
-                /*val opts = listOf("Нет, это не так","Пожалуй, так","Верно","Совершенно верно")
-                return listOf(Question("Я спокоен", opts),Question("Мне ничто не угрожает", opts),Question("Я нахожусь в напряжении", opts),
-                    Question("Я испытываю сожаление", opts),Question("Я чувствую себя свободно", opts),Question("Я расстроен", opts),
-                    Question("Меня волнуют возможные неудачи", opts),Question("Я чувствую себя отдохнувшим", opts),Question("Я встревожен", opts),
-                    Question("Я испытываю чувство внутреннего удовлетворения", opts),Question("Я уверен в себе", opts),Question("Я нервничаю", opts),
-                    Question("Я не нахожу себе места", opts),Question("Я взвинчен", opts),Question("Я не чувствую скованности, напряженности", opts),
-                    Question("Я доволен", opts),Question("Я озабочен", opts),Question("Я слишком возбужден и мне не по себе", opts),
-                    Question("Мне радостно", opts),Question("Мне приятно", opts),)
-    */
                 return parseCSV()
             else ->
                 return listOf(Question("Question # 1 text",
@@ -60,15 +51,12 @@ class TestLoader(
     }
 
     fun getTestName(): String {
-
-        //context.assets.open("test${test_id}.csv").bufferedReader()
         val bufferedReader = context.assets.open("test${test_id.id}.csv").bufferedReader()
         val csvParser = CSVParser(bufferedReader, CSVFormat.DEFAULT)
         return csvParser.first().get(1)
     }
     companion object {
         fun getTestName(id : Int, context : Context): String {
-            //context.assets.open("test${test_id}.csv").bufferedReader()
             val bufferedReader = context.assets.open("test${id}.csv").bufferedReader()
             val csvParser = CSVParser(bufferedReader, CSVFormat.DEFAULT)
             return csvParser.first().get(1)

@@ -70,11 +70,9 @@ fun QuestionScreen(
     putInts : (List<Int>) ->Unit
 )
 {
-    //manager.startTest()
-    //var mutableState by remember { mutableStateOf(manager.cur_q) }
+
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        //horizontalAlignment = Alignment.CenterHorizontally,
         )
     {
         QuestionCard(manager, navigateToResults, putInts)
@@ -172,7 +170,6 @@ fun QuestionCard(
                    onClick = {
                    if(manager.cur_q - 1 >= 1) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
-                       Log.d("DEBUG QUESTION", "++++++++++prev manager.saveAnswer() ${manager.getChoosedOption()}")
                        manager.cur_q -=1
                        mutableState -= 1
                        selectedOption = radioOptions[manager.getChoosedOption()]
@@ -210,36 +207,15 @@ fun QuestionCard(
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
                        manager.updateProgress()
-                       Log.d("DEBUG QUESTION", "++++++++++next manager.saveAnswer() ${manager.getChoosedOption()}")
                        manager.cur_q +=1
                        mutableState += 1
                        selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
                    }
                    else {
-                      /* val lst = ArrayList<QAPair>()
-                       var j = 1
-                       for(i in manager.test.qa_map.keys) {
-                           lst.add(QAPair(j, manager.test.qa_map[i]!!))
-                           j+=1
-                       }
-                       val qalst : QAPairList? = QAPairList(lst)
-
-                       Log.d("DEBUG RESULTS", "+++++++++ lst size${lst.size}")
-                       if (qalst != null) {
-                           Log.d("DEBUG RESULTS", "+++++++++ qapair lst size${qalst.list?.size}")
-                       }
-
-                       navController.currentBackStackEntry?.arguments?.putParcelable("qa",qalst)*/
-
                        val param1 = STAITestAnalyzer.countTotalPointsFirstHalf(manager.test)
                        val param2 = STAITestAnalyzer.countTotalPointsSecondHalf(manager.test)
-//                       Log.d("DEBUG RESULTS", "+++++++++ qs param1 = ${param1}; param2 = ${param1}")
-//
-//                       navController.currentBackStackEntry?.arguments?.putInt("param1", param1)
-//                       navController.currentBackStackEntry?.arguments?.putInt("param2", param2)
                        putInts(listOf(TestID.STAI.id, param1, param2))
                        navigateToResults()
-
                    }
 
 

@@ -42,7 +42,6 @@ class TestManager(
     }
     fun saveAnswer(q_ind : Int = cur_q, a_pos : Int) {
         if(test.qa_map.containsKey(test.getQuestion(q_ind))) {
-            Log.d("DEBUG QUESTION", "+++++++++++++ test.qa_map.containsKey(test.getQuestion(q_ind)")
             test.qa_map[test.getQuestion(q_ind)] = a_pos
         }
     }

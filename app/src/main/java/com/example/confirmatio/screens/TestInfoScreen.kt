@@ -99,7 +99,6 @@ fun ScreenContent(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: (
             )
         }
     }
-    //NavigateUpButton(navigateUp)
 }
 @Composable
 fun InfoCard(title:String,text:String, icon : ImageVector) {
@@ -148,7 +147,6 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
             text =text,
             modifier = Modifier.padding(10.dp),
             fontSize = 13.sp
-            //textAlign = TextAlign.Justify
         )
     }
 
