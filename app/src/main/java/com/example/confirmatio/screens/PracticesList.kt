@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -105,15 +107,15 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                     modifier = Modifier.padding(15.dp,0.dp, 5.dp, 0.dp),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Medium,
-                    color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                    color = if(model.id ==2) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline,
 
 
                     )
-               /* Text(text = model.description,
-                    modifier = Modifier.padding(15.dp, 0.dp),
-                    color = if(!isSystemInDarkTheme()) md_theme_light_onSurfaceVariant else md_theme_dark_onSurfaceVariant,
-                    fontSize = 13.sp
-                )*/
+                /* Text(text = model.description,
+                     modifier = Modifier.padding(15.dp, 0.dp),
+                     color = if(!isSystemInDarkTheme()) md_theme_light_onSurfaceVariant else md_theme_dark_onSurfaceVariant,
+                     fontSize = 13.sp
+                 )*/
             }
             Image(
                 painter = model.image,
@@ -121,11 +123,12 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                 modifier = Modifier
                     .padding(5.dp, 0.dp, 25.dp, 0.dp)
                     .size(80.dp),
-                colorFilter = ColorFilter.tint(if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground),
+                colorFilter = ColorFilter.tint( if(model.id ==2) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline),
 
-            )
+                )
         }
     }
+
 }
 
 @Composable
@@ -147,11 +150,11 @@ fun generateList(id : Int) : List<CardModel> {
 
     if (id == 1) {
         return listOf(
-            CardModel("\"У меня есь мысль, что...\"", "Description",
-                painterResource(id = R.drawable.question_icon), color1, 1
-            ),
             CardModel("Техника \"Пирог\"", "Description",
                 painterResource(id = R.drawable.cake_icon), color2, 2
+            ),
+            CardModel("\"У меня есь мысль, что...\"", "Description",
+                painterResource(id = R.drawable.question_icon), color1, 1
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
                 painterResource(id = R.drawable.note_icon), color3, 3
