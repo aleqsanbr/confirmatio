@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -30,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -88,9 +90,7 @@ fun ScreenContent(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: (
         Spacer(modifier = Modifier.padding(15.dp))
         InfoCard(title = "Перед началом теста", TestLoader.getTestDescription(testId, LocalContext.current),icon = Icons.Outlined.Star)
         FilledTonalButton(onClick = { navigateToQuestions(testId) },
-            modifier = Modifier.padding(0.dp, 15.dp),
-            colors = ButtonDefaults.buttonColors(containerColor =Color(0xFFBAEEC3),contentColor=Color.Black,
-                disabledContainerColor =Color(0xFFCFD5D0),  disabledContentColor=Color(0xFFA2AAA2))
+            modifier = Modifier.width((LocalConfiguration.current.screenWidthDp/2).dp).padding(5.dp,20.dp),
         ) {
             Text(
                 text = "Начать тест",
