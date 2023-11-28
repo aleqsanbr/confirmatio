@@ -32,6 +32,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.ArrowForward
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -75,9 +77,7 @@ fun QuestionScreen(
         //horizontalAlignment = Alignment.CenterHorizontally,
         )
     {
-        Box {
-            QuestionCard(manager, navigateToResults, putInts)
-        }
+        QuestionCard(manager, navigateToResults, putInts)
 
     }
 }
@@ -101,7 +101,7 @@ fun QuestionCard(
         verticalArrangement = Arrangement.Top
     ){
        Column(
-           modifier = Modifier.width(IntrinsicSize.Min),
+           modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
        ) {
            Text(
                modifier = Modifier.padding(0.dp, 30.dp, 0.dp, 0.dp),
@@ -119,14 +119,14 @@ fun QuestionCard(
            )
            Column (
                modifier = Modifier
-                   .widthIn(300.dp, 450.dp)
-                   .heightIn(400.dp, 700.dp)
-                   .padding(0.dp)
+                   .widthIn(300.dp, 550.dp)
+                   //.fillMaxWidth()
+                   .heightIn(350.dp, 650.dp)
                    .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
                ) {
                Text(
-                   modifier = Modifier.padding(10.dp, 10.dp,10.dp, 5.dp),
+                   modifier = Modifier.padding(10.dp, 7.dp,10.dp, 5.dp),
                    text = manager.getQuestion().q_text,
                    fontSize = 22.sp,
                    fontWeight = FontWeight.Medium,
@@ -134,8 +134,8 @@ fun QuestionCard(
 
 
                Column(
-                   modifier = Modifier.padding(vertical = 8.dp, horizontal = 0.dp),
-                   verticalArrangement = Arrangement.spacedBy(8.dp),
+                   modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp, horizontal = 0.dp),
+                   verticalArrangement = Arrangement.spacedBy(5.dp),
                    horizontalAlignment = Alignment.Start
 
                ) {
@@ -151,7 +151,7 @@ fun QuestionCard(
                            Text(
                                text = option,
                                modifier = Modifier.padding(start = 6.dp),
-                               fontSize = 19.sp
+                               fontSize = 17.sp
                            )
                        }
                    }
@@ -164,9 +164,10 @@ fun QuestionCard(
                Button(
                    enabled = manager.cur_q > 1,
                    modifier = Modifier
-                       .width(IntrinsicSize.Min)
-                       .width(135.dp)
-                       .padding(0.dp, 15.dp, 0.dp, 0.dp),
+                       .padding(0.dp, 15.dp, 0.dp, 5.dp)
+                       //.width(IntrinsicSize.Min)
+                       .width(130.dp),
+                       //.padding(0.dp, 15.dp, 0.dp, 10.dp),
                    colors = ButtonDefaults.buttonColors(containerColor = if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q - 1 >= 1) {
@@ -181,11 +182,11 @@ fun QuestionCard(
                }) {
                    Row (
                        modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.SpaceBetween,
+                       horizontalArrangement = Arrangement.Start,
                        verticalAlignment = Alignment.CenterVertically
                    ) {
                        Image(
-                           imageVector = Icons.Default.ArrowBack,
+                           imageVector = Icons.Outlined.ArrowBack,
                            contentDescription = "Previous",
                            modifier = Modifier.size(20.dp),
                            colorFilter = ColorFilter.tint(Color.White)
@@ -200,9 +201,10 @@ fun QuestionCard(
                }
                Button(
                    modifier = Modifier
-                       .width(IntrinsicSize.Min)
-                       .width(135.dp)
-                       .padding(0.dp, 15.dp, 0.dp, 0.dp),
+                       //.width(IntrinsicSize.Min)
+                       .padding(0.dp, 15.dp, 0.dp, 5.dp)
+                       .width(130.dp),
+
                    colors = ButtonDefaults.buttonColors(containerColor =if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
@@ -245,7 +247,7 @@ fun QuestionCard(
 
                    Row (
                        modifier = Modifier.fillMaxWidth(),
-                       horizontalArrangement = Arrangement.SpaceBetween,
+                       horizontalArrangement = Arrangement.End,
                        verticalAlignment = Alignment.CenterVertically
                    ) {
                        if(manager.cur_q < manager.amountOfQuestions()) {
@@ -257,14 +259,14 @@ fun QuestionCard(
                        }
                        else {
                            Text(
-                               text = "Результат",
+                               text = "Итоги",
                                color = Color.White,
                                fontSize = 17.sp
                            )
                        }
 
                        Image(
-                           imageVector = Icons.Default.ArrowForward,
+                           imageVector = Icons.Outlined.ArrowForward,
                            contentDescription = "Next",
                            modifier = Modifier.size(20.dp),
                            colorFilter = ColorFilter.tint(Color.White)
