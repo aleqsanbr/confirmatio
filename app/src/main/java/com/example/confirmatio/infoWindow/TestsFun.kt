@@ -9,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -30,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -38,8 +40,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.md_theme_dark_onBackground
+import com.example.compose.md_theme_light_onBackground
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -82,19 +88,39 @@ fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
                             val shape = RoundedCornerShape(20.dp)
                             Box(
                                 modifier = Modifier
-                                    .height(columnHeightDp-100.dp)
+                                    //.height(columnHeightDp - 100.dp)
+                                    .height(columnHeightDp - 70.dp)
                                     .width(LocalConfiguration.current.screenWidthDp.dp + 5.dp)
                                     .background(Color.Transparent)
                                     .padding(horizontal = 15.dp),
+                                contentAlignment = Alignment.Center
                             ) {
-
+                               /*
                                 Image(
                                     painter = painterResource(id = item.imageId),
                                     contentDescription = "image1",
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .clip(shape)
+                                )*/
+                                Box(
+                                    modifier = Modifier
+                                        .height(columnHeightDp - 80.dp)
+                                        .width(LocalConfiguration.current.screenWidthDp.dp - 70.dp)
+                                        .background(item.color, shape = shape)
+                                        .padding(horizontal = 15.dp),
+                                    contentAlignment = Alignment.Center
                                 )
+                                {
+                                    Text(text = item.title,
+                                        textAlign = TextAlign.Center,
+                                        lineHeight = 50.sp,
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight(700),
+                                        color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                                        modifier = Modifier
+                                            .padding((10.dp)))
+                                }
                             }
                         },
                         measurePolicy = { measurables, constraints ->
