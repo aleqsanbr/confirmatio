@@ -71,8 +71,8 @@ fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
                 }
         ) {
             Text(
-                text = "Тесты", fontSize = 30.sp, modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                text = "Тесты", fontSize = 30.sp, fontWeight = FontWeight(700),modifier = Modifier
+                    .padding(horizontal = 30.dp, vertical = 5.dp)
             )
             LazyRow(
                 modifier = Modifier

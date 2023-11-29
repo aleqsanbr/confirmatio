@@ -3,6 +3,7 @@ package com.example.confirmatio.articles
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,16 +13,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -31,7 +35,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.compose.CustomColor1
+import com.example.compose.dark_CustomColor1Container
+import com.example.compose.md_theme_dark_onBackground
 import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_onBackground
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
@@ -46,26 +54,54 @@ fun WhatIsAnAlarm(navigateUp: () -> Unit) {
         modifier = Modifier
             .background(color = Color.Transparent)
             .verticalScroll(ScrollState(0))
-            .padding(horizontal = 15.dp, vertical = 15.dp),
+            .padding(horizontal = 12.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy((-65).dp)
     )
     {
-      //  Spacer(modifier = Modifier.padding(30.dp))
+        Box(
+            modifier = Modifier
+                .height(130.dp)
+                .width(LocalConfiguration.current.screenWidthDp.dp - 20.dp)
+                .background(
+                    if (!isSystemInDarkTheme()) CustomColor1 else dark_CustomColor1Container,
+                    shape = shape
+                )
+                .border(3.dp, MaterialTheme.colorScheme.background, RoundedCornerShape(30.dp))
+                .padding((10.dp)),
+        )
+        {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Что такое тревога?",
+                    textAlign = TextAlign.Center,
+                    lineHeight = 50.sp,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight(700),
+                    color = if (!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                    modifier = Modifier
+                        .padding((10.dp))
+                )
+            }
+        }
 
-          Image(
+        /*  Image(
                 painter = painterResource(id = R.drawable.article_1_heading),
                 contentDescription = "image1",
                 modifier = Modifier
                   .fillMaxSize()
                     .clip(shape)
             )
-
+*/
         Box(
             modifier = Modifier
                 .background(
                     color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
                     shape = shape
                 )
+                .border(3.dp, MaterialTheme.colorScheme.background, RoundedCornerShape(30.dp))
         )
         {
             contentText(

@@ -79,8 +79,8 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                 }
         ) {
             Text(
-                text = "Статьи", fontSize = 30.sp, modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                text = "Статьи", fontSize = 30.sp,  fontWeight = FontWeight(700), modifier = Modifier
+                    .padding(horizontal = 30.dp, vertical = 5.dp)
             )
             LazyRow(
                 modifier = Modifier
@@ -123,6 +123,7 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                                 {
                                     Text(text = item.title,
                                         textAlign = TextAlign.Center,
+
                                         lineHeight = 50.sp,
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight(700),
