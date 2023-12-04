@@ -4,20 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.confirmatio.ui.theme.ConfirmatioTheme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.confirmatio.screens.Practices
-import com.example.confirmatio.screens.Info
 import com.example.confirmatio.screens.HelpNow
 import com.example.confirmatio.screens.Diary
 import com.example.confirmatio.screens.Settings
@@ -30,9 +26,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.compose.ConfirmatioTheme
+import com.example.compose.md_theme_dark_onSecondary
+import com.example.compose.md_theme_light_secondaryContainer
+import com.example.confirmatio.navigation.InfoNavigation
+import com.example.confirmatio.navigation.PracticesNavigation
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.runtime.*
 
 sealed class NavRoutes(val route: String) {
     object Practices : NavRoutes("practices")
@@ -43,14 +47,23 @@ sealed class NavRoutes(val route: String) {
 }
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ConfirmatioTheme {
-                // A surface container using the 'background' color from the theme
+                val useDarkTheme: Boolean = isSystemInDarkTheme()
+                val systemUiController = rememberSystemUiController()
+                val background_status_color = colorScheme.onSecondary
+                SideEffect {
+                    systemUiController.setStatusBarColor(
+                        color = background_status_color,
+                        darkIcons = !useDarkTheme,
+                    )
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = background_status_color
                 ) {
                     MainScreen()
                 }
@@ -74,7 +87,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
+                        restoreState = navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
                     }
                 },
                 icon = {
@@ -97,6 +110,9 @@ fun MainScreen() {
     Scaffold(
         topBar = { TopAppBar(
             title = { Text("Confirmatio") },
+            colors = if(!isSystemInDarkTheme())
+                TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
+            else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
             navigationIcon = {
                 Image(
                     painter = painterResource(R.drawable.logo),
@@ -139,10 +155,10 @@ fun NavigationHost(navController: NavHostController) {
             HelpNow()
         }
         composable(NavRoutes.Practices.route) {
-            Practices()
+            PracticesNavigation()
         }
         composable(NavRoutes.Info.route) {
-            Info()
+            InfoNavigation()
         }
         composable(NavRoutes.Diary.route) {
             Diary()

@@ -1,8 +1,10 @@
 package com.example.confirmatio.screens
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.List
 import androidx.compose.material3.Card
@@ -43,72 +47,87 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.confirmatio.R
+import com.example.confirmatio.Title
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 
+
 @Composable
-fun Practices() {
+fun Practices(navigateToPractice: (Int) -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        Column() {
+        Column {
             Title("Упражнения для борьбы с тревогой");
-            PagingScreen()
+            PagingScreen(navigateToPractice)
         }
     }
 }
 
 
-
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun PagingScreen() {
+fun PagingScreen(navigateToPractice: (Int) -> Unit) {
     val coroutineScope = rememberCoroutineScope()//will use for animation
     val pagerState = rememberPagerState(
         initialPage = 0,
         initialPageOffsetFraction = 0f
     ) {
-       3
+        3
     }//store page state
 
     val tabRowItems = listOf<TabItem>(
         TabItem(
             title = "О будущем",
-            screen = { ListColumn(generateList(1)) },
+            screen = { ListColumn(generateList(1), navigateToPractice) },
         ),
         TabItem(
             title = "О текущих задачах",
-            screen = { ListColumn(generateList(2)) },
+            screen = { ListColumn(generateList(2), navigateToPractice) },
         ),
         TabItem(
-            title = "С ведением записей",
-            screen = { ListColumn(generateList(3)) },
+            title = "С записями",
+            screen = { ListColumn(generateList(3), navigateToPractice) },
         )
     )
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize()
     ) {
         androidx.compose.material.TabRow(
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.Transparent,
+            indicator = {
+                TabRowDefaults.Indicator(
+                    modifier = Modifier
+                        .tabIndicatorOffset(it[pagerState.currentPage]),
+                    color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    height = TabRowDefaults.IndicatorHeight * 1.5F
+                )
+            },
             divider = {},
 
             ) {
-            tabRowItems.forEachIndexed {index, item ->
+            tabRowItems.forEachIndexed { index, item ->
                 val selected = pagerState.currentPage == index
-                val textColor : Color
-                if (selected) textColor = Color.Black
-                else textColor = Color.Gray
+                val textColor: Color
+                if (!isSystemInDarkTheme()) {
+                    if (selected) textColor = Color.Black
+                    else textColor = Color.Gray
+                } else {
+                    if (selected) textColor = Color.White
+                    else textColor = Color.Gray
+                }
+
                 Tab(
                     modifier = Modifier.padding(5.dp),
-                    text = { Text(
-                        text = item.title,
-                        color = textColor,
+                    text = {
+                        Text(
+                            text = item.title,
+                            color = textColor,
 
-                        //  modifier = Modifier.padding(0.dp),
-                        //modifier = Modifier.height(50.dp).wrapContentHeight(align = Alignment.Bottom),
-                    )},
+                            )
+                    },
                     selected = selected,
                     onClick = { coroutineScope.launch { pagerState.animateScrollToPage(index) } }
 
@@ -117,7 +136,6 @@ fun PagingScreen() {
         }
         HorizontalPager(
             state = pagerState,
-
         ) {
             tabRowItems[pagerState.currentPage].screen()
         }
@@ -125,20 +143,8 @@ fun PagingScreen() {
 }
 
 
-@Composable
-fun Title(title : String) {
-    Text(
-        text = title,
-        fontSize = 7.em,
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Medium,
-        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 20.dp)
-    )
-}
-
-
-data class TabItem (
-    val title : String,
-    val screen: @Composable ()->Unit//Tab Screen(can also take params)
+data class TabItem(
+    val title: String,
+    val screen: @Composable () -> Unit//Tab Screen(can also take params)
 )
 
