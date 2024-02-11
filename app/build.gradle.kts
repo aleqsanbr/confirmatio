@@ -51,6 +51,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.0-beta01")
     implementation("androidx.compose.animation:animation:1.6.0-beta01")
@@ -77,6 +79,6 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0") // Pager Indicators
 
     implementation("org.apache.commons:commons-csv:1.5")
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.google.code.gson:gson:2.9.0")
 }

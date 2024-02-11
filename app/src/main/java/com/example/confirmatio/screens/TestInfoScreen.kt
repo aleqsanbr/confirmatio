@@ -53,7 +53,8 @@ import com.example.confirmatio.testsSystem.TestLoader
 @Composable
 fun TestInfoScreen(testId:Int, navigateToQuestions: (Int) ->  Unit, navigateUp: () -> Unit) {
     when(testId) {
-        1 -> ScreenContent(testId, navigateToQuestions, navigateUp)
+        1,2-> ScreenContent(testId, navigateToQuestions, navigateUp)
+
         else ->
             Column(
                 modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),

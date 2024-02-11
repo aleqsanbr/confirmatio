@@ -91,6 +91,7 @@ fun QuestionCard(
     var mutableState by remember { mutableStateOf(manager.cur_q) }
     val radioOptions = manager.getOptions()
     var selectedOption by remember { mutableStateOf(radioOptions[0])}
+    Log.d("TEST", "cur_q opt " + manager.getChoosedOption(manager.cur_q))
     Column (
         modifier = Modifier
             .fillMaxWidth()
@@ -172,7 +173,7 @@ fun QuestionCard(
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
                        manager.cur_q -=1
                        mutableState -= 1
-                       selectedOption = radioOptions[manager.getChoosedOption()]
+                       selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
                    }
 
 
@@ -205,16 +206,20 @@ fun QuestionCard(
                    colors = ButtonDefaults.buttonColors(containerColor =if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
+                       Log.d("TEST", "selectedOption = " + selectedOption)
+
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
+                       Log.d("TEST", "saved pption = " + manager.getChoosedOption(manager.cur_q))
                        manager.updateProgress()
                        manager.cur_q +=1
                        mutableState += 1
                        selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
+
                    }
                    else {
                        val param1 = STAITestAnalyzer.countTotalPointsFirstHalf(manager.test)
                        val param2 = STAITestAnalyzer.countTotalPointsSecondHalf(manager.test)
-                       putInts(listOf(TestID.STAI.id, param1, param2))
+                       putInts(listOf(manager.test_id.id, param1, param2))
                        navigateToResults()
                    }
 

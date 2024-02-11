@@ -20,12 +20,13 @@ class Test (
 }
 
 enum class TestID (val id : Int){
-    STAI(1), None(2);
+    STAI(1), LSAS(2), None(4);
 }
 
 fun getTestId(id : Int) : TestID {
     when(id) {
         1 -> return TestID.STAI
+        2 -> return TestID.LSAS
         else -> return TestID.None
     }
 }
