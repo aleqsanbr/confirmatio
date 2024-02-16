@@ -20,7 +20,7 @@ class TestLoader(
     }
     fun loadQuestions() : List<Question> {
         when(test_id) {
-            TestID.STAI, TestID.LSAS->
+            TestID.STAI, TestID.LSAS, TestID.BAI->
                 return parseCSV()
             else ->
                 return listOf(Question("Question # 1 text",

@@ -60,13 +60,7 @@ fun InfoNavigation() {
             var param0 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param0")
             var param1 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param1")
             var param2 = navController.previousBackStackEntry?.savedStateHandle?.get<Int>("param2")
-            if (param1 == null) {
-                param1 = 10
-            }
-            if (param2 == null) {
-                param2 = 10
-            }
-            TestResultScreen(listOf(param0 ?: TestID.None.id, param1 ?:10, param2 ?:10), actions.navigateToStart,LocalContext.current)
+            TestResultScreen(listOf(param0 ?: TestID.None.id, param1 ?:-1, param2 ?:-1), actions.navigateToStart,LocalContext.current)
         }
 
         composable(

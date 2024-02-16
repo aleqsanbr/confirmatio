@@ -61,7 +61,7 @@ fun Info(
         var lstTests = listOf(
             tests(R.drawable.test_1, "Шкала Спилберга", color2),
             tests(R.drawable.test_2, "Тест Либовица", color3),
-            tests(R.drawable.test_3, "Тест 3", color1)
+            tests(R.drawable.test_3, "Шкала тревоги Бека", color1)
         )
         TestsFun(lstTests,navigateToTest)
 

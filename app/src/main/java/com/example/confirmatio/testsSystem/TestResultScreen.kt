@@ -26,6 +26,8 @@ fun TestResultScreen(
          when(results[0]) {
              TestID.STAI.id -> STAITestAnalyzer.getResults(results[1], results[2])
              TestID.LSAS.id -> LSASTestAnalyzer.getResults(results[1],results[2], context)
+             TestID.BAI.id -> BAITestAnalyzer.getResults(results[1])
+
              else ->
              {
                  Row(
