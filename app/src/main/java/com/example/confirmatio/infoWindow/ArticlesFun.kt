@@ -80,7 +80,8 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
         ) {
             Text(
                 text = "Статьи", fontSize = 30.sp,  fontWeight = FontWeight(700), modifier = Modifier
-                    .padding(horizontal = 30.dp, vertical = 5.dp)
+                    .padding(horizontal = 30.dp, vertical = 5.dp),
+                        color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground
             )
             LazyRow(
                 modifier = Modifier

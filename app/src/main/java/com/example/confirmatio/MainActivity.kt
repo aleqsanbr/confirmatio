@@ -25,7 +25,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.res.painterResource
@@ -37,6 +39,11 @@ import com.example.confirmatio.navigation.InfoNavigation
 import com.example.confirmatio.navigation.PracticesNavigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.runtime.*
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.compose.navigation
+import com.example.confirmatio.NavRoutes.Diary.route
+import com.example.confirmatio.practices.PieTechnique
+import com.example.confirmatio.screens.SinglePractice
 
 sealed class NavRoutes(val route: String) {
     object Practices : NavRoutes("practices")
@@ -87,12 +94,15 @@ fun BottomNavigationBar(navController: NavHostController) {
                             saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
+                        restoreState =
+                            navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
                     }
                 },
                 icon = {
-                    Icon(imageVector = navItem.image,
-                        contentDescription = navItem.title)
+                    Icon(
+                        imageVector = navItem.image,
+                        contentDescription = navItem.title
+                    )
                 },
                 label = {
                     Text(text = navItem.title)
@@ -107,46 +117,93 @@ fun BottomNavigationBar(navController: NavHostController) {
 fun MainScreen() {
     val navController = rememberNavController()
 
+    val scaffoldState = rememberScaffoldState()
+    val currentRoute = navController
+        .currentBackStackEntryFlow
+        .collectAsState(initial = navController.currentBackStackEntry)
+    if (currentRoute.value?.destination?.route == "practices") navController.popBackStack(
+        route = "practices",
+        inclusive = false
+    )
     Scaffold(
-        topBar = { TopAppBar(
-            title = { Text("Confirmatio") },
-            colors = if(!isSystemInDarkTheme())
-                TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
-            else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
-            navigationIcon = {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = "Logo",
-                    modifier = Modifier
-                        .size(60.dp)
-                        .padding(horizontal = 10.dp)
-                )
-            },
-            actions = {
-                IconButton(onClick = {
-                    navController.navigate("Settings") {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+      /*  topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Confirmatio", overflow = TextOverflow.Ellipsis) },
+                colors = if (!isSystemInDarkTheme())
+                    TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
+                else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
+                navigationIcon = {
+                    if (buttonback.value) {
+                        IconButton(onClick = {
+                        }) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    } else {
+                        null
                     }
-                }) {
-                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate("Settings") {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }) {
+                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                    }
                 }
-            }
-        )
-        },
+            )
+        },*/
+
+         topBar = { TopAppBar(
+             title = { Text("Confirmatio") },
+             colors = if(!isSystemInDarkTheme())
+                 TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
+             else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
+             navigationIcon = {
+                 Image(
+                     painter = painterResource(R.drawable.logo),
+                     contentDescription = "Logo",
+                     modifier = Modifier
+                         .size(60.dp)
+                         .padding(horizontal = 10.dp)
+                 )
+             },
+             actions = {
+                 IconButton(onClick = {
+                     navController.navigate("Settings") {
+                         popUpTo(navController.graph.findStartDestination().id) {
+                             saveState = true
+                         }
+                         launchSingleTop = true
+                         restoreState = true
+                     }
+                 }) {
+                     Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                 }
+             }
+         )
+         },
         content = { padding ->
             Column(Modifier.padding(padding)) {
                 NavigationHost(navController = navController)
-            } },
-        bottomBar = { BottomNavigationBar(navController = navController)}
+            }
+        },
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
+        }
     )
 }
 
 @Composable
 fun NavigationHost(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         startDestination = NavRoutes.HelpNow.route,
@@ -158,7 +215,7 @@ fun NavigationHost(navController: NavHostController) {
             PracticesNavigation()
         }
         composable(NavRoutes.Info.route) {
-            InfoNavigation()
+           InfoNavigation()
         }
         composable(NavRoutes.Diary.route) {
             Diary()

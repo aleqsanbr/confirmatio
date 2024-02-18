@@ -31,7 +31,7 @@ fun PracticesNavigation() {
             val arguments = requireNotNull(backStackEntry.arguments)
             SinglePractice(
                 practiceId = arguments.getInt(Destinations.PRACTICE_ID),
-                navigateUp = actions.navigateUp
+                navController = navController
             )
         }
 

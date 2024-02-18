@@ -21,16 +21,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import com.example.confirmatio.practices.PieTechnique
 
 @Composable
 fun SinglePractice(
     practiceId: Int,
-    navigateUp: () -> Unit)
+    navController: NavHostController
+)
 {
     when(practiceId) {
-       2 ->  PieTechnique(navigateUp)
-
+         2 -> PieTechnique()
         else ->
         {
             Column(
@@ -45,12 +47,6 @@ fun SinglePractice(
                     text = "Данная практика еще не реализована!",
                     fontSize = 23.sp
                 )
-                Button(onClick = navigateUp,)
-                {Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "get back"
-                    )
-                }
             }
         }
     }

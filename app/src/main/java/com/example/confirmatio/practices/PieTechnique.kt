@@ -1,5 +1,6 @@
 package com.example.confirmatio.practices
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -7,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +28,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,18 +49,23 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.compose.md_theme_dark_onSecondary
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.NavigateUpButton
+import com.example.confirmatio.NavigationHost
 import com.example.confirmatio.R
 import com.example.confirmatio.Title
+//import com.example.confirmatio.displaybackbutton
 
 
 @Composable
-fun PieTechnique(navigateUp: () -> Unit) {
+fun PieTechnique() {
     Column(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -97,7 +110,6 @@ fun PieTechnique(navigateUp: () -> Unit) {
         )
         Spacer(modifier = Modifier.padding(5.dp))
     }
-    NavigateUpButton(navigateUp)
 }
 
 @Composable
@@ -142,14 +154,17 @@ fun actionCard(content: String) {
         modifier = Modifier
             .height(220.dp)
             .fillMaxWidth()
-            .background(color = if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, shape = shape)
+            .background(
+                color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                shape = shape
+            )
             .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center
     ) {
 
         Text(
             text = content,
-            color = if(!isSystemInDarkTheme()) Color.Black else Color.White,
+            color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
             fontSize = 20.sp, modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 10.dp)
 
