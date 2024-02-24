@@ -142,7 +142,9 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
     }
 
     Text(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = 15.dp, vertical = 0.dp)
+            .fillMaxWidth(1f),
         fontSize = fontSize,
         text = annotatedString
     )
