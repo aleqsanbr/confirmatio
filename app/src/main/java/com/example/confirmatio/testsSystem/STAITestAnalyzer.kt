@@ -1,7 +1,6 @@
 package com.example.confirmatio.testsSystem
 
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -87,12 +86,14 @@ class STAITestAnalyzer(val test : Test) {
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-                CustomText(text = "Баллы ситуативной тревожности : **${total_points1}**" +
+                CustomText(
+                    text = "Баллы ситуативной тревожности : **${total_points1}**" +
                         " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-                CustomText(text = "Баллы личностной тревожности : **${total_points2}**" +
+                    modifier = Modifier.padding(20.dp), fontSize = 20.sp )
+                CustomText(
+                    text = "Баллы личностной тревожности : **${total_points2}**" +
                         " (${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
+                    modifier = Modifier.padding(20.dp), fontSize = 20.sp )
 
                 if((total_points1 + total_points2) / 2 < 31) {
                     Text(

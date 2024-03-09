@@ -24,14 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import java.io.Console
 
 @Composable
 fun Title(title : String, isCentered : Boolean = false) {
@@ -176,7 +174,8 @@ fun StartButton(text: String, onButtonClick: () -> Unit) {
 fun NotImplemented(name: String) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.padding(30.dp))
-        CustomText(text = "Not implemented. $name", modifier = Modifier.padding(20.dp).align(
+        CustomText(
+            text = "Not implemented. $name", modifier = Modifier.padding(20.dp).align(
             Alignment.CenterHorizontally
         ), fontSize = 20.sp)
         Spacer(modifier = Modifier.padding(30.dp))
