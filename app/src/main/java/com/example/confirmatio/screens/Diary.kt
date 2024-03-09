@@ -112,7 +112,7 @@ fun Diary() {
                     Text(text = "Личное", fontSize = 15.sp)
                 }
             }
-            Entry(header = "18.07.2007", text = "Текhbhhbhhbhbibhbhhbbnhjnhbhhhbjhksjdakgdksgdkjsdgjaksdjkdjds,kmjс")
+            Entry(header = "18.07.2007", text = "Текhbhhbhhbhbibhbhhbbnhjhbhhhbjhksjdakgdksgdkjsdgjaksdjkdjds,kmjс")
         }
     }
 }
