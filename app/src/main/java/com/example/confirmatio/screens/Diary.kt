@@ -46,7 +46,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.unit.dp
 
 @Composable
-@Composable
 fun Entry(header: String, text: String) {
     Column(
             modifier = Modifier

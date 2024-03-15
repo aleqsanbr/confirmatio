@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.confirmatio.practices.PieTechnique
-
+import com.example.confirmatio.practices.MindTraps
 @Composable
 fun SinglePractice(
     practiceId: Int,
@@ -33,6 +33,7 @@ fun SinglePractice(
 {
     when(practiceId) {
          2 -> PieTechnique()
+         6 -> MindTraps()
         else ->
         {
             Column(
