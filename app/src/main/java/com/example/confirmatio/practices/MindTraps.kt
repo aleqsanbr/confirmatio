@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,25 +20,157 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.compose.md_theme_dark_onSecondary
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.Title
+import com.example.confirmatio.screens.HelpNowContent
+import com.example.confirmatio.screens.HelpNowMethods.Breathing
+import com.example.confirmatio.screens.HelpNowMethods.Grounding
+import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingProcess
+import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingSuccess
+import com.example.confirmatio.screens.HelpNowMethods.Meditation
+
+@Composable
+fun screenWithQuestions() {
+    var currentQuestionIndex by remember { mutableStateOf(0) }
+    val selectedButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = md_theme_light_secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onBackground
+    )
+    val unselectedButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = md_theme_dark_secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+    )
+    val textStyle =
+        androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
+    var answers by remember { mutableStateOf(mutableListOf<String>()) }
+    val shape = RoundedCornerShape(20.dp)
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        if (currentQuestionIndex < questions.size) {
+
+            Text(text = questions[currentQuestionIndex])
+
+            Spacer(modifier = Modifier.padding(10.dp));
+
+            var answer by remember { mutableStateOf(TextFieldValue()) }
+            TextField(
+                modifier = Modifier
+                    .verticalScroll(ScrollState(0))
+                    .fillMaxWidth(0.75f)
+                    .height(350.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = answer,
+                onValueChange = { answer = it },
+
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor =if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                )
+            )
+
+
+            Spacer(modifier = Modifier.padding(10.dp));
+
+            Button(
+                onClick = {
+                    answers.add(answer.text)
+                    currentQuestionIndex++
+                },
+                shape = RoundedCornerShape(20.dp),
+                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+            ) {
+                Text(
+                    text = "Далее",
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp, vertical = 5.dp),
+                    style = textStyle,
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                )
+            }
+        } else {
+            Button(
+                onClick = {
+                    val diaryEntry = answers.joinToString(separator = "\n")
+                },
+                shape = RoundedCornerShape(20.dp),
+                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+            ) {
+                Text(
+                    text = "Сохранить запись в дневник",
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp, vertical = 5.dp),
+                    style = textStyle,
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                )
+            }
+        }
+    }
+}
+
+val questions = listOf(
+    "Question 1",
+    "Question 2",
+    "Question 3"
+)
+
+sealed class Screen(val route: String) {
+    object mindtraps : Screen(route = "mindtraps_screen");
+    object questons : Screen(route = "questions_screen")
+}
+
+@Composable
+fun navMindTraps(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Screen.mindtraps.route) {
+        composable(Screen.mindtraps.route) { MindTraps1(navController) }
+        composable(Screen.questons.route) { screenWithQuestions() }
+    }
+}
 
 @Composable
 fun MindTraps() {
+    val navController = rememberNavController()
+    navMindTraps(navController = navController);
+}
+
+@Composable
+fun MindTraps1(navController: NavHostController) {
     Column(
         modifier = Modifier
             .background(color = Color.Transparent)
@@ -71,9 +204,9 @@ fun MindTraps() {
                     "Вы представляете самый\nплохой исход событий.\nЕсли произойдет что-то\nплохое — а вы уверены,\nчто оно так и будет, —\nто все закончится хуже некуда."
                 )
             ) { ind, content ->
-                if (ind == 0) actionCard("Поспешные выводы",content);
-                if (ind == 1) actionCard("Тоска и мрак",content);
-                if (ind == 2) actionCard("Худший вариант",content);
+                if (ind == 0) actionCard("Поспешные выводы", content);
+                if (ind == 1) actionCard("Тоска и мрак", content);
+                if (ind == 2) actionCard("Худший вариант", content);
             }
         }
         contentText(
@@ -81,21 +214,22 @@ fun MindTraps() {
         )
         Spacer(modifier = Modifier.padding(5.dp))
         val selectedButtonColors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colorScheme.primaryContainer,
+            backgroundColor = md_theme_light_secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onBackground
         )
         val unselectedButtonColors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colorScheme.outlineVariant,
+            backgroundColor = md_theme_dark_secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSurface,
         )
-        val textStyle = androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
+        val textStyle =
+            androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
                 onClick = {
-
+                    navController.navigate(Screen.questons.route)
                 },
                 shape = RoundedCornerShape(20.dp),
 
@@ -111,7 +245,7 @@ fun MindTraps() {
                 )
             }
         }
-        Spacer(modifier = Modifier.padding(10.dp))
+        Spacer(modifier = Modifier.padding(10.dp));
     }
 }
 
