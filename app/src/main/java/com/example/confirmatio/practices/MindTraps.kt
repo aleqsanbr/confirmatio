@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +24,11 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Snackbar
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +68,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.md_theme_dark_onSecondary
 import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_secondary
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.Title
 import com.example.confirmatio.screens.HelpNowContent
@@ -102,7 +107,9 @@ fun screenWithQuestions(navController: NavHostController) {
         backgroundColor = md_theme_dark_secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
-    val textStyle = androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
+    val shape = RoundedCornerShape(20.dp)
+    val textStyle =
+        androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
     var answers by remember { mutableStateOf(mutableListOf<String>()) }
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -111,9 +118,11 @@ fun screenWithQuestions(navController: NavHostController) {
     ) {
         if (currentQuestionIndex < questions.size) {
 
-            Text(text = questions[currentQuestionIndex],
+            Text(
+                text = questions[currentQuestionIndex],
                 modifier = Modifier.fillMaxWidth(0.75f),
-                textAlign = TextAlign.Center)
+                textAlign = TextAlign.Center
+            )
 
             Spacer(modifier = Modifier.padding(10.dp));
 
@@ -133,7 +142,7 @@ fun screenWithQuestions(navController: NavHostController) {
                     focusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor =if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
                     textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
                     backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
                 ),
@@ -162,6 +171,69 @@ fun screenWithQuestions(navController: NavHostController) {
                 )
             }
         } else {
+            Text(
+                text = "Поставьте галочку напротив ловушки сознания, которая больше всего подходит в конкретном случае\n" +
+                        " (можно выбрать сразу несколько)",
+                modifier = Modifier.fillMaxWidth(0.80f),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            Box(
+                modifier = Modifier.background(
+                    color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    shape = shape
+                ),
+            )
+            {
+                Column(
+
+                ) {
+
+                    val checkedState1 = remember { mutableStateOf(false) }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 15.dp)
+                    )
+                    {
+                        Checkbox(
+                            checked = checkedState1.value,
+                            onCheckedChange = { checkedState1.value = it },
+                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
+                            )
+                        Text("Поспешные выводы", fontSize = 16.sp)
+                    }
+
+                    val checkedState2 = remember { mutableStateOf(false) }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 15.dp)
+                    ) {
+                        Checkbox(
+                            checked = checkedState2.value,
+                            onCheckedChange = { checkedState2.value = it },
+                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
+                        )
+                        Text("Тоска и мрак", fontSize = 16.sp)
+                    }
+
+                    val checkedState3 = remember { mutableStateOf(false) }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(horizontal = 15.dp)
+                    ) {
+                        Checkbox(
+                            checked = checkedState3.value,
+                            onCheckedChange = { checkedState3.value = it },
+                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
+                        )
+                        Text("Худший вариант", fontSize = 16.sp)
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.padding(10.dp))
+
             Button(
                 onClick = {
                     //val diaryEntry = answers.joinToString(separator = "\n")
