@@ -1,7 +1,9 @@
 package com.example.confirmatio.practices
 
+import android.view.ViewTreeObserver
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,29 +19,43 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
@@ -56,9 +72,27 @@ import com.example.confirmatio.screens.HelpNowMethods.Grounding
 import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingProcess
 import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingSuccess
 import com.example.confirmatio.screens.HelpNowMethods.Meditation
+import kotlinx.coroutines.delay
 
 @Composable
-fun screenWithQuestions() {
+fun keyboardAsState(): State<Boolean> {
+    val keyboardState = remember { mutableStateOf(false) }
+    val view = LocalView.current
+    val viewTreeObserver = view.viewTreeObserver
+    DisposableEffect(viewTreeObserver) {
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            keyboardState.value = ViewCompat.getRootWindowInsets(view)
+                ?.isVisible(WindowInsetsCompat.Type.ime()) ?: true
+        }
+        viewTreeObserver.addOnGlobalLayoutListener(listener)
+        onDispose { viewTreeObserver.removeOnGlobalLayoutListener(listener) }
+    }
+    return keyboardState
+}
+
+
+@Composable
+fun screenWithQuestions(navController: NavHostController) {
     var currentQuestionIndex by remember { mutableStateOf(0) }
     val selectedButtonColors = ButtonDefaults.buttonColors(
         backgroundColor = md_theme_light_secondaryContainer,
@@ -68,10 +102,8 @@ fun screenWithQuestions() {
         backgroundColor = md_theme_dark_secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
-    val textStyle =
-        androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
+    val textStyle = androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
     var answers by remember { mutableStateOf(mutableListOf<String>()) }
-    val shape = RoundedCornerShape(20.dp)
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -79,12 +111,16 @@ fun screenWithQuestions() {
     ) {
         if (currentQuestionIndex < questions.size) {
 
-            Text(text = questions[currentQuestionIndex])
+            Text(text = questions[currentQuestionIndex],
+                modifier = Modifier.fillMaxWidth(0.75f),
+                textAlign = TextAlign.Center)
 
             Spacer(modifier = Modifier.padding(10.dp));
 
-            var answer by remember { mutableStateOf(TextFieldValue()) }
+            var answer by remember { mutableStateOf(TextFieldValue("")) }
+
             TextField(
+                enabled = true,
                 modifier = Modifier
                     .verticalScroll(ScrollState(0))
                     .fillMaxWidth(0.75f)
@@ -100,15 +136,17 @@ fun screenWithQuestions() {
                     cursorColor =if (!isSystemInDarkTheme()) Color.Black else Color.White,
                     textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
                     backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
-                )
+                ),
             )
-
-
-            Spacer(modifier = Modifier.padding(10.dp));
+            val isKeyboardOpen by keyboardAsState()
+            val focusManager = LocalFocusManager.current
+            if (!isKeyboardOpen) focusManager.clearFocus()
+            Spacer(modifier = Modifier.padding(10.dp))
 
             Button(
                 onClick = {
                     answers.add(answer.text)
+                    answer = TextFieldValue("");
                     currentQuestionIndex++
                 },
                 shape = RoundedCornerShape(20.dp),
@@ -126,7 +164,8 @@ fun screenWithQuestions() {
         } else {
             Button(
                 onClick = {
-                    val diaryEntry = answers.joinToString(separator = "\n")
+                    //val diaryEntry = answers.joinToString(separator = "\n")
+                    navController.navigate(Screen.mindtraps.route)
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
@@ -145,9 +184,9 @@ fun screenWithQuestions() {
 }
 
 val questions = listOf(
-    "Question 1",
-    "Question 2",
-    "Question 3"
+    "Запишите автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога или депрессия",
+    "Расскажите о ситуации, которой были вызваны такие размышления",
+    "Опишите ваши эмоции"
 )
 
 sealed class Screen(val route: String) {
@@ -159,7 +198,7 @@ sealed class Screen(val route: String) {
 fun navMindTraps(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.mindtraps.route) {
         composable(Screen.mindtraps.route) { MindTraps1(navController) }
-        composable(Screen.questons.route) { screenWithQuestions() }
+        composable(Screen.questons.route) { screenWithQuestions(navController) }
     }
 }
 
