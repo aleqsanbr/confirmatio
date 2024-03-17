@@ -237,7 +237,7 @@ fun screenWithQuestions(navController: NavHostController) {
             Button(
                 onClick = {
                     //val diaryEntry = answers.joinToString(separator = "\n")
-                    navController.navigate(Screen.mindtraps.route)
+                    navController.navigateUp()
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
