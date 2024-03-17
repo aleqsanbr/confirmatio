@@ -1,6 +1,7 @@
 package com.example.confirmatio.practices
 
 import android.view.ViewTreeObserver
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -31,6 +33,9 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Snackbar
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,6 +57,7 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -70,6 +76,7 @@ import com.example.compose.md_theme_dark_onSecondary
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_secondary
 import com.example.compose.md_theme_light_secondaryContainer
+import com.example.confirmatio.R
 import com.example.confirmatio.Title
 import com.example.confirmatio.screens.HelpNowContent
 import com.example.confirmatio.screens.HelpNowMethods.Breathing
@@ -94,7 +101,6 @@ fun keyboardAsState(): State<Boolean> {
     }
     return keyboardState
 }
-
 
 @Composable
 fun screenWithQuestions(navController: NavHostController) {
@@ -172,7 +178,7 @@ fun screenWithQuestions(navController: NavHostController) {
             }
         } else {
             Text(
-                text = "Поставьте галочку напротив ловушки сознания, которая больше всего подходит в конкретном случае\n" +
+                text = "✔️ Поставьте галочку напротив ловушки сознания, которая больше всего подходит в конкретном случае\n" +
                         " (можно выбрать сразу несколько)",
                 modifier = Modifier.fillMaxWidth(0.80f),
                 textAlign = TextAlign.Center
@@ -256,9 +262,9 @@ fun screenWithQuestions(navController: NavHostController) {
 }
 
 val questions = listOf(
-    "Запишите автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога или депрессия",
-    "Расскажите о ситуации, которой были вызваны такие размышления",
-    "Опишите ваши эмоции"
+    "✏️ Запишите автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога или депрессия",
+    "\uD83D\uDDE3️ Расскажите о ситуации, которой были вызваны такие размышления",
+    "\uD83C\uDFAD Опишите ваши эмоции"
 )
 
 sealed class Screen(val route: String) {
@@ -346,8 +352,9 @@ fun MindTraps1(navController: NavHostController) {
 
                 colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
             ) {
+
                 Text(
-                    text = "Зафиксировать в дневнике\n\nловушку сознания",
+                    text = "✍\uD83C\uDFFB Зафиксировать в дневнике\n\nловушку сознания",
                     modifier = Modifier
                         .padding(horizontal = 15.dp, vertical = 5.dp),
                     style = textStyle,
