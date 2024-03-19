@@ -2,6 +2,7 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,9 +39,13 @@ import com.example.confirmatio.NotImplemented
 import com.example.confirmatio.Title
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -49,7 +54,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_light_secondaryContainer
 
 @Composable
 fun Entry(header: String, text: String) {
@@ -68,6 +77,13 @@ fun Entry(header: String, text: String) {
 
 @Composable
 fun Diary() {
+    val selectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
+        backgroundColor = md_theme_dark_secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onBackground
+    )
+    val unselectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
+        backgroundColor = md_theme_dark_secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSurface)
     var activeButton by remember { mutableStateOf("Из упражнений") }
 
     /* FloatingActionButton(
@@ -120,5 +136,20 @@ fun Diary() {
             Entry(header = "18.07.2007", text = "Текhbhhbhhbhbibhbhhbbnhjhbhhbjhksjdakgdksgdkjsdgjaksdjkdjds,kmjс")
         }
     }
+    Box(
+        modifier = Modifier.fillMaxSize().padding(20.dp),
+        contentAlignment = Alignment.BottomEnd
 
+    ) {
+        androidx.compose.material.Button(
+            onClick = {
+            },
+            shape = CircleShape,
+            modifier = Modifier.height(70.dp).width(70.dp),
+               // .aspectRatio(5f),
+            colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors,
+        ) {
+            Text("+", color = Color.White, fontSize = 30.sp)
+        }
+    }
 }
