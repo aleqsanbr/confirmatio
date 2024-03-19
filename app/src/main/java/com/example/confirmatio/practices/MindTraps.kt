@@ -4,6 +4,7 @@ import android.view.ViewTreeObserver
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -48,6 +50,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -56,10 +59,13 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -134,28 +140,30 @@ fun screenWithQuestions(navController: NavHostController) {
 
             var answer by remember { mutableStateOf(TextFieldValue("")) }
 
-            TextField(
-                enabled = true,
-                modifier = Modifier
-                    .verticalScroll(ScrollState(0))
-                    .fillMaxWidth(0.75f)
-                    .height(350.dp),
-                shape = RoundedCornerShape(15.dp),
-                value = answer,
-                onValueChange = { answer = it },
-
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
-                ),
-            )
             val isKeyboardOpen by keyboardAsState()
             val focusManager = LocalFocusManager.current
-            if (!isKeyboardOpen) focusManager.clearFocus()
+            if (!isKeyboardOpen) {
+                focusManager.clearFocus()
+            }
+                TextField(
+                    enabled = true,
+                    modifier = Modifier
+                        .verticalScroll(ScrollState(0))
+                        .fillMaxWidth(0.75f)
+                        .height(350.dp),
+                    shape = RoundedCornerShape(15.dp),
+                    value = answer,
+                    onValueChange = { answer = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                        textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                        backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    ),
+                )
+
             Spacer(modifier = Modifier.padding(10.dp))
 
             Button(
@@ -179,7 +187,7 @@ fun screenWithQuestions(navController: NavHostController) {
         } else {
             Text(
                 text = "✔️ Поставьте галочку напротив ловушки сознания, которая больше всего подходит в конкретном случае\n" +
-                        " (можно выбрать сразу несколько)",
+                        "(можно выбрать сразу несколько)",
                 modifier = Modifier.fillMaxWidth(0.80f),
                 textAlign = TextAlign.Center
             )
@@ -206,8 +214,8 @@ fun screenWithQuestions(navController: NavHostController) {
                         Checkbox(
                             checked = checkedState1.value,
                             onCheckedChange = { checkedState1.value = it },
-                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
-                            )
+                            colors = CheckboxDefaults.colors(checkedColor = md_theme_light_secondary)
+                        )
                         Text("Поспешные выводы", fontSize = 16.sp)
                     }
 
@@ -219,7 +227,7 @@ fun screenWithQuestions(navController: NavHostController) {
                         Checkbox(
                             checked = checkedState2.value,
                             onCheckedChange = { checkedState2.value = it },
-                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
+                            colors = CheckboxDefaults.colors(checkedColor = md_theme_light_secondary)
                         )
                         Text("Тоска и мрак", fontSize = 16.sp)
                     }
@@ -232,7 +240,7 @@ fun screenWithQuestions(navController: NavHostController) {
                         Checkbox(
                             checked = checkedState3.value,
                             onCheckedChange = { checkedState3.value = it },
-                            colors  = CheckboxDefaults.colors(checkedColor =  md_theme_light_secondary )
+                            colors = CheckboxDefaults.colors(checkedColor = md_theme_light_secondary)
                         )
                         Text("Худший вариант", fontSize = 16.sp)
                     }
@@ -364,6 +372,7 @@ fun MindTraps1(navController: NavHostController) {
             }
         }
         Spacer(modifier = Modifier.padding(10.dp));
+
     }
 }
 
