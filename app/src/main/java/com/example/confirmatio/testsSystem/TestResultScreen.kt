@@ -1,5 +1,6 @@
 package com.example.confirmatio.testsSystem
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,20 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.sp
 import com.example.confirmatio.NavigateUpButton
 
 @Composable
 fun TestResultScreen(
-    results : List<Int>,
-    navigateToStart: () -> Unit)
+    results: List<Int>,
+    navigateToStart: () -> Unit,
+    context : Context
+)
  {
      if(results != null) {
          when(results[0]) {
-             TestID.STAI.id ->
-
-             STAITestAnalyzer.getResults(results[1], results[2] )
+             TestID.STAI.id -> STAITestAnalyzer.getResults(results[1], results[2])
+             TestID.LSAS.id -> LSASTestAnalyzer.getResults(results[1],results[2], context)
+             TestID.BAI.id -> BAITestAnalyzer.getResults(results[1])
 
              else ->
              {

@@ -149,6 +149,110 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
 }
 
 @Composable
+fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
+
+    var results: MatchResult? = boldRegex.find(text)
+
+    val boldIndexes = mutableListOf<Pair<Int, Int>>()
+
+    val keywords = mutableListOf<String>()
+
+    var finalText = text
+
+    var color : Color = Color.Black
+
+    while (results != null) {
+        keywords.add(results.value)
+        results = results.next()
+    }
+
+    keywords.forEach { keyword ->
+        val indexOf = finalText.indexOf(keyword)
+        val newKeyWord = keyword.removeSurrounding("**")
+        val value = newKeyWord.toIntOrNull()
+        if(value != null) {
+            color = if(value < 65) Color.Green else if(value < 96) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
+        }
+        finalText = finalText.replace(keyword, newKeyWord)
+        boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
+    }
+
+    val annotatedString = buildAnnotatedString {
+        append(finalText)
+
+        // Add bold style to keywords that has to be bold
+        boldIndexes.forEach {
+            addStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                    color = color,
+                    fontSize = fontSize
+
+                ),
+                start = it.first,
+                end = it.second
+            )
+
+        }
+    }
+
+    Text(
+        modifier = modifier,
+        fontSize = fontSize,
+        text = annotatedString
+    )
+}
+
+@Composable
+fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
+
+    var results: MatchResult? = boldRegex.find(text)
+    val boldIndexes = mutableListOf<Pair<Int, Int>>()
+    val keywords = mutableListOf<String>()
+    var finalText = text
+    var color : Color = Color.Black
+    while (results != null) {
+        keywords.add(results.value)
+        results = results.next()
+    }
+
+    keywords.forEach { keyword ->
+        val indexOf = finalText.indexOf(keyword)
+        val newKeyWord = keyword.removeSurrounding("**")
+        val value = newKeyWord.toIntOrNull()
+        if(value != null) {
+            color = if(value <= 21) Color.Green else if(value <= 35) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
+        }
+        finalText = finalText.replace(keyword, newKeyWord)
+        boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
+    }
+
+    val annotatedString = buildAnnotatedString {
+        append(finalText)
+
+        // Add bold style to keywords that has to be bold
+        boldIndexes.forEach {
+            addStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                    color = color,
+                    fontSize = fontSize
+
+                ),
+                start = it.first,
+                end = it.second
+            )
+
+        }
+    }
+
+    Text(
+        modifier = modifier,
+        fontSize = fontSize,
+        text = annotatedString
+    )
+}
+@Composable
 fun StartButton(text: String, onButtonClick: () -> Unit) {
     FilledTonalButton(
         onClick = {

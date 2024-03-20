@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.CustomColor1
 import com.example.compose.CustomColor2
@@ -25,7 +24,10 @@ import com.example.confirmatio.infoWindow.articles
 import com.example.confirmatio.infoWindow.tests
 
 @Composable
-fun Info(navigateToTest: (Int) -> Unit, navigateToArticle: (Int) -> Unit) {
+fun Info(
+    navigateToTest: (Int) -> Unit,
+    navigateToArticle: (Int) -> Unit,
+) {
     val color1 : Color
     val color2 : Color
     val color3 : Color
@@ -58,8 +60,8 @@ fun Info(navigateToTest: (Int) -> Unit, navigateToArticle: (Int) -> Unit) {
 
         var lstTests = listOf(
             tests(R.drawable.test_1, "Шкала Спилберга", color2),
-            tests(R.drawable.test_2, "Тест 2", color3),
-            tests(R.drawable.test_3, "Тест 3", color1)
+            tests(R.drawable.test_2, "Тест Либовица", color3),
+            tests(R.drawable.test_3, "Шкала тревоги Бека", color1)
         )
         TestsFun(lstTests,navigateToTest)
 

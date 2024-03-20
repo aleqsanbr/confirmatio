@@ -172,7 +172,7 @@ fun QuestionCard(
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
                        manager.cur_q -=1
                        mutableState -= 1
-                       selectedOption = radioOptions[manager.getChoosedOption()]
+                       selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
                    }
 
 
@@ -212,10 +212,37 @@ fun QuestionCard(
                        selectedOption = radioOptions[if (manager.getChoosedOption() == -1) 0 else manager.getChoosedOption()]
                    }
                    else {
-                       val param1 = STAITestAnalyzer.countTotalPointsFirstHalf(manager.test)
-                       val param2 = STAITestAnalyzer.countTotalPointsSecondHalf(manager.test)
-                       putInts(listOf(TestID.STAI.id, param1, param2))
-                       navigateToResults()
+                       manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
+
+                       when(manager.test_id)
+                       {
+                           TestID.STAI ->  {
+                               val param1 = STAITestAnalyzer.countTotalPointsFirstHalf(manager.test)
+                               val param2 = STAITestAnalyzer.countTotalPointsSecondHalf(manager.test)
+                               putInts(listOf(manager.test_id.id, param1, param2))
+                               navigateToResults()
+                           }
+                           TestID.LSAS ->  {
+                               val param1 = LSASTestAnalyzer.countFearPoints(manager.test)
+                               val param2 = LSASTestAnalyzer.countAvoidancePoints(manager.test)
+                               putInts(listOf(manager.test_id.id, param1, param2))
+                               navigateToResults()
+                           }
+                           TestID.BAI ->  {
+                               val param1 = BAITestAnalyzer.countPoints(manager.test)
+                               Log.d("TESTBAI", "res = "+ param1);
+                               for(i in manager.test.qa_map) {
+                                   Log.d("TESTBAI", "question " + i.key.q_text + " answer "+ i.value);
+
+                               }
+                               putInts(listOf(manager.test_id.id, param1))
+                               navigateToResults()
+                           }
+                           else -> navigateToResults()
+                       }
+
+
+
                    }
 
 
