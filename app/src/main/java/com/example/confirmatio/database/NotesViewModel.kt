@@ -22,11 +22,10 @@ class NotesViewModel (
         val item = NotesEntity(0,title,text, date)
         database.personalNotesDao().insertAll(item)
     }
-   /* fun DeleteItem(id:Int) = viewModelScope.launch {
-        val item = database.personalNotesDao().findById(id).single()
-        database.personalNotesDao().delete(item)
+    fun DeleteItem(id:Long) = viewModelScope.launch {
+        database.personalNotesDao().deleteById(id)
     }
-*/
+
     companion object{
         val factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
             @Suppress("UNCHECKED_CAST")

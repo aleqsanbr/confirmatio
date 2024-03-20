@@ -32,6 +32,8 @@ interface PersonalNotesDBDao {
     @Update
     suspend fun updateNotes(vararg notes: NotesEntity)
 
-    @Delete
-    suspend fun delete(note: NotesEntity)
+    /*@Delete
+    suspend fun delete(note: NotesEntity)*/
+    @Query("DELETE FROM ${PERSONAL_NOTES_NAME} WHERE id = :id")
+    suspend fun deleteById(id: Long)
 }
