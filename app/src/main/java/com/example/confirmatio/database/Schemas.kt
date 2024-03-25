@@ -12,4 +12,10 @@ data class NotesEntity(
     @ColumnInfo(name = "note_title") val noteTitle: String,
     @ColumnInfo(name = "note_text") val noteText: String,
     @ColumnInfo(name = "note_date") val noteDate: Date,
+    @ColumnInfo(name = "type") val noteType: Int,
+
 )
+
+enum class NoteType(val type : Int){
+    PERSONAL(1), PRACTICE(2);
+}

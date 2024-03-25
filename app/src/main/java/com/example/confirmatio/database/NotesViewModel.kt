@@ -22,8 +22,8 @@ class NotesViewModel (
 
     val notesList = database.personalNotesDao().getAll()
 
-    fun InsertItem(title:String, text:String, date: Date) = viewModelScope.launch {
-        val item = NotesEntity(0,title,text, date)
+    fun InsertItem(title:String, text:String, date: Date, type:Int) = viewModelScope.launch {
+        val item = NotesEntity(0,title,text, date, type)
         database.personalNotesDao().insertAll(item)
     }
 
