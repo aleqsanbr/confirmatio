@@ -72,6 +72,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
@@ -84,6 +85,8 @@ import com.example.compose.md_theme_light_secondary
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.R
 import com.example.confirmatio.Title
+import com.example.confirmatio.database.NoteType
+import com.example.confirmatio.database.NotesViewModel
 import com.example.confirmatio.screens.HelpNowContent
 import com.example.confirmatio.screens.HelpNowMethods.Breathing
 import com.example.confirmatio.screens.HelpNowMethods.Grounding
@@ -91,6 +94,7 @@ import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingProcess
 import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingSuccess
 import com.example.confirmatio.screens.HelpNowMethods.Meditation
 import kotlinx.coroutines.delay
+import java.util.Date
 
 @Composable
 fun keyboardAsState(): State<Boolean> {
@@ -109,7 +113,9 @@ fun keyboardAsState(): State<Boolean> {
 }
 
 @Composable
-fun screenWithQuestions(navController: NavHostController) {
+fun screenWithQuestions(navController: NavHostController,
+                        notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)) {
+
     var currentQuestionIndex by remember { mutableStateOf(0) }
     val selectedButtonColors = ButtonDefaults.buttonColors(
         backgroundColor = md_theme_light_secondaryContainer,
@@ -123,6 +129,10 @@ fun screenWithQuestions(navController: NavHostController) {
     val textStyle =
         androidx.compose.material.MaterialTheme.typography.button.copy(color = MaterialTheme.colorScheme.onBackground)
     var answers by remember { mutableStateOf(mutableListOf<String>()) }
+
+    val checkedState1 = remember { mutableStateOf(false) }
+    val checkedState2 = remember { mutableStateOf(false) }
+    val checkedState3 = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -205,7 +215,6 @@ fun screenWithQuestions(navController: NavHostController) {
 
                 ) {
 
-                    val checkedState1 = remember { mutableStateOf(false) }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 15.dp)
@@ -219,7 +228,6 @@ fun screenWithQuestions(navController: NavHostController) {
                         Text("Поспешные выводы", fontSize = 16.sp)
                     }
 
-                    val checkedState2 = remember { mutableStateOf(false) }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 15.dp)
@@ -232,7 +240,7 @@ fun screenWithQuestions(navController: NavHostController) {
                         Text("Тоска и мрак", fontSize = 16.sp)
                     }
 
-                    val checkedState3 = remember { mutableStateOf(false) }
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 15.dp)
@@ -250,7 +258,16 @@ fun screenWithQuestions(navController: NavHostController) {
 
             Button(
                 onClick = {
-                    //val diaryEntry = answers.joinToString(separator = "\n")
+                    var diaryEntry = "Автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога:\n" +
+                            answers[0] + "\n\nСитуация(и), в которой(ых) была вызвана тревога\n" +
+                            answers[1] + "\n\nОписанные вами эмоции:\n" +
+                            answers[2] + "\n\nЛовушки сознания, которые описывают эту ситуацию:\n"
+                    if(checkedState1.value) {diaryEntry += "Поспешные выводы, "}
+                    if(checkedState2.value) {diaryEntry += "Тоска и мрак, "}
+                    if(checkedState3.value) {diaryEntry += "Худший вариант"}
+                    if (diaryEntry.last() == ' ') diaryEntry = diaryEntry.dropLast(1)
+
+                    notesViewModel.InsertItem("Запись из упражнения \"Ловушки сознания\"", diaryEntry, Date(), NoteType.PRACTICE.type )
                     navController.navigateUp()
                 },
                 shape = RoundedCornerShape(20.dp),
