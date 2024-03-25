@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.confirmatio.screens.HelpNow
-import com.example.confirmatio.screens.Diary
 import com.example.confirmatio.screens.Settings
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,6 +41,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.compose.navigation
 import com.example.confirmatio.NavRoutes.Diary.route
+import com.example.confirmatio.navigation.DiaryNavigation
 import com.example.confirmatio.practices.PieTechnique
 import com.example.confirmatio.screens.SinglePractice
 
@@ -218,7 +218,8 @@ fun NavigationHost(navController: NavHostController) {
            InfoNavigation()
         }
         composable(NavRoutes.Diary.route) {
-            Diary()
+            //Diary()
+            DiaryNavigation()
         }
         composable(NavRoutes.Settings.route) {
             Settings()

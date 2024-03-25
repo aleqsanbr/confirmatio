@@ -15,10 +15,10 @@ interface PersonalNotesDBDao {
     fun getAll():Flow<List<NotesEntity>>
 
     @Query("SELECT * FROM ${PERSONAL_NOTES_NAME} WHERE id IN (:noteIds)")
-    fun loadAllByIds(noteIds: IntArray): Flow<List<NotesEntity>>
+    fun loadAllByIds(noteIds: LongArray): Flow<List<NotesEntity>>
 
-    @Query("SELECT * FROM ${PERSONAL_NOTES_NAME} WHERE id IN (:id)")
-    fun findById(id: Int): Flow<NotesEntity>
+    @Query("SELECT * FROM ${PERSONAL_NOTES_NAME} WHERE id IN (:id) LIMIT 1")
+    fun findById(id: Long): Flow<NotesEntity?>
 
     @Query("SELECT * FROM ${PERSONAL_NOTES_NAME} WHERE note_title LIKE :title")
     fun findByTitle(title: String,): Flow<List<NotesEntity>>
@@ -30,7 +30,7 @@ interface PersonalNotesDBDao {
     suspend fun insertAll(vararg notes: NotesEntity)
 
     @Update
-    suspend fun updateNotes(vararg notes: NotesEntity)
+    suspend fun updateNote(note: NotesEntity)
 
     /*@Delete
     suspend fun delete(note: NotesEntity)*/

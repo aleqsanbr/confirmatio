@@ -1,31 +1,39 @@
 package com.example.confirmatio.screens
 
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.SnackbarDefaults.backgroundColor
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,52 +41,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.confirmatio.CustomText
-import com.example.confirmatio.NotImplemented
-import com.example.confirmatio.Title
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
-import androidx.compose.material.Divider
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.IconButton
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.compose.CustomColor1
+import com.example.compose.dark_CustomColor1Container
 import com.example.compose.md_theme_dark_secondaryContainer
-import com.example.compose.md_theme_light_secondary
 import com.example.compose.md_theme_light_secondaryContainer
-import com.example.confirmatio.practices.MindTraps1
-import com.example.confirmatio.practices.Screen
+import com.example.confirmatio.CustomText
+import com.example.confirmatio.Title
+import com.example.confirmatio.database.NotesEntity
+import com.example.confirmatio.database.NotesViewModel
+import com.example.confirmatio.navigation.NOTEID
 import com.example.confirmatio.practices.keyboardAsState
-import com.example.confirmatio.practices.navMindTraps
-import com.example.confirmatio.practices.questions
-import com.example.confirmatio.practices.screenWithQuestions
-import java.time.format.TextStyle
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import java.time.Instant
+import java.util.Calendar
+import java.util.Date
+
 
 @Composable
 fun Entry(header: String, text: String) {
@@ -97,21 +82,22 @@ fun Entry(header: String, text: String) {
     }
 }
 
-@Composable
-fun Diary() {
-    val navController = rememberNavController()
-    navDiary(navController = navController);
-}
 
 @Composable
-fun Diary1(navController: NavHostController) {
+fun Diary(
+    navController: NavHostController,
+    navigateToEditScreen : (Long) -> Unit,
+    navigateToAddScreen : () -> Unit,
+    notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
+) {
+    val notesList = notesViewModel.notesList.collectAsState(initial = emptyList())
     val selectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
         backgroundColor = md_theme_dark_secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onBackground
+        contentColor = colorScheme.onBackground
     )
     val unselectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
         backgroundColor = md_theme_dark_secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSurface
+        contentColor = colorScheme.onSurface
     )
     var activeButton by remember { mutableStateOf("Из упражнений") }
 
@@ -129,8 +115,7 @@ fun Diary1(navController: NavHostController) {
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(ScrollState(0)),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Title("Дневник")
@@ -142,8 +127,8 @@ fun Diary1(navController: NavHostController) {
                         .padding(5.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onBackground,
-                        containerColor = if (activeButton == "Из упражнений") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.onSecondary
+                        contentColor = colorScheme.onBackground,
+                        containerColor = if (activeButton == "Из упражнений") colorScheme.primaryContainer else colorScheme.onSecondary
                     )
                 ) {
                     Text(text = "Из упражнений", fontSize = 15.sp)
@@ -155,17 +140,37 @@ fun Diary1(navController: NavHostController) {
                         .padding(5.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onBackground,
-                        containerColor = if (activeButton == "Личное") MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.onSecondary
+                        contentColor = colorScheme.onBackground,
+                        containerColor = if (activeButton == "Личное") colorScheme.primaryContainer else colorScheme.onSecondary
                     )
                 ) {
                     Text(text = "Личное", fontSize = 15.sp)
                 }
             }
-            Entry(
+            /*Entry(
                 header = "18.07.2007",
                 text = "Текhbhhbhhbhbibhbhhbbnhjhbhhbjhksjdakgdksgdkjsdgjaksdjkdjds,kmjс"
-            )
+            )*/
+            Column (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp, 20.dp)
+                    .verticalScroll(ScrollState(0)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ){
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    items(notesList.value) { item ->
+                        NoteCard(item, navigateToEditScreen)
+                    }
+                }
+            }
+
         }
     }
     Box(
@@ -177,7 +182,7 @@ fun Diary1(navController: NavHostController) {
     ) {
         androidx.compose.material.Button(
             onClick = {
-                navController.navigate("record_Filling_Screen")
+                navigateToAddScreen()
             },
             shape = CircleShape,
             modifier = Modifier
@@ -192,15 +197,86 @@ fun Diary1(navController: NavHostController) {
 }
 
 @Composable
-fun navDiary(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "Diary_Screen") {
-        composable("Diary_Screen") { Diary1(navController) }
-        composable("record_Filling_Screen") { recordFillingScreen(navController) }
+fun NoteCard(
+    item : NotesEntity,
+    navigateTo : (Long) -> Unit
+    //navController: NavHostController
+) {
+    val cal: Calendar = Calendar.getInstance()
+    val textColor = if(!isSystemInDarkTheme()) Color.Black else Color.White
+    val titleColor = if(!isSystemInDarkTheme()) dark_CustomColor1Container else CustomColor1
+
+
+    Card (
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { navigateTo(item.id) }
+            .padding(20.dp, 10.dp)
+            .background(color = Color.Transparent, shape = RoundedCornerShape(20.dp))
+            .padding(5.dp)
+            .heightIn(100.dp, 200.dp)
+            .width(150.dp),
+    ) {
+        Row(
+            Modifier
+                .fillMaxSize()
+                .background(color = if (!isSystemInDarkTheme()) CustomColor1 else dark_CustomColor1Container),
+
+            //horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+
+            )
+        {
+            Column (
+                Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ){
+               /* Row (
+                    Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                ){
+
+                }*/
+
+                Text(
+                    modifier = Modifier.padding(10.dp, 5.dp),
+                    text = item.noteTitle,
+                    fontSize = 25.sp,
+                    color = textColor,
+
+                )
+                Text(
+                    modifier = Modifier.padding(10.dp, 0.dp),
+                    text = cal.get(Calendar.DAY_OF_MONTH).toString() + "." +
+                            (cal.get(Calendar.MONTH)+1).toString() + "." +
+                            cal.get(Calendar.YEAR).toString(),
+                    fontSize = 19.sp,
+                    color = Color.Gray
+                )
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    text = item.noteText,
+                    fontSize = 18.sp,
+                    color = textColor,
+                )
+            }
+
+        }
+
     }
 }
 
+
 @Composable
-fun recordFillingScreen(navController: NavHostController) {
+fun recordFillingScreen(
+    navController: NavHostController,
+    notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
+) {
     val selectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
         backgroundColor = md_theme_light_secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onBackground
@@ -273,6 +349,7 @@ fun recordFillingScreen(navController: NavHostController) {
 
         androidx.compose.material.Button(
             onClick = {
+                notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
                 navController.navigateUp()
             },
             shape = RoundedCornerShape(20.dp),
@@ -287,5 +364,136 @@ fun recordFillingScreen(navController: NavHostController) {
             )
         }
 
+    }
+}
+
+
+@Composable
+fun recordEditingScreen(
+    navController: NavHostController,
+    id : Long,
+    notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
+) {
+
+    val note by notesViewModel.getItemById(id).collectAsState(initial = null)
+
+    if (note != null) {
+        val selectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = md_theme_light_secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onBackground
+        )
+        val unselectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
+            backgroundColor = md_theme_dark_secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        )
+        Column(
+            modifier = Modifier.fillMaxSize().padding(10.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            var answer1 by remember { mutableStateOf(TextFieldValue(note!!.noteTitle)) }
+            val isKeyboardOpen by keyboardAsState()
+            val focusManager = LocalFocusManager.current
+            if (!isKeyboardOpen) {
+                focusManager.clearFocus()
+            }
+
+            TextField(
+                enabled = true,
+                modifier = Modifier
+                    .verticalScroll(ScrollState(0))
+                    .fillMaxWidth(0.90f)
+                    .padding(top = 25.dp)
+                    .height(100.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = answer1,
+                textStyle = androidx.compose.ui.text.TextStyle(
+                    fontSize = 20.sp,
+                ),
+                label = { Text(text = "Заголовок", fontStyle = FontStyle.Italic) },
+                onValueChange = { answer1 = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                ),
+            )
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            var answer2 by remember { mutableStateOf(TextFieldValue(note!!.noteText)) }
+            TextField(
+                enabled = true,
+                modifier = Modifier
+                    .verticalScroll(ScrollState(0))
+                    .fillMaxWidth(0.90f)
+                    .height(400.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = answer2,
+                textStyle = androidx.compose.ui.text.TextStyle(
+                    fontSize = 20.sp,
+                ),
+                label = { Text(text = "Содержание", fontStyle = FontStyle.Italic) },
+                onValueChange = { answer2 = it },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                ),
+            )
+            Spacer(modifier = Modifier.padding(10.dp))
+
+            Row(
+                Modifier.fillMaxWidth().padding(20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                androidx.compose.material.Button(
+                    onClick = {
+                        //notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
+                        var newNote = NotesEntity(note!!.id, answer1.text, answer2.text ,note!!.noteDate)
+                        notesViewModel.UpdateItem(newNote)
+                        //navController.navigateUp()
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                ) {
+                    Text(
+                        text = "Сохранить",
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp, vertical = 5.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp,
+                    )
+                }
+
+                androidx.compose.material.Button(
+                    onClick = {
+                        notesViewModel.DeleteItem(id)
+                        navController.navigateUp()
+                    },
+                    shape = RoundedCornerShape(20.dp),
+                    colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                ) {
+                    Text(
+                        text = "Удалить",
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp, vertical = 5.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 18.sp,
+                    )
+                }
+
+            }
+
+        }
+
+    } else {
+        CircularProgressIndicator()
     }
 }
