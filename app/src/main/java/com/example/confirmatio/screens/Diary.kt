@@ -55,6 +55,7 @@ import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.CustomText
 import com.example.confirmatio.Title
+import com.example.confirmatio.database.NoteType
 import com.example.confirmatio.database.NotesEntity
 import com.example.confirmatio.database.NotesViewModel
 import com.example.confirmatio.navigation.NOTEID
@@ -90,7 +91,10 @@ fun Diary(
     navigateToAddScreen : () -> Unit,
     notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
 ) {
+    val selectedListType = remember { mutableStateOf<NoteType>(NoteType.PERSONAL) }
+
     val notesList = notesViewModel.notesList.collectAsState(initial = emptyList())
+
     val selectedButtonColors = androidx.compose.material.ButtonDefaults.buttonColors(
         backgroundColor = md_theme_dark_secondaryContainer,
         contentColor = colorScheme.onBackground
@@ -99,7 +103,7 @@ fun Diary(
         backgroundColor = md_theme_dark_secondaryContainer,
         contentColor = colorScheme.onSurface
     )
-    var activeButton by remember { mutableStateOf("Из упражнений") }
+    var activeButton by remember { mutableStateOf("Личное") }
 
     /* FloatingActionButton(
         onClick = { /* Обработчик нажатия кнопки */ },
@@ -121,20 +125,8 @@ fun Diary(
             Title("Дневник")
             Row {
                 Button(
-                    onClick = { activeButton = "Из упражнений" },
-                    modifier = Modifier
-                        .size(190.dp, 45.dp)
-                        .padding(5.dp),
-                    shape = MaterialTheme.shapes.extraLarge,
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = colorScheme.onBackground,
-                        containerColor = if (activeButton == "Из упражнений") colorScheme.primaryContainer else colorScheme.onSecondary
-                    )
-                ) {
-                    Text(text = "Из упражнений", fontSize = 15.sp)
-                }
-                Button(
-                    onClick = { activeButton = "Личное" },
+                    onClick = { activeButton = "Личное"
+                        selectedListType.value = NoteType.PERSONAL},
                     modifier = Modifier
                         .size(190.dp, 45.dp)
                         .padding(5.dp),
@@ -145,6 +137,20 @@ fun Diary(
                     )
                 ) {
                     Text(text = "Личное", fontSize = 15.sp)
+                }
+                Button(
+                    onClick = { activeButton = "Из упражнений"
+                        selectedListType.value = NoteType.PRACTICE  },
+                    modifier = Modifier
+                        .size(190.dp, 45.dp)
+                        .padding(5.dp),
+                    shape = MaterialTheme.shapes.extraLarge,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = colorScheme.onBackground,
+                        containerColor = if (activeButton == "Из упражнений") colorScheme.primaryContainer else colorScheme.onSecondary
+                    )
+                ) {
+                    Text(text = "Из упражнений", fontSize = 15.sp)
                 }
             }
             /*Entry(
@@ -165,36 +171,48 @@ fun Diary(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    items(notesList.value) { item ->
-                        NoteCard(item, navigateToEditScreen)
+                    if(selectedListType.value == NoteType.PERSONAL) {
+                        items(notesList.value.filter { it.noteType == NoteType.PERSONAL.type}) { item ->
+                            NoteCard(item, navigateToEditScreen)
+                        }
                     }
+                    else {
+                        items(notesList.value.filter { it.noteType == NoteType.PRACTICE.type }) { item ->
+                            NoteCard(item, navigateToEditScreen)
+                        }
+                    }
+
                 }
             }
 
         }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
-        contentAlignment = Alignment.BottomEnd
-
-    ) {
-        androidx.compose.material.Button(
-            onClick = {
-                navigateToAddScreen()
-            },
-            shape = CircleShape,
+    if(selectedListType.value == NoteType.PERSONAL) {
+        Box(
             modifier = Modifier
-                .height(70.dp)
-                .width(70.dp),
-            // .aspectRatio(5f),
-            colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors,
+                .fillMaxSize()
+                .padding(20.dp),
+            contentAlignment = Alignment.BottomEnd
+
         ) {
-            Text("+", color = Color.White, fontSize = 30.sp)
+            androidx.compose.material.Button(
+                onClick = {
+                    navigateToAddScreen()
+                },
+                shape = CircleShape,
+                modifier = Modifier
+                    .height(70.dp)
+                    .width(70.dp),
+                // .aspectRatio(5f),
+                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors,
+            ) {
+                Text("+", color = Color.White, fontSize = 30.sp)
+            }
         }
     }
+
 }
+
 
 @Composable
 fun NoteCard(
@@ -349,7 +367,7 @@ fun recordFillingScreen(
 
         androidx.compose.material.Button(
             onClick = {
-                notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
+                notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()), 1)
                 navController.navigateUp()
             },
             shape = RoundedCornerShape(20.dp),
@@ -387,7 +405,9 @@ fun recordEditingScreen(
             contentColor = MaterialTheme.colorScheme.onSurface,
         )
         Column(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -449,47 +469,52 @@ fun recordEditingScreen(
             )
             Spacer(modifier = Modifier.padding(10.dp))
 
-            Row(
-                Modifier.fillMaxWidth().padding(20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                androidx.compose.material.Button(
-                    onClick = {
-                        //notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
-                        var newNote = NotesEntity(note!!.id, answer1.text, answer2.text ,note!!.noteDate)
-                        notesViewModel.UpdateItem(newNote)
-                        //navController.navigateUp()
-                    },
-                    shape = RoundedCornerShape(20.dp),
-                    colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+            if(note!!.noteType == 1) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = "Сохранить",
-                        modifier = Modifier
-                            .padding(horizontal = 15.dp, vertical = 5.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 18.sp,
-                    )
-                }
+                    androidx.compose.material.Button(
+                        onClick = {
+                            //notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
+                            var newNote = NotesEntity(note!!.id, answer1.text, answer2.text ,note!!.noteDate, 1)
+                            notesViewModel.UpdateItem(newNote)
+                            //navController.navigateUp()
+                        },
+                        shape = RoundedCornerShape(20.dp),
+                        colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                    ) {
+                        Text(
+                            text = "Сохранить",
+                            modifier = Modifier
+                                .padding(horizontal = 15.dp, vertical = 5.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp,
+                        )
+                    }
 
-                androidx.compose.material.Button(
-                    onClick = {
-                        notesViewModel.DeleteItem(id)
-                        navController.navigateUp()
-                    },
-                    shape = RoundedCornerShape(20.dp),
-                    colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
-                ) {
-                    Text(
-                        text = "Удалить",
-                        modifier = Modifier
-                            .padding(horizontal = 15.dp, vertical = 5.dp),
-                        textAlign = TextAlign.Center,
-                        fontSize = 18.sp,
-                    )
-                }
+                    androidx.compose.material.Button(
+                        onClick = {
+                            notesViewModel.DeleteItem(id)
+                            navController.navigateUp()
+                        },
+                        shape = RoundedCornerShape(20.dp),
+                        colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                    ) {
+                        Text(
+                            text = "Удалить",
+                            modifier = Modifier
+                                .padding(horizontal = 15.dp, vertical = 5.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp,
+                        )
+                    }
 
+                }
             }
+
 
         }
 
