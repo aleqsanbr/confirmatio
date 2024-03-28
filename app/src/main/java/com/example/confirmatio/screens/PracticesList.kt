@@ -108,7 +108,7 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                     modifier = Modifier.padding(15.dp,0.dp, 5.dp, 0.dp),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Medium,
-                    color = if(model.id ==2) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline,
+                    color = MaterialTheme.colorScheme.onBackground,
 
 
                     )
@@ -122,9 +122,9 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
                 painter = model.image,
                 contentDescription = "Question Icon",
                 modifier = Modifier
-                    .padding(5.dp, 0.dp, 25.dp, 0.dp)
+                    .padding(5.dp, 0.dp, 35.dp, 0.dp)
                     .size(80.dp),
-                colorFilter = ColorFilter.tint( if(model.id ==2) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.outline),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
 
                 )
         }
@@ -155,20 +155,20 @@ fun generateList(id : Int) : List<CardModel> {
                 painterResource(id = R.drawable.cake_icon), color2, PracticeID.Pie.id
             ),
             CardModel("Упражнение \"Волшебная палочка\"", "Description",
-                painterResource(id = R.drawable.question_icon), color1, PracticeID.MagicWand.id
+                painterResource(id = R.drawable.magic_wand_icon), color1, PracticeID.MagicWand.id
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.note_icon), color3, PracticeID.Prognosis.id
+                painterResource(id = R.drawable.time_icon), color3, PracticeID.Prognosis.id
             )
         )
     }
     else if (id == 2) {
         return listOf(
             CardModel("Мозговой штурм", "Description",
-                painterResource(id = R.drawable.note_icon), color2, PracticeID.BrainStorm.id
+                painterResource(id = R.drawable.idea_icon), color2, PracticeID.BrainStorm.id
             ),
             CardModel("Техника \"Горячие мысли\"", "Description",
-                painterResource(id = R.drawable.cake_icon), color3, PracticeID.HotThought.id
+                painterResource(id = R.drawable.thoughts_icon), color3, PracticeID.HotThought.id
             ),
             CardModel("Ловушки сознания", "Description",
                 painterResource(id = R.drawable.question_icon), color1, PracticeID.MindTrap.id
@@ -178,10 +178,10 @@ fun generateList(id : Int) : List<CardModel> {
     else {
         return listOf(
             CardModel("Ловушки сознания", "Description",
-                painterResource(id = R.drawable.cake_icon), color3, PracticeID.MindTrap.id
+                painterResource(id = R.drawable.question_icon), color3, PracticeID.MindTrap.id
             ),
             CardModel("Упражнение \"Прогнозы\"", "Description",
-                painterResource(id = R.drawable.question_icon), color1, PracticeID.Prognosis.id
+                painterResource(id = R.drawable.time_icon), color1, PracticeID.Prognosis.id
             ),
             CardModel("Ведение записей", "Description",
                 painterResource(id = R.drawable.note_icon),color2,PracticeID.WithNotes.id
