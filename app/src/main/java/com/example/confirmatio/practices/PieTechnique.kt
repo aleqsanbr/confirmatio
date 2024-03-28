@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -153,7 +154,8 @@ fun actionCard(content: String) {
     Box(
         modifier = Modifier
             .height(220.dp)
-            .fillMaxWidth()
+            //.fillMaxWidth()
+            .widthIn(150.dp, 300.dp)
             .background(
                 color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
                 shape = shape
@@ -166,7 +168,7 @@ fun actionCard(content: String) {
             text = content,
             color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
             fontSize = 20.sp, modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 10.dp)
+                .padding(horizontal = 10.dp, vertical = 15.dp)
 
         )
     }

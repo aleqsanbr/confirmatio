@@ -23,6 +23,10 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.example.confirmatio.navigation.PracticeID
+import com.example.confirmatio.practices.BrainStorm
+import com.example.confirmatio.practices.HotThoughts
+import com.example.confirmatio.practices.MagicWand
 import com.example.confirmatio.practices.PieTechnique
 import com.example.confirmatio.practices.MindTraps
 @Composable
@@ -32,12 +36,18 @@ fun SinglePractice(
 )
 {
     when(practiceId) {
-         2 -> PieTechnique()
-         6 -> MindTraps()
+        PracticeID.Pie.id -> PieTechnique()
+        PracticeID.MindTrap.id -> MindTraps()
+        PracticeID.BrainStorm.id -> BrainStorm()
+        PracticeID.HotThought.id -> HotThoughts()
+        PracticeID.MagicWand.id -> MagicWand()
+
         else ->
         {
             Column(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 25.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             )

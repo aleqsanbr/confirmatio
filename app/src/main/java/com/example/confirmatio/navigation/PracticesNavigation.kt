@@ -55,3 +55,8 @@ object Destinations {
     const val PRACTICE_ID = "practice_id"
 
 }
+
+enum class PracticeID (val id : Int){
+    Pie(1), MagicWand(2), Prognosis(3), BrainStorm(4),
+    HotThought(5), MindTrap(6), WithNotes(7);
+}
