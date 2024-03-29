@@ -45,6 +45,7 @@ import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.R
 import com.example.confirmatio.practices.nameOfPractice
 
+/*
 
 @Composable
 fun WhatIsAnAlarm(navigateUp: () -> Unit) {
@@ -146,3 +147,4 @@ fun contentText(str: String) {
     )
 }
 
+*/
