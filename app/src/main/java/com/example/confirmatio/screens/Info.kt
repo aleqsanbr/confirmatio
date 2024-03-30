@@ -40,9 +40,9 @@ fun Info(
     )
     {
         var lstArticles = listOf(
-            articles(R.drawable.article_1, "Что такое тревога?", color1),
-            articles(R.drawable.article_2, "Какие виды тревоги бывают?", color2),
-            articles(R.drawable.article_3, "Как бороться с тревогой?", color3)
+            articles(R.drawable.what_is_anxiety, "Что такое тревога?", color1),
+            articles(R.drawable.anxiety_types, "Какие виды тревоги бывают?", color2),
+            articles(R.drawable.dealing_with_anxiety, "Как бороться с тревогой?", color3)
         )
         ArticlesFun(lstArticles,navigateToArticle)
 

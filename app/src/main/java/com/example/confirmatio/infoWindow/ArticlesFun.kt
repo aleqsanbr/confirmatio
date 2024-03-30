@@ -5,12 +5,12 @@
 
 package com.example.confirmatio.infoWindow
 
+import android.content.res.AssetManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -37,12 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Blue
-import androidx.compose.ui.graphics.Color.Companion.Green
-import androidx.compose.ui.graphics.Color.Companion.Red
-import androidx.compose.ui.graphics.Color.Companion.Transparent
-import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
@@ -53,7 +46,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.md_theme_dark_onBackground
-import com.example.compose.md_theme_light_onBackground
+import com.example.confirmatio.R
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -81,7 +75,7 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
             Text(
                 text = "Статьи", fontSize = 30.sp,  fontWeight = FontWeight(700), modifier = Modifier
                     .padding(horizontal = 30.dp, vertical = 5.dp),
-                        color = md_theme_dark_onBackground
+                color = md_theme_dark_onBackground
             )
             LazyRow(
                 modifier = Modifier
@@ -97,27 +91,26 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                             val shape = RoundedCornerShape(20.dp)
                             Box(
                                 modifier = Modifier
-                                    //.height(columnHeightDp - 100.dp)
                                     .height(columnHeightDp - 70.dp)
-                                    .width(LocalConfiguration.current.screenWidthDp.dp + 5.dp)
+                                    .width(LocalConfiguration.current.screenWidthDp.dp - 70.dp)
                                     .background(Color.Transparent)
-                                    .padding(horizontal = 15.dp),
+                                    .clip(shape),
                                 contentAlignment = Alignment.Center
-                                ) {
+                            ) {
+                                Image(
+                                    painter = painterResource(id = item.imageId),
+                                    contentDescription = item.title,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clip(shape)
+                                )
 
-                                  Image(
-                                      painter = painterResource(id = item.imageId),
-                                      contentDescription = "",
-                                      modifier = Modifier
-                                          .fillMaxSize()
-                                          .clip(shape)
-                                  )
-
+                                /*
                                 Box(
                                     modifier = Modifier
                                         .height(columnHeightDp - 80.dp)
                                         .width(LocalConfiguration.current.screenWidthDp.dp - 70.dp)
-                                        .background(item.color, shape = shape)
+                                        .background(Color.Transparent, shape = shape)
                                         .padding(horizontal = 15.dp),
                                     contentAlignment = Alignment.Center
                                 )
@@ -133,6 +126,7 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                                             .padding((10.dp)))
 
                                 }
+                                */
                             }
                         },
                         measurePolicy = { measurables, constraints ->
@@ -157,5 +151,3 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
         }
     }
 }
-
-
