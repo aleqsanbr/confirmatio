@@ -157,7 +157,7 @@ fun actionCard(content: String) {
             //.fillMaxWidth()
             .widthIn(150.dp, 300.dp)
             .background(
-                color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                color = md_theme_dark_secondaryContainer,
                 shape = shape
             )
             .padding(horizontal = 10.dp),
@@ -166,7 +166,7 @@ fun actionCard(content: String) {
 
         Text(
             text = content,
-            color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+            color = Color.White,
             fontSize = 20.sp, modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 15.dp)
 

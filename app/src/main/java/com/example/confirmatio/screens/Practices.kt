@@ -101,7 +101,7 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
                 TabRowDefaults.Indicator(
                     modifier = Modifier
                         .tabIndicatorOffset(it[pagerState.currentPage]),
-                    color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                    color = Color.White,
                     height = TabRowDefaults.IndicatorHeight * 1.5F
                 )
             },
@@ -110,14 +110,8 @@ fun PagingScreen(navigateToPractice: (Int) -> Unit) {
             ) {
             tabRowItems.forEachIndexed { index, item ->
                 val selected = pagerState.currentPage == index
-                val textColor: Color
-                if (!isSystemInDarkTheme()) {
-                    if (selected) textColor = Color.Black
-                    else textColor = Color.Gray
-                } else {
-                    if (selected) textColor = Color.White
-                    else textColor = Color.Gray
-                }
+                val textColor: Color = if (selected) Color.White
+                else Color.Gray
 
                 Tab(
                     modifier = Modifier.padding(5.dp),

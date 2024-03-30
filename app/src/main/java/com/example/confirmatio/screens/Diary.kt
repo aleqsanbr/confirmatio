@@ -72,7 +72,7 @@ fun Entry(header: String, text: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp, 80.dp)
-            .background(colorScheme.onSecondary, MaterialTheme.shapes.extraLarge)
+            .background(md_theme_dark_secondaryContainer, MaterialTheme.shapes.extraLarge)
     ) {
         CustomText(
             header, modifier = Modifier
@@ -204,7 +204,7 @@ fun Diary(
                     .height(70.dp)
                     .width(70.dp),
                 // .aspectRatio(5f),
-                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors,
+                colors = unselectedButtonColors,
             ) {
                 Text("+", color = Color.White, fontSize = 30.sp)
             }
@@ -221,8 +221,8 @@ fun NoteCard(
     //navController: NavHostController
 ) {
     val cal: Calendar = Calendar.getInstance()
-    val textColor = if(!isSystemInDarkTheme()) Color.Black else Color.White
-    val titleColor = if(!isSystemInDarkTheme()) dark_CustomColor1Container else CustomColor1
+    val textColor = Color.White
+    val titleColor = CustomColor1
 
 
     Card (
@@ -238,7 +238,7 @@ fun NoteCard(
         Row(
             Modifier
                 .fillMaxSize()
-                .background(color = if (!isSystemInDarkTheme()) CustomColor1 else dark_CustomColor1Container),
+                .background(color = dark_CustomColor1Container),
 
             //horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -332,9 +332,9 @@ fun recordFillingScreen(
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                cursorColor = Color.White,
+                textColor = Color.White,
+                backgroundColor = md_theme_dark_secondaryContainer,
             ),
         )
 
@@ -358,9 +358,9 @@ fun recordFillingScreen(
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                cursorColor = Color.White,
+                textColor = Color.White,
+                backgroundColor = md_theme_dark_secondaryContainer,
             ),
         )
         Spacer(modifier = Modifier.padding(10.dp))
@@ -371,7 +371,7 @@ fun recordFillingScreen(
                 navController.navigateUp()
             },
             shape = RoundedCornerShape(20.dp),
-            colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+            colors = unselectedButtonColors
         ) {
             Text(
                 text = "Сохранить запись",
@@ -436,9 +436,9 @@ fun recordEditingScreen(
                     focusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    cursorColor = Color.White,
+                    textColor = Color.White,
+                    backgroundColor = md_theme_dark_secondaryContainer,
                 ),
             )
 
@@ -462,9 +462,9 @@ fun recordEditingScreen(
                     focusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                    backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    cursorColor = Color.White,
+                    textColor = Color.White,
+                    backgroundColor = md_theme_dark_secondaryContainer,
                 ),
             )
             Spacer(modifier = Modifier.padding(10.dp))
@@ -484,7 +484,7 @@ fun recordEditingScreen(
                             //navController.navigateUp()
                         },
                         shape = RoundedCornerShape(20.dp),
-                        colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                        colors = unselectedButtonColors
                     ) {
                         Text(
                             text = "Сохранить",
@@ -501,7 +501,7 @@ fun recordEditingScreen(
                             navController.navigateUp()
                         },
                         shape = RoundedCornerShape(20.dp),
-                        colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                        colors = unselectedButtonColors
                     ) {
                         Text(
                             text = "Удалить",

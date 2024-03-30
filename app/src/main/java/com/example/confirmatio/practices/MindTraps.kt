@@ -168,9 +168,9 @@ fun screenWithQuestions(navController: NavHostController,
                         focusedIndicatorColor = Color.Transparent,
                         disabledIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        cursorColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                        textColor = if (!isSystemInDarkTheme()) Color.Black else Color.White,
-                        backgroundColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                        cursorColor = Color.White,
+                        textColor = Color.White,
+                        backgroundColor = md_theme_dark_secondaryContainer,
                     ),
                 )
 
@@ -183,7 +183,7 @@ fun screenWithQuestions(navController: NavHostController,
                     currentQuestionIndex++
                 },
                 shape = RoundedCornerShape(20.dp),
-                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                colors = unselectedButtonColors
             ) {
                 Text(
                     text = "Далее",
@@ -206,7 +206,7 @@ fun screenWithQuestions(navController: NavHostController,
 
             Box(
                 modifier = Modifier.background(
-                    color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    color = md_theme_dark_secondaryContainer,
                     shape = shape
                 ),
             )
@@ -271,7 +271,7 @@ fun screenWithQuestions(navController: NavHostController,
                     navController.navigateUp()
                 },
                 shape = RoundedCornerShape(20.dp),
-                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                colors = unselectedButtonColors
             ) {
                 Text(
                     text = "Сохранить запись в дневник",
@@ -375,7 +375,7 @@ fun MindTraps1(navController: NavHostController) {
                 },
                 shape = RoundedCornerShape(20.dp),
 
-                colors = if (!isSystemInDarkTheme()) selectedButtonColors else unselectedButtonColors
+                colors = unselectedButtonColors
             ) {
 
                 Text(
@@ -401,7 +401,7 @@ fun actionCard(title: String, content: String) {
             .height(220.dp)
             .fillMaxWidth()
             .background(
-                color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                color = md_theme_dark_secondaryContainer,
                 shape = shape
             )
             .padding(horizontal = 10.dp),
@@ -413,12 +413,12 @@ fun actionCard(title: String, content: String) {
                 fontSize = 25.sp,
                 modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 10.dp),
-                color = if (!isSystemInDarkTheme()) md_theme_dark_onSecondary; else md_theme_light_secondaryContainer,
+                color = md_theme_light_secondaryContainer,
                 fontWeight = FontWeight(900),
             )
             Text(
                 text = content,
-                color = if (!isSystemInDarkTheme()) Color.Black else Color.White,
+                color = Color.White,
                 fontSize = 18.sp, modifier = Modifier
                     .padding(horizontal = 10.dp)
             )

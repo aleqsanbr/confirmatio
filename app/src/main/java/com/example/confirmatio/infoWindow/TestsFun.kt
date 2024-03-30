@@ -73,7 +73,7 @@ fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
             Text(
                 text = "Тесты", fontSize = 30.sp, fontWeight = FontWeight(700),modifier = Modifier
                     .padding(horizontal = 30.dp, vertical = 5.dp),
-                color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground
+                color = md_theme_dark_onBackground
             )
             LazyRow(
                 modifier = Modifier
@@ -118,7 +118,7 @@ fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
                                         lineHeight = 50.sp,
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight(700),
-                                        color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                                        color = md_theme_dark_onBackground,
                                         modifier = Modifier
                                             .padding((10.dp)))
                                 }

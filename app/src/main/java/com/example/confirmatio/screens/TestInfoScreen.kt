@@ -112,7 +112,7 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
             .widthIn(200.dp, 400.dp)
             .padding(20.dp, 0.dp)
             .background(
-                color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                color = md_theme_dark_secondaryContainer,
                 shape = RoundedCornerShape(20.dp)
             ),
     ) {
@@ -120,7 +120,7 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = if (!isSystemInDarkTheme()) Color(0x44506352) else Color(0x44B7CCB8),
+                    color = Color(0x44B7CCB8),
                     shape = RoundedCornerShape(20.dp, 20.dp, 0.dp, 0.dp)
                 ),
         ) {
@@ -130,7 +130,7 @@ fun InfoCard(title:String,text:String, icon : ImageVector) {
                 modifier = Modifier
                     .padding(10.dp)
                     .size(25.dp),
-                colorFilter = ColorFilter.tint(if(!isSystemInDarkTheme()) md_theme_light_onSecondaryContainer else md_theme_dark_onSecondaryContainer)
+                colorFilter = ColorFilter.tint(md_theme_dark_onSecondaryContainer)
 
             )
             Column(

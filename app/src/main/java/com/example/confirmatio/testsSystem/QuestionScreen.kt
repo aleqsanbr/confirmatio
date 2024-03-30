@@ -112,7 +112,7 @@ fun QuestionCard(
                    .fillMaxWidth()
                    .padding(0.dp, 20.dp)
                    .heightIn(10.dp, 20.dp),
-               color = if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondary,
+               color = md_theme_dark_secondary,
                progress = manager.getProgress()
            )
            Column (
@@ -120,7 +120,7 @@ fun QuestionCard(
                    .widthIn(300.dp, 550.dp)
                    //.fillMaxWidth()
                    .heightIn(350.dp, 650.dp)
-                   .background(if(!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
+                   .background(md_theme_dark_secondaryContainer, RoundedCornerShape(20.dp))
                    .padding(15.dp),
                ) {
                Text(
@@ -166,7 +166,7 @@ fun QuestionCard(
                        //.width(IntrinsicSize.Min)
                        .width(130.dp),
                        //.padding(0.dp, 15.dp, 0.dp, 10.dp),
-                   colors = ButtonDefaults.buttonColors(containerColor = if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
+                   colors = ButtonDefaults.buttonColors(containerColor = md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q - 1 >= 1) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))
@@ -202,7 +202,7 @@ fun QuestionCard(
                        .padding(0.dp, 15.dp, 0.dp, 5.dp)
                        .width(130.dp),
 
-                   colors = ButtonDefaults.buttonColors(containerColor =if(!isSystemInDarkTheme()) md_theme_light_secondary else md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
+                   colors = ButtonDefaults.buttonColors(containerColor = md_theme_dark_secondaryContainer, contentColor = md_theme_light_onSecondary),
                    onClick = {
                    if(manager.cur_q + 1 <= manager.amountOfQuestions()) {
                        manager.saveAnswer(a_pos = radioOptions.indexOf(selectedOption))

@@ -3,10 +3,20 @@
   <component name="deploymentTargetDropDown">
     <value>
       <entry key="Confirmatio">
-        <State />
-      </entry>
-      <entry key="NoteCard">
-        <State />
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="adb-6HUWAYYD4TFAFIHM-GWL1FF._adb-tls-connect._tcp" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-30T18:34:56.170088300Z" />
+        </State>
       </entry>
     </value>
   </component>

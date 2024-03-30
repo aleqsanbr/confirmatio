@@ -40,6 +40,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.compose.navigation
+import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.confirmatio.NavRoutes.Diary.route
 import com.example.confirmatio.navigation.DiaryNavigation
 import com.example.confirmatio.practices.PieTechnique
@@ -59,13 +60,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ConfirmatioTheme {
-                val useDarkTheme: Boolean = isSystemInDarkTheme()
+                val useDarkTheme: Boolean = true
                 val systemUiController = rememberSystemUiController()
-                val background_status_color = colorScheme.onSecondary
+                val background_status_color = md_theme_dark_onSecondary
                 SideEffect {
                     systemUiController.setStatusBarColor(
                         color = background_status_color,
-                        darkIcons = !useDarkTheme,
+                        darkIcons = false,
                     )
                 }
                 Surface(
@@ -163,9 +164,7 @@ fun MainScreen() {
 
          topBar = { TopAppBar(
              title = { Text("Confirmatio") },
-             colors = if(!isSystemInDarkTheme())
-                 TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
-             else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
+             colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
              navigationIcon = {
                  Image(
                      painter = painterResource(R.drawable.logo),

@@ -65,7 +65,7 @@ fun Article(navigateUp: () -> Unit, article: String, title: String) {
                 .height(130.dp)
                 .width(LocalConfiguration.current.screenWidthDp.dp - 20.dp)
                 .background(
-                    if (!isSystemInDarkTheme()) CustomColor1 else dark_CustomColor1Container,
+                    dark_CustomColor1Container,
                     shape = shape
                 )
                 .border(3.dp, MaterialTheme.colorScheme.background, RoundedCornerShape(30.dp))
@@ -82,7 +82,7 @@ fun Article(navigateUp: () -> Unit, article: String, title: String) {
                     lineHeight = 50.sp,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(700),
-                    color = if (!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                    color = md_theme_dark_onBackground,
                     modifier = Modifier
                         .padding((10.dp))
                 )
@@ -100,7 +100,7 @@ fun Article(navigateUp: () -> Unit, article: String, title: String) {
         Box(
             modifier = Modifier
                 .background(
-                    color = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer,
+                    color = md_theme_dark_secondaryContainer,
                     shape = shape
                 )
                 .border(3.dp, MaterialTheme.colorScheme.background, RoundedCornerShape(30.dp))
@@ -221,7 +221,7 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 31) Color.Green else if(value < 45) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
+            color = if(value < 31) Color.Green else if(value < 45) (Color.Yellow) else Color.Red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -276,7 +276,7 @@ fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextU
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 65) Color.Green else if(value < 96) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
+            color = if(value < 65) Color.Green else if(value < 96) (Color.Yellow) else Color.Red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -326,7 +326,7 @@ fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUn
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value <= 21) Color.Green else if(value <= 35) (if(!isSystemInDarkTheme())Color.DarkGray else Color.Yellow) else Color.Red
+            color = if(value <= 21) Color.Green else if(value <= 35) (Color.Yellow) else Color.Red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))

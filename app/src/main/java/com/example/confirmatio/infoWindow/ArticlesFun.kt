@@ -81,7 +81,7 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
             Text(
                 text = "Статьи", fontSize = 30.sp,  fontWeight = FontWeight(700), modifier = Modifier
                     .padding(horizontal = 30.dp, vertical = 5.dp),
-                        color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground
+                        color = md_theme_dark_onBackground
             )
             LazyRow(
                 modifier = Modifier
@@ -104,14 +104,14 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                                     .padding(horizontal = 15.dp),
                                 contentAlignment = Alignment.Center
                                 ) {
-                                /*
+
                                   Image(
                                       painter = painterResource(id = item.imageId),
-                                      contentDescription = "image1",
+                                      contentDescription = "",
                                       modifier = Modifier
                                           .fillMaxSize()
                                           .clip(shape)
-                                  ) */
+                                  )
 
                                 Box(
                                     modifier = Modifier
@@ -128,7 +128,7 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                                         lineHeight = 50.sp,
                                         fontSize = 22.sp,
                                         fontWeight = FontWeight(700),
-                                        color = if(!isSystemInDarkTheme()) md_theme_light_onBackground else md_theme_dark_onBackground,
+                                        color = md_theme_dark_onBackground,
                                         modifier = Modifier
                                             .padding((10.dp)))
 

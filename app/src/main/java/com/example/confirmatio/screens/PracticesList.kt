@@ -134,19 +134,9 @@ fun CardItem(model: CardModel, navigateToPractice: (Int) -> Unit) {
 
 @Composable
 fun generateList(id : Int) : List<CardModel> {
-    val color1 : Color
-    val color2 : Color
-    val color3 : Color
-    if(!isSystemInDarkTheme()){
-        color1 = CustomColor1
-        color2 = CustomColor2
-        color3 = CustomColor3
-    }
-    else {
-        color1 = dark_CustomColor1Container
-        color2 = dark_CustomColor2Container
-        color3 = dark_CustomColor3Container
-    }
+    val color1 : Color = dark_CustomColor1Container
+    val color2 : Color = dark_CustomColor2Container
+    val color3 : Color = dark_CustomColor3Container
 
 
     if (id == 1) {

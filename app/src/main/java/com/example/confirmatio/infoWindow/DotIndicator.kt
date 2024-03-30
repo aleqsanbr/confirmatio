@@ -49,7 +49,7 @@ fun DotsIndicator(
                         .height(height)
                         .width(width)
                         .clip(shape)
-                        .background(color = if(!isSystemInDarkTheme()) md_theme_dark_secondaryContainer else md_theme_dark_onSecondaryContainer)
+                        .background(color = md_theme_dark_onSecondaryContainer)
                 )
             } else {
                 Box(
@@ -57,7 +57,7 @@ fun DotsIndicator(
                         .height(height)
                         .width(width)
                         .clip(shape)
-                        .background(color = if(!isSystemInDarkTheme()) md_theme_dark_onSecondaryContainer else md_theme_dark_secondaryContainer) // md_theme_dark_onSecondaryContainer
+                        .background(color = md_theme_dark_secondaryContainer) // md_theme_dark_onSecondaryContainer
                 )
             }
             if (index != totalDots - 1) {
