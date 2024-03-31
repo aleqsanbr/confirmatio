@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -45,6 +46,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.compose.CustomColor1
+import com.example.compose.md_theme_dark_onPrimary
+import com.example.compose.md_theme_dark_onSecondary
+import com.example.compose.md_theme_dark_primaryContainer
 import com.example.compose.md_theme_dark_secondaryContainer
 import com.example.compose.md_theme_dark_surfaceVariant
 import com.example.compose.md_theme_light_secondaryContainer
@@ -118,12 +122,12 @@ fun Diary(
                     onClick = { activeButton = "Личное"
                         selectedListType.value = NoteType.PERSONAL},
                     modifier = Modifier
-                        .size(160.dp, 45.dp)
+                        .width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 2.dp, end = 5.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = colorScheme.onBackground,
-                        containerColor = if (activeButton == "Личное") colorScheme.primaryContainer else colorScheme.onSecondary
+                        containerColor = if (activeButton == "Личное") md_theme_dark_secondaryContainer else md_theme_dark_onSecondary
                     )
                 ) {
                     Text(text = "Личное", fontSize = 15.sp)
@@ -132,12 +136,12 @@ fun Diary(
                     onClick = { activeButton = "Из упражнений"
                         selectedListType.value = NoteType.PRACTICE  },
                     modifier = Modifier
-                        .size(160.dp, 45.dp)
+                        .width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 5.dp, end = 2.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = colorScheme.onBackground,
-                        containerColor = if (activeButton == "Из упражнений") colorScheme.primaryContainer else colorScheme.onSecondary
+                        containerColor = if (activeButton == "Из упражнений") md_theme_dark_secondaryContainer else md_theme_dark_onSecondary
                     )
                 ) {
                     Text(text = "Из упражнений", fontSize = 15.sp)
@@ -212,7 +216,7 @@ fun NoteCard(
         Row(
             Modifier
                 .fillMaxSize()
-                .background(color = md_theme_dark_surfaceVariant),
+                .background(color = md_theme_dark_secondaryContainer),
 
             //horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -375,7 +379,7 @@ fun recordEditingScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            verticalArrangement = Arrangement.Center,
+            //verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             var answer1 by remember { mutableStateOf(TextFieldValue(note!!.noteTitle)) }
@@ -417,7 +421,7 @@ fun recordEditingScreen(
                 modifier = Modifier
                     .verticalScroll(ScrollState(0))
                     .fillMaxWidth(0.90f)
-                    .height(400.dp),
+                    .heightIn(350.dp, 400.dp),
                 shape = RoundedCornerShape(15.dp),
                 value = answer2,
                 textStyle = androidx.compose.ui.text.TextStyle(
@@ -440,7 +444,7 @@ fun recordEditingScreen(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(horizontal = 20.dp, vertical = 5.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     androidx.compose.material.Button(

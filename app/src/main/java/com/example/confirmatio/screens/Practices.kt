@@ -16,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.confirmatio.Title
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,7 @@ fun Practices(navigateToPractice: (Int) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            //Title("Упражнения для борьбы с тревогой")
+            Title("Упражнения для борьбы с тревогой")
             PagingScreen(navigateToPractice)
         }
     }
