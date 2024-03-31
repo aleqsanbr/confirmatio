@@ -3,7 +3,6 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +20,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -43,10 +41,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.compose.md_theme_dark_onSecondaryContainer
 import com.example.compose.md_theme_dark_secondaryContainer
-import com.example.compose.md_theme_light_onSecondaryContainer
-import com.example.compose.md_theme_light_secondary
-import com.example.compose.md_theme_light_secondaryContainer
-import com.example.confirmatio.NavigateUpButton
 import com.example.confirmatio.Title
 import com.example.confirmatio.testsSystem.TestLoader
 

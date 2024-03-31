@@ -1,9 +1,7 @@
 package com.example.confirmatio.screens.HelpNowMethods
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,27 +9,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.confirmatio.StartButton
 import com.example.confirmatio.Title
-import com.example.confirmatio.screens.HelpNowContent
-import com.example.confirmatio.screens.HelpNowMethods.Grounding.GroundingProcess
 import com.example.confirmatio.screens.InfoCard
-import com.example.confirmatio.testsSystem.TestLoader
 
 val about = "1. Cильная тревога или навязчивые мысли, мешающие концентрации внимания\n" +
         "2. Панические расстройства\n" +

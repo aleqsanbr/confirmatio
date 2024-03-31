@@ -5,7 +5,6 @@
 
 package com.example.confirmatio.infoWindow
 
-import android.content.res.AssetManager
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,11 +41,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.md_theme_dark_onBackground
-import com.example.confirmatio.R
 
 
 @OptIn(ExperimentalFoundationApi::class)

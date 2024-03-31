@@ -1,10 +1,8 @@
 package com.example.confirmatio.screens
 
-import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +15,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,17 +45,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.compose.CustomColor1
-import com.example.compose.dark_CustomColor1Container
 import com.example.compose.md_theme_dark_secondaryContainer
+import com.example.compose.md_theme_dark_surfaceVariant
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.CustomText
 import com.example.confirmatio.Title
 import com.example.confirmatio.database.NoteType
 import com.example.confirmatio.database.NotesEntity
 import com.example.confirmatio.database.NotesViewModel
-import com.example.confirmatio.navigation.NOTEID
 import com.example.confirmatio.practices.keyboardAsState
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import java.time.Instant
 import java.util.Calendar
 import java.util.Date
@@ -108,6 +101,7 @@ fun Diary(
     Box(
         modifier = Modifier
             .fillMaxSize()
+
     ) {
         Column(
             modifier = Modifier
@@ -115,14 +109,17 @@ fun Diary(
                 .verticalScroll(ScrollState(0)), // Добавлено для прокрутки всего экрана
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Title("Дневник")
-            Row {
+            Row(modifier = Modifier.padding(10.dp)) {
+                Title("Дневник")
+            }
+
+            Row(modifier = Modifier) {
                 Button(
                     onClick = { activeButton = "Личное"
                         selectedListType.value = NoteType.PERSONAL},
                     modifier = Modifier
-                        .size(190.dp, 45.dp)
-                        .padding(5.dp),
+                        .size(160.dp, 45.dp)
+                        .padding(top = 0.dp, bottom = 0.dp, start = 2.dp, end = 5.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = colorScheme.onBackground,
@@ -135,8 +132,8 @@ fun Diary(
                     onClick = { activeButton = "Из упражнений"
                         selectedListType.value = NoteType.PRACTICE  },
                     modifier = Modifier
-                        .size(190.dp, 45.dp)
-                        .padding(5.dp),
+                        .size(160.dp, 45.dp)
+                        .padding(top = 0.dp, bottom = 0.dp, start = 5.dp, end = 2.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
                         contentColor = colorScheme.onBackground,
@@ -215,7 +212,7 @@ fun NoteCard(
         Row(
             Modifier
                 .fillMaxSize()
-                .background(color = dark_CustomColor1Container),
+                .background(color = md_theme_dark_surfaceVariant),
 
             //horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,

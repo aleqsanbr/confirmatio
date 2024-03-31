@@ -60,6 +60,9 @@ android {
 
 
 dependencies {
+    implementation("androidx.media3:media3-exoplayer:1.3.0")
+    implementation("androidx.media3:media3-exoplayer-dash:1.3.0")
+    implementation("androidx.media3:media3-ui:1.3.0")
     implementation("androidx.compose.material:material-icons-extended:1.6.0-beta01")
     implementation("androidx.compose.animation:animation:1.6.0-beta01")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")

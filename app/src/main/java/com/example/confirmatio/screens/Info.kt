@@ -3,7 +3,6 @@
 package com.example.confirmatio.screens
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,9 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.compose.CustomColor1
-import com.example.compose.CustomColor2
-import com.example.compose.CustomColor3
 import com.example.compose.dark_CustomColor1Container
 import com.example.compose.dark_CustomColor2Container
 import com.example.compose.dark_CustomColor3Container

@@ -3,9 +3,7 @@ package com.example.confirmatio.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,20 +30,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.compose.CustomColor1
-import com.example.compose.CustomColor2
-import com.example.compose.CustomColor3
-import com.example.compose.dark_CustomColor1
 import com.example.compose.dark_CustomColor1Container
-import com.example.compose.dark_CustomColor2
 import com.example.compose.dark_CustomColor2Container
-import com.example.compose.dark_CustomColor3
 import com.example.compose.dark_CustomColor3Container
-import com.example.compose.md_theme_dark_onBackground
-import com.example.compose.md_theme_dark_onSurfaceVariant
-import com.example.compose.md_theme_light_onBackground
-import com.example.compose.md_theme_light_onSurfaceVariant
-import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.R
 import com.example.confirmatio.navigation.PracticeID
 

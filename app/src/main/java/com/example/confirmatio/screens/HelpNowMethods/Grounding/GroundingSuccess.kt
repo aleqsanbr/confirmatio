@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.confirmatio.CustomText
-import com.example.confirmatio.NotImplemented
 import com.example.confirmatio.SubTitle
 import com.example.confirmatio.Title
 

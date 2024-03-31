@@ -13,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.em
 import com.example.confirmatio.Article
-import com.example.confirmatio.practices.PieTechnique
-import java.io.File
 
 fun JoinToString(list: List<String>): String {
     var result = ""
