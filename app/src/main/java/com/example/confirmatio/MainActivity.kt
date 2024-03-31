@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.material3.Surface
@@ -24,27 +23,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.ConfirmatioTheme
 import com.example.compose.md_theme_dark_onSecondary
-import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.navigation.InfoNavigation
 import com.example.confirmatio.navigation.PracticesNavigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.navigation.compose.navigation
-import com.example.compose.md_theme_dark_secondaryContainer
-import com.example.confirmatio.NavRoutes.Diary.route
 import com.example.confirmatio.navigation.DiaryNavigation
-import com.example.confirmatio.practices.PieTechnique
-import com.example.confirmatio.screens.SinglePractice
 
 sealed class NavRoutes(val route: String) {
     object Practices : NavRoutes("practices")
@@ -92,11 +82,11 @@ fun BottomNavigationBar(navController: NavHostController) {
                 onClick = {
                     navController.navigate(navItem.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                            saveState = false
                         }
-                        launchSingleTop = true
-                        restoreState =
-                            navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
+                        launchSingleTop = false
+                        //restoreState =
+                        //    navItem.route != NavRoutes.Practices.route && navItem.route != NavRoutes.Info.route
                     }
                 },
                 icon = {
@@ -127,43 +117,8 @@ fun MainScreen() {
         inclusive = false
     )
     Scaffold(
-      /*  topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("Confirmatio", overflow = TextOverflow.Ellipsis) },
-                colors = if (!isSystemInDarkTheme())
-                    TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_light_secondaryContainer)
-                else TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
-                navigationIcon = {
-                    if (buttonback.value) {
-                        IconButton(onClick = {
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    } else {
-                        null
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("Settings") {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }) {
-                        Icon(Icons.Filled.Settings, contentDescription = "Settings")
-                    }
-                }
-            )
-        },*/
-
          topBar = { TopAppBar(
-             title = { Text("Confirmatio") },
+             title = { FriendlyNameOf(currentRoute.value?.destination?.route?:"Confirmatio") },
              colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
              navigationIcon = {
                  Image(

@@ -105,21 +105,14 @@ fun Diary(
     )
     var activeButton by remember { mutableStateOf("Личное") }
 
-    /* FloatingActionButton(
-        onClick = { /* Обработчик нажатия кнопки */ },
-        modifier = Modifier
-            .padding(16.dp, 100.dp, 160.dp, 160.dp)
-    ) {
-        //Icon(Icons.Filled.Add, contentDescription = "Добавить")
-    } */
-
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .verticalScroll(ScrollState(0)), // Добавлено для прокрутки всего экрана
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Title("Дневник")
@@ -153,38 +146,23 @@ fun Diary(
                     Text(text = "Из упражнений", fontSize = 15.sp)
                 }
             }
-            /*Entry(
-                header = "18.07.2007",
-                text = "Текhbhhbhhbhbibhbhhbbnhjhbhhbjhksjdakgdksgdkjsdgjaksdjkdjds,kmjс"
-            )*/
             Column (
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(0.dp, 20.dp)
-                    .verticalScroll(ScrollState(0)),
+                    .padding(0.dp, 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ){
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    if(selectedListType.value == NoteType.PERSONAL) {
-                        items(notesList.value.filter { it.noteType == NoteType.PERSONAL.type}) { item ->
-                            NoteCard(item, navigateToEditScreen)
-                        }
+                if(selectedListType.value == NoteType.PERSONAL) {
+                    notesList.value.filter { it.noteType == NoteType.PERSONAL.type}.reversed().forEach { item ->
+                        NoteCard(item, navigateToEditScreen)
                     }
-                    else {
-                        items(notesList.value.filter { it.noteType == NoteType.PRACTICE.type }) { item ->
-                            NoteCard(item, navigateToEditScreen)
-                        }
+                }
+                else {
+                    notesList.value.filter { it.noteType == NoteType.PRACTICE.type }.reversed().forEach { item ->
+                        NoteCard(item, navigateToEditScreen)
                     }
-
                 }
             }
-
         }
     }
     if(selectedListType.value == NoteType.PERSONAL) {
@@ -203,15 +181,14 @@ fun Diary(
                 modifier = Modifier
                     .height(70.dp)
                     .width(70.dp),
-                // .aspectRatio(5f),
                 colors = unselectedButtonColors,
             ) {
                 Text("+", color = Color.White, fontSize = 30.sp)
             }
         }
     }
-
 }
+
 
 
 @Composable
@@ -250,13 +227,6 @@ fun NoteCard(
                     .fillMaxSize()
                     .padding(10.dp)
             ){
-               /* Row (
-                    Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                ){
-
-                }*/
 
                 Text(
                     modifier = Modifier.padding(10.dp, 5.dp),

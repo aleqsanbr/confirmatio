@@ -49,6 +49,20 @@ import com.example.compose.md_theme_light_secondaryContainer
 import java.io.Console
 
 @Composable
+fun FriendlyNameOf(name: String) {
+    val fr_name: String
+    fr_name = when (name) {
+        "help_now" -> "В моменте"
+        "practices" -> "Практики"
+        "info" -> "Информация"
+        "diary" -> "Дневник"
+        "settings" -> "Настройки"
+        else -> "Confirmatio"
+    }
+    Text(text = fr_name)
+}
+
+@Composable
 fun Article(navigateUp: () -> Unit, article: String, title: String) {
     val shape = RoundedCornerShape(30.dp)
 
@@ -384,15 +398,18 @@ fun StartButton(text: String, onButtonClick: () -> Unit) {
 fun NotImplemented(name: String) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.padding(30.dp))
-        CustomText(text = "Not implemented. $name", modifier = Modifier.padding(20.dp).align(
-            Alignment.CenterHorizontally
-        ), fontSize = 20.sp)
+        CustomText(text = "Not implemented. $name", modifier = Modifier
+            .padding(20.dp)
+            .align(
+                Alignment.CenterHorizontally
+            ), fontSize = 20.sp)
         Spacer(modifier = Modifier.padding(30.dp))
         Icon(
             imageVector = Icons.Outlined.Warning,
             contentDescription = "",
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.size(150.dp)
+            modifier = Modifier
+                .size(150.dp)
                 .align(Alignment.CenterHorizontally)
         )
     }
