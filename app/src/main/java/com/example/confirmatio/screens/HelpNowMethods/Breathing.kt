@@ -45,7 +45,7 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun BreathingExercise(color: Color) {
+fun BreathingExercise(ccolor: Color) {
     val infiniteTransition = rememberInfiniteTransition()
     val breathAnimation = infiniteTransition.animateFloat(
         initialValue = 0.5f,
@@ -65,12 +65,12 @@ fun BreathingExercise(color: Color) {
     Canvas(modifier = Modifier.fillMaxSize()) {
         val radius = size.minDimension * breathAnimation.value / 2
         drawCircle(
-            color = color,
+            color = ccolor,
             radius = radius,
             style = Stroke(width = 55f),
         )
         val paint = android.graphics.Paint().apply {
-            //color = android.graphics.Color.WHITE
+            color = android.graphics.Color.WHITE
             textSize = 100f
             textAlign = android.graphics.Paint.Align.CENTER
         }
