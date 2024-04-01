@@ -89,9 +89,9 @@ fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
                             Box(
                                 modifier = Modifier
                                     .height(columnHeightDp - 70.dp)
-                                    .width(LocalConfiguration.current.screenWidthDp.dp - 70.dp)
+                                    .width(LocalConfiguration.current.screenWidthDp.dp + 5.dp)
                                     .background(Color.Transparent)
-                                    .clip(shape),
+                                    .padding(horizontal = 15.dp),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Image(
