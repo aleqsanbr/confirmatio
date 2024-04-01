@@ -58,7 +58,7 @@ import java.util.TimerTask
 fun Meditation() {
     val context = LocalContext.current
     val viewModel: MeditationViewModel = viewModel()
-
+    val isPlaying by viewModel.isPlaying.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,6 +77,9 @@ fun Meditation() {
                     Track("Binaural Meditation 432 Hz", "Mapamusic", R.raw.binaural_meditation),
                 ),
                 onItemClick = { track ->
+                    if (isPlaying) {
+                        viewModel.togglePlayPause()
+                    }
                     viewModel.playTrack(context, track)
                 }
             )
@@ -90,7 +93,7 @@ fun Meditation() {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    val isPlaying by viewModel.isPlaying.collectAsState()
+
                     val icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow
                     val buttonText = if (isPlaying) "Pause" else "Play"
                     IconButton(
