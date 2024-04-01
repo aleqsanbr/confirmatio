@@ -1,15 +1,23 @@
 package com.example.confirmatio.screens
 
+import android.annotation.SuppressLint
+import android.graphics.Matrix
+import android.graphics.RectF
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -25,7 +33,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.asComposePath
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,14 +46,19 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.PathParser
+import androidx.media3.extractor.text.Subtitle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.md_theme_dark_onSecondary
+import com.example.compose.md_theme_dark_onSurface
 import com.example.confirmatio.CustomText
 import com.example.confirmatio.NotImplemented
+import com.example.confirmatio.R
+import com.example.confirmatio.SubTitle
 import com.example.confirmatio.Title
 
 @Composable
@@ -157,16 +175,20 @@ fun SettingsContent(navController: NavController) {
 
 
                 ) {
-                    SettingsButton(Icons.Filled.Palette,
-                        "Вид приложения", "Тема и цветовая схема"
+                    SettingsButton(
+                        Icons.Filled.Palette,
+                        "Вид приложения", "Кастомизация"
                     ) { navController.navigate("customize") }
-                    SettingsButton(Icons.Filled.Notifications,
+                    SettingsButton(
+                        Icons.Filled.Notifications,
                         "Уведомления", "Для регулярного использования"
                     ) { navController.navigate("notifications") }
-                    SettingsButton(Icons.Filled.Lock,
+                    SettingsButton(
+                        Icons.Filled.Lock,
                         "Конфиденциальность", "Хранение ваших данных"
                     ) { navController.navigate("privacy") }
-                    SettingsButton(Icons.Filled.Code,
+                    SettingsButton(
+                        Icons.Filled.Code,
                         "О приложении", "Информация о версии"
                     ) { navController.navigate("about") }
 
@@ -198,9 +220,67 @@ fun Settings() {
 }
 
 @Composable
+fun LogoInFooter() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+        modifier = Modifier
+            .clip(
+                RoundedCornerShape(
+                    topStart = 0.dp,
+                    topEnd = 0.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = 0.dp
+                )
+            )
+            .background(Color.Transparent)
+            .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
+            .alpha(2f)
+    ) {
+        Image(painter = painterResource(id = R.drawable.darklogopng), contentDescription = "", alpha = 0.5F)
+        Text(
+            text = "Confirmatio v1.0",
+            textAlign = TextAlign.Center,
+            fontSize = 22.sp,
+            textDecoration = TextDecoration.None,
+            letterSpacing = 0.sp,
+            lineHeight = 28.sp,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .alpha(0.5f),
+            color = md_theme_dark_onSurface,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+        )
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
 fun AboutContent(navController: NavHostController) {
-    Title(title = "О приложении")
-    NotImplemented(name = "")
+    Column {
+        Title(title = "О приложении")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Text("Confirmatio - это приложение для психологической помощи, которое поможет " +
+                    "вам справиться с тревожностью и стрессом. Приложение предлагает различные " +
+                    "методики и упражнения для расслабления и улучшения вашего психологического " +
+                    "состояния.\n\nОбращаем ваше внимание, что Confirmatio не является " +
+                    "лекарственным средством. При необходимости обращайтесь к специалисту.\n\n" +
+                    "Разработано в рамках проектной деятельности студентами 1-2 курса Института математики, " +
+                    "механики и компьютерных наук ЮФУ в 2024 году.")
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                LogoInFooter()
+            }
+        }
+    }
 }
 
 @Composable
@@ -217,8 +297,18 @@ fun NotificationsContent(navController: NavHostController) {
 
 @Composable
 fun CustomizeContent(navController: NavHostController) {
-    Title(title = "Вид приложения")
-    NotImplemented(name = "")
+    Column(modifier = Modifier.fillMaxSize()) {
+        Title(title = "Вид приложения")
+        SubTitle(title = "Когда-нибудь здесь можно будет настроить цветовую схему и тему приложения. " +
+                "Пока что это просто заглушка. Но скоро всё будет! :) Посмотрите на этого кота: ")
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+            Image(
+                painterResource(id = R.drawable.cat),
+                contentDescription = "Кот",
+                modifier = Modifier.fillMaxSize().padding(16.dp)
+            )
+        }
+    }
 }
 
 
