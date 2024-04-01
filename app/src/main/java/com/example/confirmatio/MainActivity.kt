@@ -122,7 +122,7 @@ fun MainScreen() {
              colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = md_theme_dark_onSecondary),
              navigationIcon = {
                  Image(
-                     painter = painterResource(R.drawable.logo),
+                     painter = painterResource(R.drawable.logo_icon),
                      contentDescription = "Logo",
                      modifier = Modifier
                          .size(60.dp)
