@@ -133,10 +133,10 @@ fun MainScreen() {
                  IconButton(onClick = {
                      navController.navigate("Settings") {
                          popUpTo(navController.graph.findStartDestination().id) {
-                             saveState = true
+                             saveState = false
                          }
-                         launchSingleTop = true
-                         restoreState = true
+                         launchSingleTop = false
+                         restoreState = false
                      }
                  }) {
                      Icon(Icons.Filled.Settings, contentDescription = "Settings")
