@@ -13,15 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -46,11 +45,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.compose.CustomColor1
-import com.example.compose.md_theme_dark_onPrimary
 import com.example.compose.md_theme_dark_onSecondary
-import com.example.compose.md_theme_dark_primaryContainer
+import com.example.compose.md_theme_dark_outlineVariant
 import com.example.compose.md_theme_dark_secondaryContainer
-import com.example.compose.md_theme_dark_surfaceVariant
 import com.example.compose.md_theme_light_secondaryContainer
 import com.example.confirmatio.CustomText
 import com.example.confirmatio.Title
@@ -117,12 +114,12 @@ fun Diary(
                 Title("Дневник")
             }
 
-            Row(modifier = Modifier) {
+            Row(modifier = Modifier, horizontalArrangement = Arrangement.Center) {
                 Button(
                     onClick = { activeButton = "Личное"
                         selectedListType.value = NoteType.PERSONAL},
                     modifier = Modifier
-                        .width(180.dp)
+                        //.width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 2.dp, end = 5.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
@@ -130,13 +127,16 @@ fun Diary(
                         containerColor = if (activeButton == "Личное") md_theme_dark_secondaryContainer else md_theme_dark_onSecondary
                     )
                 ) {
-                    Text(text = "Личное", fontSize = 15.sp)
+                    Text(text = "Личное", fontSize = 18.sp)
+                }
+                Row(modifier = Modifier.padding(0.dp)) {
+                    Spacer(modifier = Modifier.width(16.dp))
                 }
                 Button(
                     onClick = { activeButton = "Из упражнений"
                         selectedListType.value = NoteType.PRACTICE  },
                     modifier = Modifier
-                        .width(180.dp)
+                        //.width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 5.dp, end = 2.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     colors = ButtonDefaults.buttonColors(
@@ -144,7 +144,7 @@ fun Diary(
                         containerColor = if (activeButton == "Из упражнений") md_theme_dark_secondaryContainer else md_theme_dark_onSecondary
                     )
                 ) {
-                    Text(text = "Из упражнений", fontSize = 15.sp)
+                    Text(text = "Из упражнений", fontSize = 18.sp)
                 }
             }
             Column (
@@ -216,7 +216,7 @@ fun NoteCard(
         Row(
             Modifier
                 .fillMaxSize()
-                .background(color = md_theme_dark_secondaryContainer),
+                .background(color = md_theme_dark_outlineVariant),
 
             //horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -262,7 +262,7 @@ fun NoteCard(
 
 
 @Composable
-fun recordFillingScreen(
+fun RecordAddScreen(
     navController: NavHostController,
     notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
 ) {
@@ -336,10 +336,16 @@ fun recordFillingScreen(
         )
         Spacer(modifier = Modifier.padding(10.dp))
 
+        var showEmptyWarningDialog by remember { mutableStateOf(false) }
+
         androidx.compose.material.Button(
             onClick = {
-                notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()), 1)
-                navController.navigateUp()
+                if (answer1.text.isEmpty() || answer2.text.isEmpty()) {
+                    showEmptyWarningDialog = true
+                } else {
+                    notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()), 1)
+                    navController.navigateUp()
+                }
             },
             shape = RoundedCornerShape(20.dp),
             colors = unselectedButtonColors
@@ -352,6 +358,24 @@ fun recordFillingScreen(
                 fontSize = 18.sp,
             )
         }
+
+        if (showEmptyWarningDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showEmptyWarningDialog = false
+                },
+                title = { Text("Не все поля заполнены") },
+                text = { Text("Пожалуйста, заполните поля \"Заголовок\" и \"Содержание\"") },
+                confirmButton = {
+                    Button(onClick = {
+                        showEmptyWarningDialog = false
+                    }) {
+                        Text("Хорошо")
+                    }
+                }
+            )
+        }
+
 
     }
 }
@@ -452,7 +476,7 @@ fun recordEditingScreen(
                             //notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
                             var newNote = NotesEntity(note!!.id, answer1.text, answer2.text ,note!!.noteDate, 1)
                             notesViewModel.UpdateItem(newNote)
-                            //navController.navigateUp()
+                            navController.navigateUp()
                         },
                         shape = RoundedCornerShape(20.dp),
                         colors = unselectedButtonColors
@@ -466,10 +490,11 @@ fun recordEditingScreen(
                         )
                     }
 
+                    var showDeleteDialog by remember { mutableStateOf(false) }
+
                     androidx.compose.material.Button(
                         onClick = {
-                            notesViewModel.DeleteItem(id)
-                            navController.navigateUp()
+                            showDeleteDialog = true
                         },
                         shape = RoundedCornerShape(20.dp),
                         colors = unselectedButtonColors
@@ -482,6 +507,33 @@ fun recordEditingScreen(
                             fontSize = 18.sp,
                         )
                     }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                showDeleteDialog = false
+                            },
+                            title = { Text("Подтверждение удаления") },
+                            text = { Text("Вы уверены, что хотите удалить эту запись?") },
+                            confirmButton = {
+                                Button(onClick = {
+                                    notesViewModel.DeleteItem(id)
+                                    navController.navigateUp()
+                                    showDeleteDialog = false
+                                }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF9A9A))) {
+                                    Text("Удалить")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = {
+                                    showDeleteDialog = false
+                                }) {
+                                    Text("Отмена")
+                                }
+                            }
+                        )
+                    }
+
 
                 }
             }

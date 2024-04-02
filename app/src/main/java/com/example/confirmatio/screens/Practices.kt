@@ -27,7 +27,7 @@ fun Practices(navigateToPractice: (Int) -> Unit) {
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            Title("Упражнения для борьбы с тревогой")
+            //Title("Упражнения для борьбы с тревогой")
             PagingScreen(navigateToPractice)
         }
     }
