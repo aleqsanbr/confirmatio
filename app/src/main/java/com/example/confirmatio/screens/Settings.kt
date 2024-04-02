@@ -1,8 +1,17 @@
 package com.example.confirmatio.screens
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.graphics.RectF
+import android.net.Uri
+import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,9 +34,16 @@ import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -38,6 +54,7 @@ import androidx.compose.ui.graphics.asComposePath
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +63,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.PathParser
 import androidx.media3.extractor.text.Subtitle
 import androidx.navigation.NavController
@@ -60,6 +80,12 @@ import com.example.confirmatio.NotImplemented
 import com.example.confirmatio.R
 import com.example.confirmatio.SubTitle
 import com.example.confirmatio.Title
+import java.time.Instant
+import java.util.Date
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 
 @Composable
 fun SettingsButton(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
@@ -237,7 +263,11 @@ fun LogoInFooter() {
             .padding(start = 0.dp, top = 0.dp, end = 0.dp, bottom = 0.dp)
             .alpha(2f)
     ) {
-        Image(painter = painterResource(id = R.drawable.darklogopng), contentDescription = "", alpha = 0.5F)
+        Image(
+            painter = painterResource(id = R.drawable.darklogopng),
+            contentDescription = "",
+            alpha = 0.5F
+        )
         Text(
             text = "Confirmatio v1.0",
             textAlign = TextAlign.Center,
@@ -265,13 +295,15 @@ fun AboutContent(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            Text("Confirmatio - это приложение для психологической помощи, которое поможет " +
-                    "вам справиться с тревожностью и стрессом. Приложение предлагает различные " +
-                    "методики и упражнения для расслабления и улучшения вашего психологического " +
-                    "состояния.\n\nОбращаем ваше внимание, что Confirmatio не является " +
-                    "лекарственным средством. При необходимости обращайтесь к специалисту.\n\n" +
-                    "Разработано в рамках проектной деятельности студентами 1-2 курса Института математики, " +
-                    "механики и компьютерных наук ЮФУ в 2024 году.")
+            Text(
+                "Confirmatio - это приложение для психологической помощи, которое поможет " +
+                        "вам справиться с тревожностью и стрессом. Приложение предлагает различные " +
+                        "методики и упражнения для расслабления и улучшения вашего психологического " +
+                        "состояния.\n\nОбращаем ваше внимание, что Confirmatio не является " +
+                        "лекарственным средством. При необходимости обращайтесь к специалисту.\n\n" +
+                        "Разработано в рамках проектной деятельности студентами 1-2 курса Института математики, " +
+                        "механики и компьютерных наук ЮФУ в 2024 году."
+            )
             Spacer(modifier = Modifier.weight(1f))
             Row(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -289,23 +321,138 @@ fun PrivacyContent(navController: NavHostController) {
     NotImplemented(name = "")
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NotificationsContent(navController: NavHostController) {
-    Title(title = "Уведомления")
-    NotImplemented(name = "")
+    val notificationId = 1
+    val context = LocalContext.current
+    val channelId = "channel_id"
+    val notificationBuilder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.drawable.darklogopng)
+        .setContentTitle("Уведомление")
+        .setContentText("Вы нажали на кнопку!")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+    var showEmptyWarningDialog by remember { mutableStateOf(false) }
+
+    Column {
+        Title(title = "Уведомления")
+        val requestPermissionLauncher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                val notificationManager = NotificationManagerCompat.from(context)
+                notificationManager.notify(notificationId, notificationBuilder.build())
+            } else {
+                showEmptyWarningDialog = true
+            }
+        }
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            Button(onClick = {
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    val notificationManager = NotificationManagerCompat.from(context)
+                    val channel = NotificationChannel(
+                        channelId,
+                        "Имя канала",
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                    notificationManager.createNotificationChannel(channel)
+                    notificationManager.notify(notificationId, notificationBuilder.build())
+
+                } else {
+                    //showEmptyWarningDialog = true
+                    ActivityCompat.requestPermissions(
+                        context as ComponentActivity,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        12
+                    )
+                }
+            }) {
+                Text("Показать уведомление")
+            }
+        }
+
+
+        if (showEmptyWarningDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showEmptyWarningDialog = false
+                },
+                title = { Text("Вы не разрешили уведомления") },
+                text = {
+                    Text(
+                        "Пожалуйста, перейдите в настройки и разрешите показ уведомлений" +
+                                " для Confirmatio"
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        showEmptyWarningDialog = false
+                    }) {
+                        Text("Хорошо")
+                    }
+                }
+            )
+        }
+
+        if (showEmptyWarningDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showEmptyWarningDialog = false
+                },
+                title = { Text("Вы не разрешили уведомления") },
+                text = {
+                    Text(
+                        "Пожалуйста, перейдите в настройки и разрешите показ уведомлений" +
+                                " для Confirmatio"
+                    )
+                },
+                confirmButton = {
+                    Button(onClick = {
+                        showEmptyWarningDialog = false
+                    }) {
+                        Text("Хорошо")
+                    }
+                }
+            )
+        }
+    }
+}
+
+fun onRequestPermissionsResult(
+    requestCode: Int,
+    permissions: Array<out String>,
+    grantResults: IntArray
+) {
+    onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (requestCode == 12) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Разрешение получено, продолжайте с показом уведомления
+        } else {
+            // Разрешение не было получено, показать сообщение об ошибке
+        }
+    }
 }
 
 @Composable
 fun CustomizeContent(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize()) {
         Title(title = "Вид приложения")
-        SubTitle(title = "Когда-нибудь здесь можно будет настроить цветовую схему и тему приложения. " +
-                "Пока что это просто заглушка. Но скоро всё будет! :) Посмотрите на этого кота: ")
+        SubTitle(
+            title = "Когда-нибудь здесь можно будет настроить цветовую схему и тему приложения. " +
+                    "Пока что это просто заглушка. Но скоро всё будет! :) Посмотрите на этого кота: "
+        )
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Image(
                 painterResource(id = R.drawable.cat),
                 contentDescription = "Кот",
-                modifier = Modifier.fillMaxSize().padding(16.dp)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
             )
         }
     }
