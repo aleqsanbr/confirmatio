@@ -398,7 +398,9 @@ fun NotificationsContent(navController: NavHostController) {
             }
         }
 
-        Column(modifier = Modifier.padding(16.dp).fillMaxSize()) {
+        Column(modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()) {
             Button(onClick = {
                 if (ContextCompat.checkSelfPermission(
                         context,
@@ -607,13 +609,7 @@ fun CustomizeContent(navController: NavHostController) {
                     "Пока что это просто заглушка. Но скоро всё будет! :) Посмотрите на этого кота: "
         )
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Image(
-                painterResource(id = R.drawable.cat),
-                contentDescription = "Кот",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            )
+            Text(text = "🐱 (только так, простите)", fontSize = 8.sp)
         }
     }
 }
