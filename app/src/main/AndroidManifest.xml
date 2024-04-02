@@ -31,7 +31,7 @@
                 android:resource="@xml/my_app_widget_info" />
         </receiver>
 
-        <receiver android:name="com.example.confirmatio.screens.NotificationReceiver" />
+        <receiver android:name="com.aleqsanbr.confirmatio.screens.NotificationReceiver" />
 
         <activity
             android:name=".MainActivity"

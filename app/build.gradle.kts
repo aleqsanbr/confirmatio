@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.confirmatio"
+    namespace = "com.aleqsanbr.confirmatio"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.confirmatio"
+        applicationId = "com.aleqsanbr.confirmatio"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
