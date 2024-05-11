@@ -44,6 +44,7 @@ import com.aleqsanbr.compose.md_theme_dark_onBackground
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TestsFun(lst: List<tests>, navigateToTest: (Int) -> Unit) {
+
     val lazyListStateArticles = rememberLazyListState()
     val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListStateArticles)
     val visibleIndex by remember {

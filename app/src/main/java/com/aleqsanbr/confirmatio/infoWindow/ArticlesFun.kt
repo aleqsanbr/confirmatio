@@ -54,6 +54,7 @@ import com.aleqsanbr.compose.md_theme_dark_onBackground
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
+
     val pagerState =
         rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f) { lst.size }
 
