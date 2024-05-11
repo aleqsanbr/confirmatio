@@ -1,6 +1,6 @@
 @file:OptIn(
-    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class
+        ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
+        ExperimentalFoundationApi::class, ExperimentalFoundationApi::class
 )
 
 package com.aleqsanbr.confirmatio.infoWindow
@@ -55,45 +55,45 @@ import com.aleqsanbr.compose.md_theme_dark_onBackground
 @Composable
 fun ArticlesFun(lst: List<articles>, navigateToArticle: (Int) -> Unit) {
     val pagerState =
-        rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f) { lst.size }
+            rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f) { lst.size }
 
     val localDensity = LocalDensity.current
 
     var columnHeightDp by remember { mutableStateOf(0.dp) }
 
     Column(
-        modifier = Modifier
-            .background(Color.Transparent)
-            .fillMaxHeight(0.5f)
-            .onGloballyPositioned { coordinates ->
-                columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
-            },
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                    .background(Color.Transparent)
+                    .fillMaxHeight(0.5f)
+                    .onGloballyPositioned { coordinates ->
+                        columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+                    },
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         Text(
-            text = "Статьи", fontSize = 25.sp, fontWeight = FontWeight(700),
-            color = md_theme_dark_onBackground,
-            textAlign = TextAlign.Center
+                text = "Статьи", fontSize = 25.sp, fontWeight = FontWeight(700),
+                color = md_theme_dark_onBackground,
+                textAlign = TextAlign.Center
         )
 
         HorizontalPager(state = pagerState) { item ->
             Box(
-                modifier = Modifier
-                    .height(columnHeightDp - 80.dp)
-                    .width(LocalConfiguration.current.screenWidthDp.dp)
-                    .background(Color.Transparent)
-                    .padding(horizontal = 15.dp)
-                    .clickable { navigateToArticle(item) },
-                contentAlignment = Alignment.Center
+                    modifier = Modifier
+                            .height(columnHeightDp - 80.dp)
+                            .width(LocalConfiguration.current.screenWidthDp.dp)
+                            .background(Color.Transparent)
+                            .padding(horizontal = 15.dp)
+                            .clickable { navigateToArticle(item) },
+                    contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = lst[item].imageId),
-                    contentDescription = lst[item].title,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(shape)
+                        painter = painterResource(id = lst[item].imageId),
+                        contentDescription = lst[item].title,
+                        modifier = Modifier
+                                .fillMaxSize()
+                                .clip(shape)
                 )
             }
         }
