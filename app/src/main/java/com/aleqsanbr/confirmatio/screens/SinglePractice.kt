@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.aleqsanbr.confirmatio.navigation.PracticeID
 import com.aleqsanbr.confirmatio.practices.BrainStorm
+import com.aleqsanbr.confirmatio.practices.Prognosis
 import com.aleqsanbr.confirmatio.practices.HotThoughts
 import com.aleqsanbr.confirmatio.practices.MagicWand
 import com.aleqsanbr.confirmatio.practices.MindTraps
@@ -31,7 +32,7 @@ fun SinglePractice(
         PracticeID.BrainStorm.id -> BrainStorm()
         PracticeID.HotThought.id -> HotThoughts()
         PracticeID.MagicWand.id -> MagicWand()
-
+        PracticeID.Prognosis.id -> Prognosis()
         else ->
         {
             Column(
