@@ -259,7 +259,7 @@ fun NoteCard(
                 if (item.noteTitle == "Запись из упражнения \"Прогнозы\"-") {
                     val text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) { append("Состояние события: ") }
-                        withStyle(style = SpanStyle(color = Color.Red)) {
+                        withStyle(style = SpanStyle(color = Color(0xFFEF9A9A))) {
                             append("не наступило")
                         }
                     }
@@ -462,7 +462,9 @@ fun recordEditingScreen(
             //verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            var answer1 by remember { mutableStateOf(TextFieldValue(note!!.noteTitle.dropLast(1))) }
+            var title = note!!.noteTitle
+            if (title.last() == '-') title = title.dropLast(1)
+            var answer1 by remember { mutableStateOf(TextFieldValue(title)) }
             val isKeyboardOpen by keyboardAsState()
             val focusManager = LocalFocusManager.current
             if (!isKeyboardOpen) {
