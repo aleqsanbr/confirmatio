@@ -455,7 +455,7 @@ fun screenWithQuestionsForVFB(
                                 color = Color(red = 0x00, green = 0xFF, blue = 0x7F, alpha = 0xFF)
                             )
                         )
-                        { append("\nСобытие: ") }
+                        { append("Событие: ") }
                         append(_answer[0] + "\n\n")
 
                         withStyle(
@@ -523,7 +523,7 @@ fun screenWithQuestionsForVFB(
                     }
                     Text(
                         modifier = Modifier
-                            .padding(10.dp, 0.dp)
+                            .padding(10.dp, 5.dp)
                             .verticalScroll(rememberScrollState()),
                         text = text,
                         fontSize = 16.sp,
