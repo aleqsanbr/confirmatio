@@ -213,7 +213,6 @@ fun NoteCard(
     val textColor = Color.White
     val titleColor = CustomColor1
 
-
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -274,7 +273,7 @@ fun NoteCard(
                 else if (item.noteTitle == "Запись из упражнения \"Прогнозы\"") {
                     val text = buildAnnotatedString {
                         withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) { append("Состояние события: ") }
-                        withStyle(style = SpanStyle(color = Color.Green)) {
+                        withStyle(style = SpanStyle(color = Color(red = 0x90, green = 0xEE, blue = 0x90, alpha = 0xFF))) {
                             append("наступило")
                         }
                     }
