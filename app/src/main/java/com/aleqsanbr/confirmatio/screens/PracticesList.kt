@@ -160,8 +160,8 @@ fun generateList(id : Int) : List<CardModel> {
             CardModel("Упражнение \"Прогнозы\"", "Description",
                 painterResource(id = R.drawable.time_icon), color1, PracticeID.Prognosis.id
             ),
-            CardModel("Ведение записей", "Description",
-                painterResource(id = R.drawable.note_icon),color2,PracticeID.WithNotes.id
+            CardModel("Упражнение \"Вид с балкона\"", "Description",
+                painterResource(id = R.drawable.note_icon),color2,PracticeID.ViewFromBalcony.id
             )
         )
     }

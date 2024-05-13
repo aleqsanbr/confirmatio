@@ -58,5 +58,5 @@ object Destinations {
 
 enum class PracticeID (val id : Int){
     Pie(1), MagicWand(2), Prognosis(3), BrainStorm(4),
-    HotThought(5), MindTrap(6), WithNotes(7);
+    HotThought(5), MindTrap(6), ViewFromBalcony(7);
 }

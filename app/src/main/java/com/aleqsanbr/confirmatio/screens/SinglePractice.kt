@@ -19,6 +19,7 @@ import com.aleqsanbr.confirmatio.practices.HotThoughts
 import com.aleqsanbr.confirmatio.practices.MagicWand
 import com.aleqsanbr.confirmatio.practices.MindTraps
 import com.aleqsanbr.confirmatio.practices.PieTechnique
+import com.aleqsanbr.confirmatio.practices.ViewFromBalcony
 
 @Composable
 fun SinglePractice(
@@ -33,6 +34,7 @@ fun SinglePractice(
         PracticeID.HotThought.id -> HotThoughts()
         PracticeID.MagicWand.id -> MagicWand()
         PracticeID.Prognosis.id -> Prognosis()
+        PracticeID.ViewFromBalcony.id -> ViewFromBalcony()
         else ->
         {
             Column(
