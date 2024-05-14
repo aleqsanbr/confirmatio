@@ -126,7 +126,7 @@ fun Prognosis1(navController: NavHostController) {
          ) {
 
             androidx.compose.material3.Text(
-               text = "в шаблон «Прогнозы» ✍\uD83C\uDFFB",
+               text = "✍\uD83C\uDFFB В шаблон «Прогнозы»",
                modifier = Modifier
                   .padding(horizontal = 15.dp, vertical = 5.dp),
                style = textStyle,

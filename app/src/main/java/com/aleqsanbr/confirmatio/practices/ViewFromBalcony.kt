@@ -593,7 +593,7 @@ fun screenWithQuestionsForVFB(
                     onClick = {
                         _answer.add("${valueSlider.toInt()}%")
                         val diaryEntry = createNote(_answer)
-                        notesViewModel.InsertItem("Запись из упражнения \"Вид с балкона\"-", diaryEntry, Date(), NoteType.PRACTICE.type )
+                        notesViewModel.InsertItem("Запись из упражнения \"Вид с балкона\"", diaryEntry, Date(), NoteType.PRACTICE.type )
                         navController.navigateUp()
                         currentQuestionIndex++
 
