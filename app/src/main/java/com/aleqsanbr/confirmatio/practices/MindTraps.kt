@@ -218,14 +218,14 @@ fun screenWithQuestions(navController: NavHostController,
 
             Button(
                 onClick = {
-                    var diaryEntry = "Автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога:\n" +
-                            answers[0] + "\n\nСитуация(и), в которой(ых) была вызвана тревога\n" +
-                            answers[1] + "\n\nОписанные вами эмоции:\n" +
-                            answers[2] + "\n\nЛовушки сознания, которые описывают эту ситуацию:\n"
+                    var diaryEntry = "\n**Автоматические мысли, которые возникают у вас каждый раз, когда вас охватывает тревога:**\n" +
+                            answers[0] + "\n\n**Ситуация(и), в которой(ых) была вызвана тревога:**\n" +
+                            answers[1] + "\n\n**Описанные вами эмоции:**\n" +
+                            answers[2] + "\n\n**Ловушки сознания, которые описывают эту ситуацию:**\n"
                     if(checkedState1.value) {diaryEntry += "Поспешные выводы, "}
                     if(checkedState2.value) {diaryEntry += "Тоска и мрак, "}
                     if(checkedState3.value) {diaryEntry += "Худший вариант"}
-                    if (diaryEntry.last() == ' ') diaryEntry = diaryEntry.dropLast(1)
+                    if (diaryEntry.last() == ' ') diaryEntry = diaryEntry.dropLast(2)
 
                     notesViewModel.InsertItem("Запись из упражнения \"Ловушки сознания\"", diaryEntry, Date(), NoteType.PRACTICE.type )
                     navController.navigateUp()

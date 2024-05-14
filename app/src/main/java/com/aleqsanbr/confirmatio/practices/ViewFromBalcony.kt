@@ -1,5 +1,6 @@
 package com.aleqsanbr.confirmatio.practices
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -146,16 +147,17 @@ val questions1 = listOf(
     "Опишите свою негативную интерпретацию события под влиянием депрессии или тревожности"
 )
 
+
 fun createNote(answers : MutableList<String> ) : String {
-    val note = "\nКраткое описание события или ситуации:\n" + answers[0]+
-            "\n\nВаша негативная интерпретация:\n" + answers[1] +
-            "\n\nНасколько вы были в этом убеждены до выполнения практики:\n" + answers[2]+
-            "\n\nИная точка зрения №1 на события:\n" + answers[3]+
-            "\n\nИная точка зрения №2 на события:\n" + answers[4]+
-            "\n\nИная точка зрения №3 на события:\n" + answers[5]+
-            "\n\nИная точка зрения №4 на события:\n" + answers[6]+
-            "\n\nИная точка зрения №5 на события:\n" + answers[7]+
-            "\n\nВаша переоценка негативной интерпретации после выполнения практики:\n" + answers[8]
+    val note = "\n**Краткое описание события или ситуации:**\n" + answers[0]+
+            "\n\n**Ваша негативная интерпретация:**\n" + answers[1] +
+            "\n\n**Насколько вы были в этом убеждены до выполнения практики:**\n" + answers[2]+
+            "\n\n**Иная точка зрения №1 на события:**\n" + answers[3]+
+            "\n\n**Иная точка зрения №2 на события:**\n" + answers[4]+
+            "\n\n**Иная точка зрения №3 на события:**\n" + answers[5]+
+            "\n\n**Иная точка зрения №4 на события:**\n" + answers[6]+
+            "\n\n**Иная точка зрения №5 на события:**\n" + answers[7]+
+            "\n\n**Ваша переоценка негативной интерпретации после выполнения практики:**\n" + answers[8]
 
             return note
 }

@@ -273,8 +273,8 @@ fun screenWithQuestionsForProg(navController: NavHostController,
 
          Button(
             onClick = {
-               var diaryEntry = "Ваш неблагоприятный прогноз:\n" +
-               _answer[0] + "\n\nВаша уверенность в этом: " + _answer[1]
+               var diaryEntry = "\n**Ваш неблагоприятный прогноз:**\n" +
+               _answer[0] + "\n\n**Ваша уверенность в этом:**\n" + _answer[1]
                notesViewModel.InsertItem("Запись из упражнения \"Прогнозы\"-", diaryEntry, Date(), NoteType.PRACTICE.type )
                navController.navigateUp()
             },
@@ -435,8 +435,8 @@ fun additionalScreenWithQuestionsForProg(navController: NavHostController, id: L
                var newNote = NotesEntity(
                   note!!.id,
                   note!!.noteTitle.dropLast(1),
-                  note!!.noteText + "\n\nЧто произошло на самом деле:\n" + _answer[0] +
-                          "\n\nПредсказание оказалось " + _answer[1],
+                  note!!.noteText + "\n\n**Что произошло на самом деле:**\n" + _answer[0] +
+                          "\n\n**Предсказание оказалось** " + _answer[1],
                   note!!.noteDate,
                   2
                )
