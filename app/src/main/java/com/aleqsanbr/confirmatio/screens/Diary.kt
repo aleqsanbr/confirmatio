@@ -54,6 +54,7 @@ import com.aleqsanbr.compose.md_theme_dark_outlineVariant
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
 import com.aleqsanbr.compose.md_theme_light_secondaryContainer
 import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextDiaryNote
 import com.aleqsanbr.confirmatio.Title
 import com.aleqsanbr.confirmatio.database.NoteType
 import com.aleqsanbr.confirmatio.database.NotesEntity
@@ -299,7 +300,7 @@ fun NoteCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    text = item.noteText,
+                    text = CustomTextDiaryNote(item.noteText.filter { it != '*' }.dropWhile { it == '\n' }),
                     fontSize = 18.sp,
                     color = textColor,
                 )
@@ -496,7 +497,8 @@ fun recordEditingScreen(
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-            var answer2 by remember { mutableStateOf(TextFieldValue(note!!.noteText)) }
+            val text =  CustomTextDiaryNote(note!!.noteText)
+            var answer2 by remember { mutableStateOf(TextFieldValue(text)) }
             TextField(
                 enabled = true,
                 modifier = Modifier
