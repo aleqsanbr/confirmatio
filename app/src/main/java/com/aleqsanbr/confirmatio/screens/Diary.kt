@@ -54,6 +54,7 @@ import com.aleqsanbr.compose.md_theme_dark_outlineVariant
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
 import com.aleqsanbr.compose.md_theme_light_secondaryContainer
 import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextDiaryNote
 import com.aleqsanbr.confirmatio.Title
 import com.aleqsanbr.confirmatio.database.NoteType
 import com.aleqsanbr.confirmatio.database.NotesEntity
@@ -299,7 +300,7 @@ fun NoteCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    text = item.noteText,
+                    text = CustomTextDiaryNote(item.noteText.filter { it != '*' }.dropWhile { it == '\n' }),
                     fontSize = 18.sp,
                     color = textColor,
                 )
@@ -496,7 +497,8 @@ fun recordEditingScreen(
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-            var answer2 by remember { mutableStateOf(TextFieldValue(note!!.noteText)) }
+            val text =  CustomTextDiaryNote(note!!.noteText)
+            var answer2 by remember { mutableStateOf(TextFieldValue(text)) }
             TextField(
                 enabled = true,
                 modifier = Modifier
@@ -520,6 +522,7 @@ fun recordEditingScreen(
                 ),
             )
             Spacer(modifier = Modifier.padding(10.dp))
+
 
             if (note!!.noteType == 1) {
                 Row(
@@ -607,19 +610,71 @@ fun recordEditingScreen(
             } else
                 if (note!!.noteTitle.last()  == '-')
                 {
+
+
+                        androidx.compose.material.Button(
+                            onClick = {
+                                navController.navigate(Screens.add_questons_prognosis.route+"/"+id.toString())
+                            },
+                            shape = RoundedCornerShape(20.dp),
+                            colors = unselectedButtonColors
+                        ) {
+                            Text(
+                                text = "Событие наступило",
+                                modifier = Modifier
+                                    .padding(horizontal = 15.dp, vertical = 5.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 18.sp,
+                            )
+                        }
+                }
+            else {
+                    var showDeleteDialog by remember { mutableStateOf(false) }
+
                     androidx.compose.material.Button(
                         onClick = {
-                            navController.navigate(Screens.add_questons_prognosis.route+"/"+id.toString())
+                            showDeleteDialog = true
                         },
                         shape = RoundedCornerShape(20.dp),
                         colors = unselectedButtonColors
                     ) {
                         Text(
-                            text = "Событие наступило",
+                            text = "Удалить",
                             modifier = Modifier
                                 .padding(horizontal = 15.dp, vertical = 5.dp),
                             textAlign = TextAlign.Center,
                             fontSize = 18.sp,
+                        )
+                    }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                showDeleteDialog = false
+                            },
+                            title = { Text("Подтверждение удаления") },
+                            text = { Text("Вы уверены, что хотите удалить эту запись?") },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        notesViewModel.DeleteItem(id)
+                                        navController.navigateUp()
+                                        showDeleteDialog = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFEF9A9A)
+                                    )
+                                ) {
+                                    Text("Удалить")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = {
+                                    showDeleteDialog = false
+                                }) {
+                                    Text("Отмена")
+                                }
+                            }
                         )
                     }
                 }
