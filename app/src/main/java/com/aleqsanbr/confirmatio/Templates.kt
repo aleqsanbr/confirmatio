@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -267,6 +268,60 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         fontSize = fontSize,
         text = annotatedString
     )
+}
+
+
+fun CustomTextDiaryNote(text: String) : AnnotatedString {
+
+    var results: MatchResult? = boldRegex.find(text)
+
+    val boldIndexes = mutableListOf<Pair<Int, Int>>()
+
+    val keywords = mutableListOf<String>()
+
+    var finalText = text
+
+    var color : Color = Color.Black
+
+    while (results != null) {
+        keywords.add(results.value)
+        results = results.next()
+    }
+
+    keywords.forEach { keyword ->
+        val indexOf = finalText.indexOf(keyword)
+        val newKeyWord = keyword.removeSurrounding("**")
+        val value = newKeyWord.toIntOrNull()
+        color = Color(red = 0x8F, green = 0xBC, blue = 0x8F, alpha = 0xFF)
+        finalText = finalText.replace(keyword, newKeyWord)
+        boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
+    }
+
+    val annotatedString = buildAnnotatedString {
+        append(finalText)
+
+        // Add bold style to keywords that has to be bold
+        boldIndexes.forEach {
+            addStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                    color = color,
+                    //fontSize = fontSize
+
+                ),
+                start = it.first,
+                end = it.second
+            )
+
+        }
+    }
+
+    /*Text(
+        modifier = modifier,
+        fontSize = fontSize,
+        text = annotatedString
+    )*/
+    return annotatedString
 }
 
 @Composable
