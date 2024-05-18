@@ -63,7 +63,7 @@ fun TestResultScreen(
              ){
                  Text(
                      modifier = Modifier,
-                     text = "Вы прошли тест!\nРезультаты появятся позже...",
+                     text = "Что-то пошло не так...",
                      fontSize = 8.em,
                      style = TextStyle(lineHeight = 40.sp)
                  )

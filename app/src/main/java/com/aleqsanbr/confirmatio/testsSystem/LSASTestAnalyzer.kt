@@ -52,6 +52,7 @@ class LSASTestAnalyzer (val test : Test, context : Context) {
                     .fillMaxSize()
                     .verticalScroll(ScrollState(0)),
                 horizontalAlignment = Alignment.Start
+
             ) {
                 Title(title = "Результаты теста",true)
                 Text(
@@ -66,11 +67,39 @@ class LSASTestAnalyzer (val test : Test, context : Context) {
                         else if(total <= 64) "Умеренная социальная тревожность" else if(total <= 79) "Выраженная социальная тревожность"
                         else if(total <= 94) "Тяжелая социальная тревожность" else "Очень сильная социальная тревожность"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-                Text(text = "Баллы страха : ${total_points1} / 72",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-                Text(text = "Баллы избегания : ${total_points1} / 72",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total,
+                    maxScore = 144,
+                    numberOfTicks = 6,
+                    points = listOf(50,80),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
+                Text(text = "Баллы страха : ${total_points1} / 72",
+                    modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp ),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points1,
+                    maxScore = 72,
+                    numberOfTicks = 6,
+                    points = listOf(25,41),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
+
+                Text(text = "Баллы избегания : ${total_points2} / 72",
+                    modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points2,
+                    maxScore = 72,
+                    numberOfTicks = 6,
+                    points = listOf(25,41),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
 
 

@@ -238,7 +238,7 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 31) Color.Green else if(value < 45) (Color.Yellow) else Color.Red
+            color = if(value < 31) color_green else if(value < 46) color_yellow else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -292,7 +292,7 @@ fun CustomTextDiaryNote(text: String) : AnnotatedString {
         val indexOf = finalText.indexOf(keyword)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
-        color = Color(red = 0x8F, green = 0xBC, blue = 0x8F, alpha = 0xFF)
+        color = color_green
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
     }
@@ -347,7 +347,7 @@ fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextU
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 65) Color.Green else if(value < 96) (Color.Yellow) else Color.Red
+            color = if(value < 50) color_green else if(value < 80) color_yellow else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -378,6 +378,9 @@ fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextU
         text = annotatedString
     )
 }
+val color_green = Color(red = 0x8F, green = 0xBC, blue = 0x8F, alpha = 0xFF)
+val color_yellow = Color(red = 0xFF, green = 0xD7, blue = 0x00, alpha = 0xFF)
+val color_red = Color(red = 0xB2, green = 0x22, blue = 0x22, alpha = 0xFF)
 
 @Composable
 fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
@@ -397,7 +400,9 @@ fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUn
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value <= 21) Color.Green else if(value <= 35) (Color.Yellow) else Color.Red
+            color = if(value <= 21) color_green
+            else if(value <= 35) color_yellow
+            else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))

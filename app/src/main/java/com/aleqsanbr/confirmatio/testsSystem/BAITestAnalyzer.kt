@@ -48,10 +48,14 @@ class BAITestAnalyzer {
                         else if(total <= 35) "Данное значение соответствует средней выраженности тревоги. " 
                         else "Данное значение свидетельствует об очень высокой тревоге."})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-
-
-
-
+                HorizontalScoreScaleWithTicks(
+                    score = total,
+                    maxScore = 63,
+                    numberOfTicks = 7,
+                    points = listOf(22,36),
+                    padding = 20.dp,
+                    barWidth = 250.dp
+                )
 
             }
 

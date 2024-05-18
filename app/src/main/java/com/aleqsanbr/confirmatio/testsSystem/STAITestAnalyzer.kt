@@ -36,7 +36,7 @@ class STAITestAnalyzer(val test : Test) {
             Text(
                 fontSize = 20.sp,
                 text = "Баллы личностной тревожности : ${total_points2}" +
-                        "(${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})"
+                        "(${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})"
             )
             Text(
                 fontSize = 20.sp,
@@ -90,10 +90,29 @@ class STAITestAnalyzer(val test : Test) {
                     text = "Баллы ситуативной тревожности : **${total_points1}**" +
                         " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp), fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points1,
+                    maxScore = 80,
+                    numberOfTicks = 6,
+                    points = listOf(31,46),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
+
                 CustomText(
                     text = "Баллы личностной тревожности : **${total_points2}**" +
                         " (${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp), fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points2,
+                    maxScore = 80,
+                    numberOfTicks = 6,
+                    points = listOf(31,46),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
                 if((total_points1 + total_points2) / 2 < 31) {
                     Text(
