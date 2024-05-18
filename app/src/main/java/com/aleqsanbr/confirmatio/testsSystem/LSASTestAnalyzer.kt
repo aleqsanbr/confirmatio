@@ -1,7 +1,6 @@
 package com.aleqsanbr.confirmatio.testsSystem
 
 import android.content.Context
-import android.graphics.Color
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,22 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.aleqsanbr.compose.md_theme_light_secondary
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextBold
 import com.aleqsanbr.confirmatio.CustomTextLSAS
+import com.aleqsanbr.confirmatio.ImportantTestNotes
 import com.aleqsanbr.confirmatio.Title
-import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
 
 class LSASTestAnalyzer (val test : Test, context : Context) {
     companion object {
@@ -101,8 +92,7 @@ class LSASTestAnalyzer (val test : Test, context : Context) {
                     barWidth = 250.dp
                 )
 
-
-
+                ImportantTestNotes()
             }
 
         }

@@ -10,11 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aleqsanbr.confirmatio.CustomTextBAI
+import com.aleqsanbr.confirmatio.CustomTextBold
+import com.aleqsanbr.confirmatio.ImportantTestNotes
 import com.aleqsanbr.confirmatio.Title
+
 
 class BAITestAnalyzer {
     companion object {
@@ -56,6 +61,8 @@ class BAITestAnalyzer {
                     padding = 20.dp,
                     barWidth = 250.dp
                 )
+
+                ImportantTestNotes()
 
             }
 

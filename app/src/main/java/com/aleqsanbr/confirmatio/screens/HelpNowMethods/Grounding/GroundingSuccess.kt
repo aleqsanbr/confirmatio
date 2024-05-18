@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextColor
 import com.aleqsanbr.confirmatio.SubTitle
 import com.aleqsanbr.confirmatio.Title
 
@@ -29,7 +29,7 @@ fun GroundingSuccess() {
             tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.size(20.dp))
-        CustomText(
+        CustomTextColor(
             text = "Не забывайте, что техника заземления не является панацеей и не " +
                     "всегда помогает. Если вы чувствуете, что тревога не уходит, обратитесь к специалисту.",
             fontSize = 16.sp
