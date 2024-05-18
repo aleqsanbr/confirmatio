@@ -9,11 +9,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextBold
+import com.aleqsanbr.confirmatio.CustomTextColor
+import com.aleqsanbr.confirmatio.ImportantTestNotes
 import com.aleqsanbr.confirmatio.Title
 
 val LOW_ANX = "Для них характерно ярко выраженное спокойствие. Они не всегда склонны воспринимать угрозу своему престижу, самооценке в самом широком диапазоне ситуаций, даже когда она реально существует. Возникновение состояния тревоги у них может наблюдаться лишь в особо важных и личностно значимых ситуациях (экзамен, стрессовые ситуации, реальная угроза семейному положению и др.). В личностном плане такие люди спокойны, считают, что лично у них нет поводов и причин волноваться за свою жизнь, репутацию, поведение и деятельность. Вероятность возникновения конфликтов, срывов, аффективных вспышек у таких людей крайне мала."
@@ -36,7 +39,7 @@ class STAITestAnalyzer(val test : Test) {
             Text(
                 fontSize = 20.sp,
                 text = "Баллы личностной тревожности : ${total_points2}" +
-                        "(${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})"
+                        "(${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})"
             )
             Text(
                 fontSize = 20.sp,
@@ -77,7 +80,7 @@ class STAITestAnalyzer(val test : Test) {
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(ScrollState(0)),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
                 Title(title = "Результаты теста",true)
                 Text(
@@ -86,18 +89,37 @@ class STAITestAnalyzer(val test : Test) {
                     fontStyle = FontStyle.Italic,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-                CustomText(
+                CustomTextColor(
                     text = "Баллы ситуативной тревожности : **${total_points1}**" +
                         " (${if(total_points1 <= 30) "низкая" else if(total_points1 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp), fontSize = 20.sp )
-                CustomText(
+                HorizontalScoreScaleWithTicks(
+                    score = total_points1,
+                    maxScore = 80,
+                    numberOfTicks = 6,
+                    points = listOf(31,46),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
+
+                CustomTextColor(
                     text = "Баллы личностной тревожности : **${total_points2}**" +
                         " (${if(total_points2 <= 30) "низкая" else if(total_points2 <= 45) "умеренная" else "высокая"})",
                     modifier = Modifier.padding(20.dp), fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points2,
+                    maxScore = 80,
+                    numberOfTicks = 6,
+                    points = listOf(31,46),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
                 if((total_points1 + total_points2) / 2 < 31) {
                     Text(
-                        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 0.dp),
+                        modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp),
                         fontSize = 20.sp,
                         text = "Психологический портрет низкотревожных лиц\n",
                         fontWeight = FontWeight.Bold
@@ -110,7 +132,7 @@ class STAITestAnalyzer(val test : Test) {
                 }
                 else if ((total_points1 + total_points2) / 2 > 44) {
                     Text(
-                        modifier = Modifier.padding(20.dp, 20.dp, 20.dp, 0.dp),
+                        modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp),
                         fontSize = 20.sp,
                         text = "Психологический портрет высокотревожных лиц\n",
                         fontWeight = FontWeight.Bold
@@ -121,6 +143,8 @@ class STAITestAnalyzer(val test : Test) {
                         text = HIGH_ANX
                     )
                 }
+
+                ImportantTestNotes()
 
 
             }

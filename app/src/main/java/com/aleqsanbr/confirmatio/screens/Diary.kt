@@ -53,15 +53,13 @@ import com.aleqsanbr.compose.md_theme_dark_onSecondary
 import com.aleqsanbr.compose.md_theme_dark_outlineVariant
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
 import com.aleqsanbr.compose.md_theme_light_secondaryContainer
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextColor
 import com.aleqsanbr.confirmatio.CustomTextDiaryNote
 import com.aleqsanbr.confirmatio.Title
 import com.aleqsanbr.confirmatio.database.NoteType
 import com.aleqsanbr.confirmatio.database.NotesEntity
 import com.aleqsanbr.confirmatio.database.NotesViewModel
-import com.aleqsanbr.confirmatio.navigation.NOTEID
 import com.aleqsanbr.confirmatio.practices.Screens
-import com.aleqsanbr.confirmatio.practices.additionalScreenWithQuestionsForProg
 import com.aleqsanbr.confirmatio.practices.keyboardAsState
 import java.time.Instant
 import java.util.Calendar
@@ -76,7 +74,7 @@ fun Entry(header: String, text: String) {
             .padding(20.dp, 80.dp)
             .background(md_theme_dark_secondaryContainer, MaterialTheme.shapes.extraLarge)
     ) {
-        CustomText(
+        CustomTextColor(
             header, modifier = Modifier
                 .padding(5.dp, 30.dp, 10.dp, 15.dp)
                 .fillMaxWidth(1f), fontSize = 20.sp

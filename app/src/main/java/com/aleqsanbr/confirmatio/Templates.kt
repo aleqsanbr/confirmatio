@@ -3,7 +3,6 @@ package com.aleqsanbr.confirmatio
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,23 +32,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.aleqsanbr.compose.CustomColor1
 import com.aleqsanbr.compose.dark_CustomColor1Container
 import com.aleqsanbr.compose.md_theme_dark_onBackground
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
-import com.aleqsanbr.compose.md_theme_light_onBackground
-import com.aleqsanbr.compose.md_theme_light_secondaryContainer
-import com.aleqsanbr.confirmatio.screens.HelpNowMethods.Track
-import java.io.Console
 
 @Composable
 fun FriendlyNameOf(name: String) {
@@ -214,9 +206,74 @@ fun NavigateUpButton(navigateUp: () -> Unit) {
 
 val boldRegex = Regex("(?<!\\*)\\*\\*(?!\\*).*?(?<!\\*)\\*\\*(?!\\*)")
 
+@Composable
+fun CustomTextBold(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
+
+    var results: MatchResult? = boldRegex.find(text)
+
+    val boldIndexes = mutableListOf<Pair<Int, Int>>()
+
+    val keywords = mutableListOf<String>()
+
+    var finalText = text
+
+
+    while (results != null) {
+        keywords.add(results.value)
+        results = results.next()
+    }
+
+    keywords.forEach { keyword ->
+        val indexOf = finalText.indexOf(keyword)
+        val newKeyWord = keyword.removeSurrounding("**")
+        val value = newKeyWord.toIntOrNull()
+        finalText = finalText.replace(keyword, newKeyWord)
+        boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
+    }
+
+    val annotatedString = buildAnnotatedString {
+        append(finalText)
+
+        // Add bold style to keywords that has to be bold
+        boldIndexes.forEach {
+            addStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                    //color = color,
+                    fontSize = fontSize
+
+                ),
+                start = it.first,
+                end = it.second
+            )
+
+        }
+    }
+
+    Text(
+        modifier = modifier,
+        fontSize = fontSize,
+        text = annotatedString
+    )
+}
 
 @Composable
-fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
+fun ImportantTestNotes() {
+    Column (
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 30.dp)
+    )
+    {
+        Title(title = "Важные замечания",true)
+        CustomTextBold(text = "**Не является окончательной диагностикой:**\nХотя шкала помогает оценить уровень тревожности, окончательный диагноз должен ставить квалифицированный специалист, учитывая все аспекты своего здоровья.\n" +
+                "\n**Контекст и другие факторы:**\nРезультаты теста должны интерпретироваться с учетом общей клинической картины и других возможных факторов, влияющих на ваше психическое состояние.\n" +
+                "\n**Регулярность и изменения:**\nПоказатели тревожности могут изменяться со временем, поэтому повторное тестирование и мониторинг динамики могут быть полезными для более точного понимания своего состояния.",
+            modifier = Modifier.padding(20.dp, 0.dp, 20.dp, 20.dp), fontSize = 20.sp)
+
+    }
+}
+@Composable
+fun CustomTextColor(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
 
     var results: MatchResult? = boldRegex.find(text)
 
@@ -238,7 +295,7 @@ fun CustomText(text: String, modifier: Modifier = Modifier, fontSize : TextUnit)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 31) Color.Green else if(value < 45) (Color.Yellow) else Color.Red
+            color = if(value < 31) color_green else if(value < 46) color_yellow else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -292,7 +349,7 @@ fun CustomTextDiaryNote(text: String) : AnnotatedString {
         val indexOf = finalText.indexOf(keyword)
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
-        color = Color(red = 0x8F, green = 0xBC, blue = 0x8F, alpha = 0xFF)
+        color = color_green
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
     }
@@ -347,7 +404,7 @@ fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextU
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value < 65) Color.Green else if(value < 96) (Color.Yellow) else Color.Red
+            color = if(value < 50) color_green else if(value < 80) color_yellow else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -378,6 +435,9 @@ fun CustomTextLSAS(text: String, modifier: Modifier = Modifier, fontSize : TextU
         text = annotatedString
     )
 }
+val color_green = Color(red = 0x8F, green = 0xBC, blue = 0x8F, alpha = 0xFF)
+val color_yellow = Color(red = 0xFF, green = 0xD7, blue = 0x00, alpha = 0xFF)
+val color_red = Color(red = 0xB2, green = 0x22, blue = 0x22, alpha = 0xFF)
 
 @Composable
 fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUnit) {
@@ -397,7 +457,9 @@ fun CustomTextBAI(text: String, modifier: Modifier = Modifier, fontSize : TextUn
         val newKeyWord = keyword.removeSurrounding("**")
         val value = newKeyWord.toIntOrNull()
         if(value != null) {
-            color = if(value <= 21) Color.Green else if(value <= 35) (Color.Yellow) else Color.Red
+            color = if(value <= 21) color_green
+            else if(value <= 35) color_yellow
+            else color_red
         }
         finalText = finalText.replace(keyword, newKeyWord)
         boldIndexes.add(Pair(indexOf, indexOf + newKeyWord.length))
@@ -455,7 +517,7 @@ fun StartButton(text: String, onButtonClick: () -> Unit) {
 fun NotImplemented(name: String) {
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.padding(30.dp))
-        CustomText(text = "Not implemented. $name", modifier = Modifier
+        CustomTextColor(text = "Not implemented. $name", modifier = Modifier
             .padding(20.dp)
             .align(
                 Alignment.CenterHorizontally

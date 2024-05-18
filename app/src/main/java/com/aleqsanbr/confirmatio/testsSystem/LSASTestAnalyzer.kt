@@ -1,7 +1,6 @@
 package com.aleqsanbr.confirmatio.testsSystem
 
 import android.content.Context
-import android.graphics.Color
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,22 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.aleqsanbr.compose.md_theme_light_secondary
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextBold
 import com.aleqsanbr.confirmatio.CustomTextLSAS
+import com.aleqsanbr.confirmatio.ImportantTestNotes
 import com.aleqsanbr.confirmatio.Title
-import com.github.mikephil.charting.charts.HorizontalBarChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
 
 class LSASTestAnalyzer (val test : Test, context : Context) {
     companion object {
@@ -52,6 +43,7 @@ class LSASTestAnalyzer (val test : Test, context : Context) {
                     .fillMaxSize()
                     .verticalScroll(ScrollState(0)),
                 horizontalAlignment = Alignment.Start
+
             ) {
                 Title(title = "Результаты теста",true)
                 Text(
@@ -66,14 +58,41 @@ class LSASTestAnalyzer (val test : Test, context : Context) {
                         else if(total <= 64) "Умеренная социальная тревожность" else if(total <= 79) "Выраженная социальная тревожность"
                         else if(total <= 94) "Тяжелая социальная тревожность" else "Очень сильная социальная тревожность"})",
                     modifier = Modifier.padding(20.dp),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total,
+                    maxScore = 144,
+                    numberOfTicks = 6,
+                    points = listOf(50,80),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
+
                 Text(text = "Баллы страха : ${total_points1} / 72",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
-                Text(text = "Баллы избегания : ${total_points1} / 72",
-                    modifier = Modifier.padding(20.dp),fontSize = 20.sp )
+                    modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp ),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points1,
+                    maxScore = 72,
+                    numberOfTicks = 6,
+                    points = listOf(25,41),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
+                Text(text = "Баллы избегания : ${total_points2} / 72",
+                    modifier = Modifier.padding(20.dp, 40.dp, 20.dp, 0.dp),fontSize = 20.sp )
+                HorizontalScoreScaleWithTicks(
+                    score = total_points2,
+                    maxScore = 72,
+                    numberOfTicks = 6,
+                    points = listOf(25,41),
+                    padding = 20.dp,
+                    actText = false,
+                    barWidth = 250.dp
+                )
 
-
-
+                ImportantTestNotes()
             }
 
         }

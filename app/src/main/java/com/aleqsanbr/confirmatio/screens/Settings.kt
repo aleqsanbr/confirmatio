@@ -2,7 +2,6 @@ package com.aleqsanbr.confirmatio.screens
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -13,9 +12,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.os.Build
-import android.preference.PreferenceManager
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -34,7 +31,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.AlertDialog
@@ -71,8 +67,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aleqsanbr.compose.md_theme_dark_onSecondary
 import com.aleqsanbr.compose.md_theme_dark_onSurface
-import com.aleqsanbr.confirmatio.CustomText
-import com.aleqsanbr.confirmatio.NotImplemented
+import com.aleqsanbr.confirmatio.CustomTextColor
 import com.aleqsanbr.confirmatio.R
 import com.aleqsanbr.confirmatio.SubTitle
 import com.aleqsanbr.confirmatio.Title
@@ -263,7 +258,7 @@ fun SettingsContent(navController: NavController) {
 
             }
 
-            CustomText(
+            CustomTextColor(
                 text = "Confirmatio не является лекарственным средством. При необходимости обращайтесь к специалисту.",
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
