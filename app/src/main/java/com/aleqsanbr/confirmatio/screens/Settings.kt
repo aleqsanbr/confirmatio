@@ -83,8 +83,53 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
+import android.content.SharedPreferences
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.RectangleShape
+import com.aleqsanbr.compose.md_theme_dark_outlineVariant
+import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
+
+object NotificationPreferences {
+
+    private const val PREFERENCES_NAME = "notification_preferences"
+    private const val KEY_HOUR = "hour"
+    private const val KEY_MINUTE = "minute"
+
+    fun saveNotificationTime(context: Context, hour: Int, minute: Int) {
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().putInt(KEY_HOUR, hour).putInt(KEY_MINUTE, minute).apply()
+    }
+
+    fun getNotificationTime(context: Context): Pair<Int, Int>? {
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        val hour = sharedPreferences.getInt(KEY_HOUR, -1)
+        val minute = sharedPreferences.getInt(KEY_MINUTE, -1)
+        return if (hour != -1 && minute != -1) {
+            hour to minute
+        } else {
+            null
+        }
+    }
+
+    fun resetNotificationTime(context: Context) {
+        val sharedPreferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
+        sharedPreferences.edit().remove(KEY_HOUR).remove(KEY_MINUTE).apply()
+    }
+}
+
 
 @Composable
 fun SettingsButton(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
@@ -310,63 +355,6 @@ fun AboutContent(navController: NavHostController) {
     }
 }
 
-@Composable
-fun TimePicker(
-    hour: Int,
-    onHourSelected: (Int) -> Unit,
-    minute: Int,
-    onMinuteSelected: (Int) -> Unit
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Spacer(modifier = Modifier.width(16.dp))
-        NumberPicker(
-            value = hour,
-            onValueChange = onHourSelected,
-            range = 0..23
-        )
-        Text(text = "ч", modifier = Modifier.padding(start = 8.dp, end = 8.dp))
-        NumberPicker(
-            value = minute,
-            onValueChange = onMinuteSelected,
-            range = 0..59
-        )
-        Text(text = "мин", modifier = Modifier.padding(start = 8.dp))
-    }
-}
-
-@Composable
-fun NumberPicker(
-    value: Int,
-    onValueChange: (Int) -> Unit,
-    range: IntRange
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(80.dp)
-    ) {
-        IconButton(onClick = { onValueChange(value + 1) }) {
-            Icon(Icons.Default.ArrowDropUp, contentDescription = "Increase")
-        }
-        Text(text = value.toString())
-        IconButton(onClick = { onValueChange(value - 1) }) {
-            Icon(Icons.Default.ArrowDropDown, contentDescription = "Decrease")
-        }
-    }
-}
-
-@Composable
-fun SaveButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Text("Сохранить время")
-    }
-}
-
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NotificationsContent(navController: NavHostController) {
@@ -380,160 +368,148 @@ fun NotificationsContent(navController: NavHostController) {
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     var showPermissionWarningDialog by remember { mutableStateOf(false) }
 
-    var selectedHour by remember { mutableStateOf(0) }
-    var selectedMinute by remember { mutableStateOf(0) }
+    var notificationTime by remember { mutableStateOf(NotificationPreferences.getNotificationTime(context)) }
+    var selectedHour by remember { mutableStateOf(notificationTime?.first ?: 0) }
+    var selectedMinute by remember { mutableStateOf(notificationTime?.second ?: 0) }
+
     var isTimePickerVisible by remember { mutableStateOf(false) }
-    var isNotImplementedWarningVisible by remember { mutableStateOf(false) }
 
-    Column {
-        Title(title = "Уведомления")
-        val requestPermissionLauncher = rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                showPermissionWarningDialog = false
-                scheduleNotification(context, selectedHour, selectedMinute)
-            } else {
-                showPermissionWarningDialog = true
-            }
-        }
-
-        Column(modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()) {
-            Button(onClick = {
-                if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    ) == PackageManager.PERMISSION_GRANTED
-                ) {
-                    val notificationManager = NotificationManagerCompat.from(context)
-                    val channel = NotificationChannel(
-                        channelId,
-                        "Напоминания",
-                        NotificationManager.IMPORTANCE_DEFAULT
-                    )
-                    notificationManager.createNotificationChannel(channel)
-                    notificationManager.notify(notificationId, notificationBuilder.build())
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Title(title = "Уведомления")
+            Column(Modifier.padding(15.dp)) {
+            val requestPermissionLauncher = rememberLauncherForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (isGranted) {
+                    showPermissionWarningDialog = false
                     scheduleNotification(context, selectedHour, selectedMinute)
-
                 } else {
                     showPermissionWarningDialog = true
-                    ActivityCompat.requestPermissions(
-                        context as ComponentActivity,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        0
-                    )
                 }
-            }) {
-                Text("Показать тестовое уведомление")
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = {
+                    if (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        val notificationManager = NotificationManagerCompat.from(context)
+                        val channel = NotificationChannel(
+                            channelId,
+                            "Напоминания",
+                            NotificationManager.IMPORTANCE_DEFAULT
+                        )
+                        notificationManager.createNotificationChannel(channel)
+                        notificationManager.notify(notificationId, notificationBuilder.build())
 
-            Button(onClick = {
-                isTimePickerVisible = false
-                isNotImplementedWarningVisible = true
-            }) {
-                Text("Настроить время напоминания")
-            }
-        }
-
-        if (showPermissionWarningDialog) {
-            AlertDialog(
-                onDismissRequest = {
-                    showPermissionWarningDialog = false
-                },
-                title = { Text("Вы не разрешили уведомления") },
-                text = {
-                    Text(
-                        "Пожалуйста, перейдите в настройки и разрешите показ уведомлений" +
-                                " для Confirmatio"
-                    )
-                },
-                confirmButton = {
-                    Button(onClick = {
-                        showPermissionWarningDialog = false
-                    }) {
-                        Text("Хорошо")
-                    }
-                }
-            )
-        }
-
-        if (isNotImplementedWarningVisible) {
-            AlertDialog(
-                onDismissRequest = {
-                    isNotImplementedWarningVisible = false
-                },
-                title = { Text("Уведомления ещё не реализованы") },
-                text = {
-                    Text(
-                        "Напоминания по расписанию пока не работают"
-                    )
-                },
-                confirmButton = {
-                    Button(onClick = {
-                        isNotImplementedWarningVisible = false
-                    }) {
-                        Text("Вернусь позже")
-                    }
-                }
-            )
-        }
-
-        if (isTimePickerVisible) {
-            TimePickerDialog(
-                selectedHour = selectedHour,
-                onHourSelected = { hour -> selectedHour = hour },
-                selectedMinute = selectedMinute,
-                onMinuteSelected = { minute -> selectedMinute = minute },
-                context = context,
-                onDismiss = {
-                    isTimePickerVisible = false
-                    scheduleNotification(context, selectedHour, selectedMinute)
-                },
-                navController = navController
-            )
-        }
-    }
-}
-
-
-@Composable
-fun TimePickerDialog(
-    selectedHour: Int,
-    onHourSelected: (Int) -> Unit,
-    selectedMinute: Int,
-    onMinuteSelected: (Int) -> Unit,
-    onDismiss: () -> Unit,
-    context: Context,
-    navController: NavHostController,
-) {
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            modifier = Modifier
-                .padding(16.dp)
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(text = "Выберите время напоминания")
-                Spacer(modifier = Modifier.height(16.dp))
-                TimePicker(
-                    hour = selectedHour,
-                    onHourSelected = onHourSelected,
-                    minute = selectedMinute,
-                    onMinuteSelected = onMinuteSelected
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                SaveButton(
-                    onClick = {
                         scheduleNotification(context, selectedHour, selectedMinute)
-                        navController.popBackStack()
+
+                    } else {
+                        showPermissionWarningDialog = true
+                        ActivityCompat.requestPermissions(
+                            context as ComponentActivity,
+                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                            0
+                        )
                     }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = md_theme_dark_secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )
+            ) {
+                Text("🐳 Показать тестовое уведомление")
+            }
+
+            Button(
+                onClick = {
+                    isTimePickerVisible = true
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = md_theme_dark_secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )
+            ) {
+                Text("⌚ Настроить время напоминания")
+            }
+
+            notificationTime?.let {
+                Text(
+                    text = "✅ Установлено напоминание на ${it.first}:${it.second} c повторением каждые 6 часов",
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Button(
+                    onClick = {
+                        NotificationPreferences.resetNotificationTime(context)
+                        notificationTime = null
+                        // Optionally cancel the existing notification
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = md_theme_dark_outlineVariant,
+                        contentColor = MaterialTheme.colorScheme.onBackground
+                    )
+                ) {
+                    Text("🗑️ Сбросить настройки уведомлений", color = Color.White)
+                }
+            } ?: Text(
+                text = "❌ Напоминание не установлено",
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            if (showPermissionWarningDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        showPermissionWarningDialog = false
+                    },
+                    title = { Text("Вы не разрешили уведомления") },
+                    text = {
+                        Text(
+                            "Пожалуйста, перейдите в настройки и разрешите показ уведомлений" +
+                                    " для Confirmatio"
+                        )
+                    },
+                    confirmButton = {
+                        Button(onClick = {
+                            showPermissionWarningDialog = false
+                        }) {
+                            Text("Хорошо")
+                        }
+                    }
+                )
+            }
+
+            if (isTimePickerVisible) {
+                TimePickerDialog(
+                    selectedHour = selectedHour,
+                    onHourSelected = { hour ->
+                        selectedHour = hour
+                        NotificationPreferences.saveNotificationTime(context, hour, selectedMinute)
+                    },
+                    selectedMinute = selectedMinute,
+                    onMinuteSelected = { minute ->
+                        selectedMinute = minute
+                        NotificationPreferences.saveNotificationTime(context, selectedHour, minute)
+                    },
+                    context = context,
+                    onDismiss = {
+                        isTimePickerVisible = false
+                        notificationTime = NotificationPreferences.getNotificationTime(context)
+                    },
+                    navController = navController
                 )
             }
         }
@@ -541,41 +517,13 @@ fun TimePickerDialog(
 }
 
 
-fun scheduleNotification(context: Context, selectedHour: Int, selectedMinute: Int) {
-    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+fun cancelScheduledNotification(context: Context) {
     val intent = Intent(context, NotificationReceiver::class.java)
     val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.HOUR_OF_DAY, selectedHour)
-    calendar.set(Calendar.MINUTE, selectedMinute)
-    calendar.set(Calendar.SECOND, 0)
-    var notificationTime = calendar.timeInMillis
-
-    // Если выбранное время уже прошло, то устанавливаем уведомление на следующий день
-    if (System.currentTimeMillis() > notificationTime) {
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
-        notificationTime = calendar.timeInMillis  // Обновляем notificationTime
-    }
-
-    // Устанавливаем повторяющееся срабатывание на выбранное время каждый день
-    alarmManager.setRepeating(
-        AlarmManager.RTC_WAKEUP,
-        calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY,
-        pendingIntent
-    )
-
-    // Сохраняем выбранное время в SharedPreferences
-    val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-    with(sharedPreferences.edit()) {
-        putLong("notification_time", notificationTime)
-        apply()
-    }
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    alarmManager.cancel(pendingIntent)
 }
-
-
-
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -599,6 +547,57 @@ class NotificationReceiver : BroadcastReceiver() {
     }
 }
 
+fun scheduleNotification(context: Context, hour: Int, minute: Int) {
+    val calendar: Calendar = Calendar.getInstance().apply {
+        timeInMillis = System.currentTimeMillis()
+        set(Calendar.HOUR_OF_DAY, hour)
+        set(Calendar.MINUTE, minute)
+    }
+
+    val intent = Intent(context, NotificationReceiver::class.java)
+    val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    alarmManager.setRepeating(
+        AlarmManager.RTC_WAKEUP,
+        calendar.timeInMillis,
+        AlarmManager.INTERVAL_HOUR * 6,
+        pendingIntent
+    )
+}
+
+@Composable
+fun TimePickerDialog(
+    selectedHour: Int,
+    onHourSelected: (Int) -> Unit,
+    selectedMinute: Int,
+    onMinuteSelected: (Int) -> Unit,
+    context: Context,
+    onDismiss: () -> Unit,
+    navController: NavHostController
+) {
+    val timePickerDialog = android.app.TimePickerDialog(
+        context,
+        { _, hourOfDay, minute ->
+            onHourSelected(hourOfDay)
+            onMinuteSelected(minute)
+            NotificationPreferences.saveNotificationTime(context, hourOfDay, minute)
+            onDismiss()
+        },
+        selectedHour,
+        selectedMinute,
+        true
+    )
+
+    DisposableEffect(key1 = true) {
+        timePickerDialog.show()
+
+        onDispose {
+            timePickerDialog.dismiss()
+        }
+    }
+}
+
 
 @Composable
 fun CustomizeContent(navController: NavHostController) {
@@ -613,7 +612,3 @@ fun CustomizeContent(navController: NavHostController) {
         }
     }
 }
-
-
-
-
