@@ -245,10 +245,11 @@ fun SettingsContent(navController: NavController) {
 
 
                 ) {
+                    /*
                     SettingsButton(
                         Icons.Filled.Palette,
                         "Вид приложения", "Кастомизация"
-                    ) { navController.navigate("customize") }
+                    ) { navController.navigate("customize") }*/
                     SettingsButton(
                         Icons.Filled.Notifications,
                         "Уведомления", "Для регулярного использования"
@@ -309,7 +310,7 @@ fun LogoInFooter() {
             alpha = 0.5F
         )
         Text(
-            text = "Confirmatio v1.0",
+            text = "Confirmatio v1.1",
             textAlign = TextAlign.Center,
             fontSize = 22.sp,
             textDecoration = TextDecoration.None,
