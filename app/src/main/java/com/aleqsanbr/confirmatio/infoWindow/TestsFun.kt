@@ -1,4 +1,5 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
+@file:OptIn(
+    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
     ExperimentalFoundationApi::class
 )
 
@@ -22,7 +23,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialogDefaults
+import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -48,81 +53,52 @@ import com.aleqsanbr.compose.md_theme_dark_onBackground
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TestsFun(lst: List<articles>, navigateToTest: (Int) -> Unit) {
-    val lazyListStateArticles = rememberLazyListState()
-    val snapBehavior = rememberSnapFlingBehavior(lazyListState = lazyListStateArticles)
-    val visibleIndex by remember {
-        derivedStateOf {
-            lazyListStateArticles.firstVisibleItemIndex
-        }
-    }
-    val localDensity = LocalDensity.current
-    var columnHeightDp by remember {
-        mutableStateOf(0.dp)
-    }
-    BoxWithConstraints {
-        Column(
-            modifier = Modifier
-                .background(Color.Transparent)
-                .fillMaxHeight(1f)
-                .onGloballyPositioned { coordinates ->
-                    columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
-                }
-        ) {
-            Text(
-                text = "Тесты", fontSize = 30.sp, fontWeight = FontWeight(700),modifier = Modifier
-                    .padding(horizontal = 30.dp, vertical = 5.dp),
-                color = md_theme_dark_onBackground
-            )
-            LazyRow(
-                modifier = Modifier
-                    .background(Color.Transparent),
-                state = lazyListStateArticles,
-                flingBehavior = snapBehavior,
-                horizontalArrangement = Arrangement.spacedBy(40.dp)
-            ) {
-                itemsIndexed(lst) { index, item ->
-                    Layout(
-                        modifier = Modifier.clickable{navigateToTest(index+1)},
-                        content = {
-                            val shape = RoundedCornerShape(20.dp)
-                            Box(
-                                modifier = Modifier
-                                    //.height(columnHeightDp - 100.dp)
-                                    .height(columnHeightDp - 70.dp)
-                                    .width(LocalConfiguration.current.screenWidthDp.dp + 5.dp)
-                                    .background(Color.Transparent)
-                                    .padding(horizontal = 15.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
+    val pagerState =
+        rememberPagerState(initialPage = 0, initialPageOffsetFraction = 0f) { lst.size }
 
-                                Image(
-                                    painter = painterResource(id = item.imageId),
-                                    contentDescription = "image1",
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .clip(shape)
-                                )
-                            }
-                        },
-                        measurePolicy = { measurables, constraints ->
-                            val placeable = measurables.first().measure(constraints)
-                            val maxWidthInPx = this@BoxWithConstraints.maxWidth.roundToPx()
-                            val itemWidth = placeable.width
-                            val startSpace =
-                                if (index == 0) (maxWidthInPx - itemWidth) / 2 else 0
-                            val endSpace =
-                                if (index == lst.lastIndex) (maxWidthInPx - itemWidth) / 2 else 0
-                            val width = startSpace + placeable.width + endSpace
-                            layout(width, placeable.height) {
-                                val x = if (index == 0) startSpace else 0
-                                placeable.place(x, 0)
-                            }
-                        }
-                    )
-                }
+    val localDensity = LocalDensity.current
+
+    var columnHeightDp by remember { mutableStateOf(0.dp) }
+
+    Column(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxHeight(1f)
+            .onGloballyPositioned { coordinates ->
+                columnHeightDp = with(localDensity) { coordinates.size.height.toDp() }
+            },
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+
+        Text(
+            text = "Статьи", fontSize = 25.sp, fontWeight = FontWeight(700),
+            color = md_theme_dark_onBackground,
+            textAlign = TextAlign.Center
+        )
+
+        HorizontalPager(state = pagerState) { item ->
+
+            Box(
+                modifier = Modifier
+                    .height(columnHeightDp - 80.dp)
+                    .width(LocalConfiguration.current.screenWidthDp.dp)
+                    .background(Color.Transparent)
+                    .padding(horizontal = 15.dp)
+                    .clickable { navigateToTest(item+1) },
+                contentAlignment = Alignment.Center
+            )
+            {
+                Image(
+                    painter = painterResource(id = lst[item].imageId),
+                    contentDescription = lst[item].title,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(shape)
+                )
             }
-            Spacer(modifier = Modifier.padding(3.dp))
-            DotsIndicator(lst.size, visibleIndex)
+
         }
+        DotsIndicator(lst.size, pagerState.currentPage)
     }
 }
