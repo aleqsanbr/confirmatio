@@ -36,22 +36,16 @@ class QuoteWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-
-        Log.d("WIDGET!!", "on receive before")
-
         if (WIDGET_UPDATE == intent.action) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val views = RemoteViews(context.packageName, R.layout.quote_widget)
             val lastUpdate = getLine(context)
-            Log.d("WIDGET!!", "on receive")
             val appWidgetId = intent.getIntExtra(WIDGET_TEXT_ID, 0)
             val remoteViews = RemoteViews(context.getPackageName(), R.layout.quote_widget).also {
                 it.setTextViewText(R.id.widget_text2, "Updated text")
             }
             remoteViews.setTextViewText(R.id.widget_text2, lastUpdate)
-            // appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
             appWidgetManager.partiallyUpdateAppWidget(appWidgetId, remoteViews)
-            Log.d("WIDGET!!", "after update")
         }
         super.onReceive(context, intent)
     }
@@ -62,8 +56,6 @@ internal fun updateAppWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetId: Int
 ) {
-    Log.d("WIDGET!!", "updateAppWidget")
-
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.quote_widget)
 
@@ -84,7 +76,6 @@ internal fun updateAppWidget(
 }
 
 private fun getPendingSelfIntent(context: Context, appWidgetId: Int, action: String): PendingIntent {
-    Log.d("WIDGET!!", "getPendingSelfIntent")
     val intent = Intent(context, QuoteWidget::class.java)
     intent.action = action
     intent.putExtra(WIDGET_TEXT_ID, appWidgetId)
