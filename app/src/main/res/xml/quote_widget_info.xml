@@ -3,7 +3,7 @@
     android:description="@string/app_widget_description1"
     android:initialKeyguardLayout="@layout/quote_widget"
     android:initialLayout="@layout/quote_widget"
-    android:minWidth="180dp"
+    android:minWidth="200dp"
     android:minHeight="110dp"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />

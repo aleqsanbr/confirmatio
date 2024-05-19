@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/md_theme_dark_primary_90">
+    android:background="@drawable/rounded_corner_background">
 
     <TextView
         android:id="@+id/widget_text2"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Example"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
@@ -19,8 +19,8 @@
 
     <ImageView
         android:id="@+id/logo_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/logo_icon"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -29,8 +29,8 @@
 
     <ImageView
         android:id="@+id/update_button"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/refresh_icon"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
