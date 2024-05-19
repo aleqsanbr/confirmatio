@@ -17,7 +17,6 @@ import com.aleqsanbr.confirmatio.R
 import com.aleqsanbr.confirmatio.infoWindow.ArticlesFun
 import com.aleqsanbr.confirmatio.infoWindow.TestsFun
 import com.aleqsanbr.confirmatio.infoWindow.articles
-import com.aleqsanbr.confirmatio.infoWindow.tests
 
 @Composable
 fun Info(
@@ -35,21 +34,21 @@ fun Info(
             .fillMaxWidth()
     )
     {
-        var lstArticles = listOf(
+        val lstArticles = listOf(
             articles(R.drawable.what_is_anxiety, "Что такое тревога?", color1),
             articles(R.drawable.anxiety_types, "Какие виды тревоги бывают?", color2),
             articles(R.drawable.dealing_with_anxiety, "Как бороться с тревогой?", color3)
         )
-        ArticlesFun(lstArticles,navigateToArticle)
+        ArticlesFun(lstArticles, navigateToArticle)
 
       //Spacer(modifier = Modifier.padding(5.dp))
 
-        var lstTests = listOf(
-            tests(R.drawable.test_1, "Шкала Спилберга", color2),
-            tests(R.drawable.test_2, "Тест Либовица", color3),
-            tests(R.drawable.test_3, "Шкала тревоги Бека", color1)
+        val lstTests = listOf(
+            articles(R.drawable.stai, "Шкала Спилберга", color2),
+            articles(R.drawable.liebowitz, "Тест Либовица", color3),
+            articles(R.drawable.bai, "Шкала тревоги Бека", color1)
         )
-        TestsFun(lstTests,navigateToTest)
+       TestsFun(lstTests, navigateToTest)
 
     }
 }
