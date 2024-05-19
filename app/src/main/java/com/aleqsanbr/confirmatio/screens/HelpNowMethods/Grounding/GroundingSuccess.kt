@@ -2,17 +2,19 @@ package com.aleqsanbr.confirmatio.screens.HelpNowMethods.Grounding
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aleqsanbr.confirmatio.CustomTextColor
 import com.aleqsanbr.confirmatio.SubTitle
 import com.aleqsanbr.confirmatio.Title
 
@@ -29,10 +31,11 @@ fun GroundingSuccess() {
             tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.size(20.dp))
-        CustomTextColor(
+        Text(modifier = Modifier.padding(20.dp),
             text = "Не забывайте, что техника заземления не является панацеей и не " +
                     "всегда помогает. Если вы чувствуете, что тревога не уходит, обратитесь к специалисту.",
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            textAlign = TextAlign.Center
         )
     }
 }
