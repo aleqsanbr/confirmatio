@@ -49,7 +49,7 @@ class MyAppWidget : GlanceAppWidget() {
     fun Content(context : Context) {
         val text = remember { mutableStateOf(getLine(context))}
         Column(
-            modifier = GlanceModifier.fillMaxSize().background(md_theme_dark_primary.copy(alpha = 0.9f)),
+            modifier = GlanceModifier.fillMaxSize().background(ImageProvider(R.drawable.rounded_corner_background)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -70,16 +70,18 @@ class MyAppWidget : GlanceAppWidget() {
 
             Row {
                 Column (
-                    GlanceModifier.width(140.dp),
+                    GlanceModifier.width(140.dp).padding(horizontal = 10.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalAlignment = Alignment.Bottom
                 ){
                     Box(
 
                         modifier = GlanceModifier
+                            .padding(10.dp)
                             .background(ImageProvider(BitmapFactory.decodeResource(context.resources, R.drawable.logo_icon)))
-                            .padding(24.dp)
                             .size(40.dp)
+                            .padding(10.dp)
+
                             .clickable(
                                 //actionStartActivity<MainActivity>()
                                 {pendingIntent.send()}
@@ -87,15 +89,17 @@ class MyAppWidget : GlanceAppWidget() {
                     ) {}
                 }
                 Column (
-                    GlanceModifier.width(140.dp),
+                    GlanceModifier.width(140.dp).padding(horizontal = 10.dp),
                     horizontalAlignment = Alignment.End,
                     verticalAlignment = Alignment.Bottom
                 ){
                     Box(
                         modifier = GlanceModifier
+                            .padding(10.dp)
                             .background(ImageProvider(BitmapFactory.decodeResource(context.resources, R.drawable.refresh_icon)))
-                            .padding(24.dp)
                             .size(40.dp)
+                            .padding(10.dp)
+
                             .clickable( {text.value = getLine(context)})
                     ) {}
                 }

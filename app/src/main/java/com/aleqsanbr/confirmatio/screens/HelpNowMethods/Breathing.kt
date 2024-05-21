@@ -1,6 +1,8 @@
 package com.aleqsanbr.confirmatio.screens.HelpNowMethods
 
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -30,20 +32,31 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun BreathingExercise(ccolor: Color) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val breathAnimation = infiniteTransition.animateFloat(
-        initialValue = 0.5f,
-        targetValue = 0.95f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 7000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ), label = ""
-    )
     val breathState = remember { mutableStateOf("вдох") }
-    LaunchedEffect(key1 = true) {
-        while (true) {
-            delay(7000)
-            breathState.value = if (breathState.value == "вдох") "выдох" else "вдох"
+    val breathAnimation = remember { Animatable(0.5f) }
+    LaunchedEffect(key1 = breathState.value) {
+        when (breathState.value) {
+            "вдох" -> {
+                breathAnimation.animateTo(
+                    targetValue = 0.95f,
+                    animationSpec = tween(durationMillis = 4000, easing = FastOutSlowInEasing)
+                )
+                breathState.value = "задержка"
+            }
+            "задержка" -> {
+                breathAnimation.animateTo(
+                    targetValue = 0.95f,
+                    animationSpec = tween(durationMillis = 4000, easing = LinearEasing)
+                )
+                breathState.value = "выдох"
+            }
+            "выдох" -> {
+                breathAnimation.animateTo(
+                    targetValue = 0.5f,
+                    animationSpec = tween(durationMillis = 4000, easing = FastOutSlowInEasing)
+                )
+                breathState.value = "вдох"
+            }
         }
     }
     Canvas(modifier = Modifier.fillMaxSize()) {
@@ -66,8 +79,6 @@ fun BreathingExercise(ccolor: Color) {
         )
     }
 }
-
-
 
 @Composable
 fun Breathing() {

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="logo_button" type="id" />
+    <item name="update_button" type="id" />
+    <item name="widget_text2" type="id" />
+    <item name="widget_layout" type="id" />
+</resources>

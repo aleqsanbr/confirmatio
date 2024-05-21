@@ -33,6 +33,7 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -41,7 +42,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aleqsanbr.compose.md_theme_dark_inversePrimary
 import com.aleqsanbr.compose.md_theme_dark_onSecondaryContainer
@@ -51,6 +54,7 @@ import com.aleqsanbr.confirmatio.SubTitle
 import com.aleqsanbr.confirmatio.Title
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 
@@ -59,6 +63,13 @@ fun Meditation() {
     val context = LocalContext.current
     val viewModel: MeditationViewModel = viewModel()
     val isPlaying by viewModel.isPlaying.collectAsState()
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.togglePlayPause()
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -187,6 +198,13 @@ class MeditationViewModel : ViewModel() {
     val progress: StateFlow<Float> = _progress
     private var timer: Timer? = null
 
+    init {
+        // Ensure media player resources are released when ViewModel is cleared
+        viewModelScope.launch {
+            // Add necessary cleanup code if needed
+        }
+    }
+
     fun playTrack(context: Context, track: Track) {
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer.create(context, track.resId).apply {
@@ -241,8 +259,13 @@ class MeditationViewModel : ViewModel() {
             }
         }
     }
-}
 
+    override fun onCleared() {
+        super.onCleared()
+        mediaPlayer?.release()
+        timer?.cancel()
+    }
+}
 
 @Composable
 fun SeekBar(progress: Float, onProgressChanged: (Float) -> Unit) {

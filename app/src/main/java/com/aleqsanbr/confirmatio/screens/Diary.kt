@@ -37,9 +37,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -49,11 +53,13 @@ import com.aleqsanbr.compose.md_theme_dark_onSecondary
 import com.aleqsanbr.compose.md_theme_dark_outlineVariant
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
 import com.aleqsanbr.compose.md_theme_light_secondaryContainer
-import com.aleqsanbr.confirmatio.CustomText
+import com.aleqsanbr.confirmatio.CustomTextColor
+import com.aleqsanbr.confirmatio.CustomTextDiaryNote
 import com.aleqsanbr.confirmatio.Title
 import com.aleqsanbr.confirmatio.database.NoteType
 import com.aleqsanbr.confirmatio.database.NotesEntity
 import com.aleqsanbr.confirmatio.database.NotesViewModel
+import com.aleqsanbr.confirmatio.practices.Screens
 import com.aleqsanbr.confirmatio.practices.keyboardAsState
 import java.time.Instant
 import java.util.Calendar
@@ -68,7 +74,7 @@ fun Entry(header: String, text: String) {
             .padding(20.dp, 80.dp)
             .background(md_theme_dark_secondaryContainer, MaterialTheme.shapes.extraLarge)
     ) {
-        CustomText(
+        CustomTextColor(
             header, modifier = Modifier
                 .padding(5.dp, 30.dp, 10.dp, 15.dp)
                 .fillMaxWidth(1f), fontSize = 20.sp
@@ -81,8 +87,8 @@ fun Entry(header: String, text: String) {
 @Composable
 fun Diary(
     navController: NavHostController,
-    navigateToEditScreen : (Long) -> Unit,
-    navigateToAddScreen : () -> Unit,
+    navigateToEditScreen: (Long) -> Unit,
+    navigateToAddScreen: () -> Unit,
     notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
 ) {
     val selectedListType = remember { mutableStateOf<NoteType>(NoteType.PERSONAL) }
@@ -116,8 +122,10 @@ fun Diary(
 
             Row(modifier = Modifier, horizontalArrangement = Arrangement.Center) {
                 Button(
-                    onClick = { activeButton = "Личное"
-                        selectedListType.value = NoteType.PERSONAL},
+                    onClick = {
+                        activeButton = "Личное"
+                        selectedListType.value = NoteType.PERSONAL
+                    },
                     modifier = Modifier
                         //.width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 2.dp, end = 5.dp),
@@ -133,8 +141,10 @@ fun Diary(
                     Spacer(modifier = Modifier.width(16.dp))
                 }
                 Button(
-                    onClick = { activeButton = "Из упражнений"
-                        selectedListType.value = NoteType.PRACTICE  },
+                    onClick = {
+                        activeButton = "Из упражнений"
+                        selectedListType.value = NoteType.PRACTICE
+                    },
                     modifier = Modifier
                         //.width(180.dp)
                         .padding(top = 0.dp, bottom = 0.dp, start = 5.dp, end = 2.dp),
@@ -147,26 +157,27 @@ fun Diary(
                     Text(text = "Из упражнений", fontSize = 18.sp)
                 }
             }
-            Column (
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(0.dp, 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-            ){
-                if(selectedListType.value == NoteType.PERSONAL) {
-                    notesList.value.filter { it.noteType == NoteType.PERSONAL.type}.reversed().forEach { item ->
-                        NoteCard(item, navigateToEditScreen)
-                    }
-                }
-                else {
-                    notesList.value.filter { it.noteType == NoteType.PRACTICE.type }.reversed().forEach { item ->
-                        NoteCard(item, navigateToEditScreen)
-                    }
+            ) {
+                if (selectedListType.value == NoteType.PERSONAL) {
+                    notesList.value.filter { it.noteType == NoteType.PERSONAL.type }.reversed()
+                        .forEach { item ->
+                            NoteCard(item, navigateToEditScreen)
+                        }
+                } else {
+                    notesList.value.filter { it.noteType == NoteType.PRACTICE.type }.reversed()
+                        .forEach { item ->
+                            NoteCard(item, navigateToEditScreen)
+                        }
                 }
             }
         }
     }
-    if(selectedListType.value == NoteType.PERSONAL) {
+    if (selectedListType.value == NoteType.PERSONAL) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -191,19 +202,17 @@ fun Diary(
 }
 
 
-
 @Composable
 fun NoteCard(
-    item : NotesEntity,
-    navigateTo : (Long) -> Unit
+    item: NotesEntity,
+    navigateTo: (Long) -> Unit
     //navController: NavHostController
 ) {
     val cal: Calendar = Calendar.getInstance()
     val textColor = Color.White
     val titleColor = CustomColor1
 
-
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxSize()
             .clickable { navigateTo(item.id) }
@@ -223,23 +232,63 @@ fun NoteCard(
 
             )
         {
-            Column (
+            Column(
                 Modifier
                     .fillMaxSize()
                     .padding(10.dp)
-            ){
-
+            ) {
+                if (item.noteTitle.last() == '-')
                 Text(
                     modifier = Modifier.padding(10.dp, 5.dp),
-                    text = item.noteTitle,
+                    text = item.noteTitle.dropLast(1),
                     fontSize = 25.sp,
                     color = textColor,
 
-                )
+                    )
+                else
+                    Text(
+                        modifier = Modifier.padding(10.dp, 5.dp),
+                        text = item.noteTitle,
+                        fontSize = 25.sp,
+                        color = textColor,
+
+                        )
+
+                if (item.noteTitle == "Запись из упражнения \"Прогнозы\"-") {
+                    val text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) { append("Состояние события: ") }
+                        withStyle(style = SpanStyle(color = Color(0xFFEF9A9A))) {
+                            append("не наступило")
+                        }
+                    }
+                    Text(
+                        modifier = Modifier.padding(10.dp, 0.dp),
+                        text = text,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Start,
+                        overflow = TextOverflow.Clip
+                    )
+                }
+                else if (item.noteTitle == "Запись из упражнения \"Прогнозы\"") {
+                    val text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) { append("Состояние события: ") }
+                        withStyle(style = SpanStyle(color = Color(red = 0x90, green = 0xEE, blue = 0x90, alpha = 0xFF))) {
+                            append("наступило")
+                        }
+                    }
+                    Text(
+                        modifier = Modifier.padding(10.dp, 0.dp),
+                        text = text,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Start,
+                        overflow = TextOverflow.Clip
+                    )
+                }
+
                 Text(
                     modifier = Modifier.padding(10.dp, 0.dp),
                     text = cal.get(Calendar.DAY_OF_MONTH).toString() + "." +
-                            (cal.get(Calendar.MONTH)+1).toString() + "." +
+                            (cal.get(Calendar.MONTH) + 1).toString() + "." +
                             cal.get(Calendar.YEAR).toString(),
                     fontSize = 19.sp,
                     color = Color.Gray
@@ -249,7 +298,7 @@ fun NoteCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(10.dp),
-                    text = item.noteText,
+                    text = CustomTextDiaryNote(item.noteText.filter { it != '*' }.dropWhile { it == '\n' }),
                     fontSize = 18.sp,
                     color = textColor,
                 )
@@ -343,7 +392,12 @@ fun RecordAddScreen(
                 if (answer1.text.isEmpty() || answer2.text.isEmpty()) {
                     showEmptyWarningDialog = true
                 } else {
-                    notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()), 1)
+                    notesViewModel.InsertItem(
+                        answer1.text,
+                        answer2.text,
+                        Date.from(Instant.now()),
+                        1
+                    )
                     navController.navigateUp()
                 }
             },
@@ -384,7 +438,7 @@ fun RecordAddScreen(
 @Composable
 fun recordEditingScreen(
     navController: NavHostController,
-    id : Long,
+    id: Long,
     notesViewModel: NotesViewModel = viewModel(factory = NotesViewModel.factory)
 ) {
 
@@ -406,7 +460,9 @@ fun recordEditingScreen(
             //verticalArrangement = Arrangement.SpaceAround,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            var answer1 by remember { mutableStateOf(TextFieldValue(note!!.noteTitle)) }
+            var title = note!!.noteTitle
+            if (title.last() == '-') title = title.dropLast(1)
+            var answer1 by remember { mutableStateOf(TextFieldValue(title)) }
             val isKeyboardOpen by keyboardAsState()
             val focusManager = LocalFocusManager.current
             if (!isKeyboardOpen) {
@@ -439,7 +495,8 @@ fun recordEditingScreen(
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-            var answer2 by remember { mutableStateOf(TextFieldValue(note!!.noteText)) }
+            val text =  CustomTextDiaryNote(note!!.noteText)
+            var answer2 by remember { mutableStateOf(TextFieldValue(text)) }
             TextField(
                 enabled = true,
                 modifier = Modifier
@@ -464,7 +521,8 @@ fun recordEditingScreen(
             )
             Spacer(modifier = Modifier.padding(10.dp))
 
-            if(note!!.noteType == 1) {
+
+            if (note!!.noteType == 1) {
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -474,7 +532,13 @@ fun recordEditingScreen(
                     androidx.compose.material.Button(
                         onClick = {
                             //notesViewModel.InsertItem(answer1.text, answer2.text, Date.from(Instant.now()))
-                            var newNote = NotesEntity(note!!.id, answer1.text, answer2.text ,note!!.noteDate, 1)
+                            var newNote = NotesEntity(
+                                note!!.id,
+                                answer1.text,
+                                answer2.text,
+                                note!!.noteDate,
+                                1
+                            )
                             notesViewModel.UpdateItem(newNote)
                             navController.navigateUp()
                         },
@@ -516,11 +580,16 @@ fun recordEditingScreen(
                             title = { Text("Подтверждение удаления") },
                             text = { Text("Вы уверены, что хотите удалить эту запись?") },
                             confirmButton = {
-                                Button(onClick = {
-                                    notesViewModel.DeleteItem(id)
-                                    navController.navigateUp()
-                                    showDeleteDialog = false
-                                }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF9A9A))) {
+                                Button(
+                                    onClick = {
+                                        notesViewModel.DeleteItem(id)
+                                        navController.navigateUp()
+                                        showDeleteDialog = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFEF9A9A)
+                                    )
+                                ) {
                                     Text("Удалить")
                                 }
                             },
@@ -536,7 +605,77 @@ fun recordEditingScreen(
 
 
                 }
-            }
+            } else
+                if (note!!.noteTitle.last()  == '-')
+                {
+
+
+                        androidx.compose.material.Button(
+                            onClick = {
+                                navController.navigate(Screens.add_questons_prognosis.route+"/"+id.toString())
+                            },
+                            shape = RoundedCornerShape(20.dp),
+                            colors = unselectedButtonColors
+                        ) {
+                            Text(
+                                text = "Событие наступило",
+                                modifier = Modifier
+                                    .padding(horizontal = 15.dp, vertical = 5.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 18.sp,
+                            )
+                        }
+                }
+            else {
+                    var showDeleteDialog by remember { mutableStateOf(false) }
+
+                    androidx.compose.material.Button(
+                        onClick = {
+                            showDeleteDialog = true
+                        },
+                        shape = RoundedCornerShape(20.dp),
+                        colors = unselectedButtonColors
+                    ) {
+                        Text(
+                            text = "Удалить",
+                            modifier = Modifier
+                                .padding(horizontal = 15.dp, vertical = 5.dp),
+                            textAlign = TextAlign.Center,
+                            fontSize = 18.sp,
+                        )
+                    }
+
+                    if (showDeleteDialog) {
+                        AlertDialog(
+                            onDismissRequest = {
+                                showDeleteDialog = false
+                            },
+                            title = { Text("Подтверждение удаления") },
+                            text = { Text("Вы уверены, что хотите удалить эту запись?") },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        notesViewModel.DeleteItem(id)
+                                        navController.navigateUp()
+                                        showDeleteDialog = false
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color(0xFFEF9A9A)
+                                    )
+                                ) {
+                                    Text("Удалить")
+                                }
+                            },
+                            dismissButton = {
+                                Button(onClick = {
+                                    showDeleteDialog = false
+                                }) {
+                                    Text("Отмена")
+                                }
+                            }
+                        )
+                    }
+                }
 
 
         }

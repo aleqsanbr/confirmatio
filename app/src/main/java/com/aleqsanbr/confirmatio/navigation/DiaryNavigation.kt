@@ -9,6 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.aleqsanbr.confirmatio.practices.Screens
+import com.aleqsanbr.confirmatio.practices.additionalScreenWithQuestionsForProg
 import com.aleqsanbr.confirmatio.screens.Diary
 import com.aleqsanbr.confirmatio.screens.recordEditingScreen
 import com.aleqsanbr.confirmatio.screens.RecordAddScreen
@@ -42,6 +44,15 @@ fun navDiary(navController: NavHostController) {
             recordEditingScreen(navController, arguments.getLong(NOTEID))
         }
 
+        composable(Screens.add_questons_prognosis.route+"/{$NOTEID}",    arguments = listOf(
+            navArgument(NOTEID) {
+                type = NavType.LongType
+            }
+        )) {
+                backStackEntry ->
+            val arguments = requireNotNull(backStackEntry.arguments)
+            Log.d("DIARY12", "id=" + arguments.getLong(NOTEID).toString()+";" )
+            additionalScreenWithQuestionsForProg(navController,arguments.getLong(NOTEID))}
     }
 }
 
