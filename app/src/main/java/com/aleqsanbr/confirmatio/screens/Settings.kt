@@ -96,6 +96,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.RectangleShape
 import com.aleqsanbr.compose.md_theme_dark_outlineVariant
 import com.aleqsanbr.compose.md_theme_dark_secondaryContainer
+import com.aleqsanbr.confirmatio.MainActivity
 
 object NotificationPreferences {
 
@@ -357,11 +358,19 @@ fun NotificationsContent(navController: NavHostController) {
     val notificationId = 1
     val context = LocalContext.current
     val channelId = "channel_id"
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+    val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+
     val notificationBuilder = NotificationCompat.Builder(context, channelId)
         .setSmallIcon(R.drawable.logo_icon)
-        .setContentTitle("Напоминание")
-        .setContentText("Вы нажали на кнопку!")
+        .setContentTitle("Как вы себя чувствуете?")
+        .setContentText("Сделайте запись в дневнике")
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+
     var showPermissionWarningDialog by remember { mutableStateOf(false) }
 
     var notificationTime by remember { mutableStateOf(NotificationPreferences.getNotificationTime(context)) }
@@ -386,6 +395,9 @@ fun NotificationsContent(navController: NavHostController) {
                     showPermissionWarningDialog = true
                 }
             }
+
+                Text(text = "ℹ️ Для Confirmatio должно быть выдано разрешение на показ уведомлений. " +
+                        "Чтобы это сделать, нажмите на кнопку \"Показать тестовое уведомление\".")
 
             Button(
                 onClick = {
@@ -526,19 +538,34 @@ class NotificationReceiver : BroadcastReceiver() {
         val channelId = "channel_id"
         val notificationId = 1
 
-        val notificationBuilder = NotificationCompat.Builder(context!!, channelId)
-            .setSmallIcon(R.drawable.logo_icon)
-            .setContentTitle("Напоминание")
-            .setContentText("Вы нажали на кнопку!")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        val intent1 = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-        val notificationManager = NotificationManagerCompat.from(context)
-        if (ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
+        val notificationBuilder = context?.let {
+            NotificationCompat.Builder(it, channelId)
+                .setSmallIcon(R.drawable.logo_icon)
+                .setContentTitle("Как вы себя чувствуете?")
+                .setContentText("Сделайте запись в дневнике")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+        }
+
+        val notificationManager = context?.let { NotificationManagerCompat.from(it) }
+        if (context?.let {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.POST_NOTIFICATIONS
+                )
+            } == PackageManager.PERMISSION_GRANTED
         ) {
-            notificationManager.notify(notificationId, notificationBuilder.build())
+            if (notificationManager != null) {
+                if (notificationBuilder != null) {
+                    notificationManager.notify(notificationId, notificationBuilder.build())
+                }
+            }
         }
     }
 }
