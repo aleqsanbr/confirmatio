@@ -26,7 +26,11 @@
 ![Confirmation-banner](https://github.com/aleqsanbr/confirmatio/assets/82591599/ee054a85-e728-4183-be33-2f10943cc1aa)
 
 # Сonfirmatio
-Мобильное приложение, которое помогает людям справляться с тревожными состояниями и повышать свое психологическое благополучие. Название в переводе с латыни означает «успокоение», «утверждение», «ободрение».
+Мобильное приложение, которое помогает людям справляться с тревожными состояниями и повышать свое психологическое благополучие. Название в переводе с латыни означает «успокоение», «утверждение», «ободрение». 
+
+*Создано в рамках проектной деятельности студентами 1-2 курсов [ИММиКН ЮФУ](https://sfedu.ru) в 2023-2024 годах.*
+
+*Связь:* [my@alexbelikov.ru](mailto:my@alexbelikov.ru)
 
 ## Цель
 Приложение, которое:
@@ -52,4 +56,5 @@
 - Всплывающие окна и виджеты с полезной информацией и фактами о тревоге
   
 ## Дополнительно
-Черновой вариант макета приложения - https://www.figma.com/file/Xol3m1zRsUHVUR8XWduHgU/Confirmatio?type=design&node-id=0%3A1&mode=design&t=y9kN1iMnQMTN9c0J-1
+- Черновой вариант макета приложения - [фигма](https://www.figma.com/file/Xol3m1zRsUHVUR8XWduHgU/Confirmatio?type=design&node-id=0%3A1&mode=design&t=y9kN1iMnQMTN9c0J-1)
+- Презентации - [папка на OneDrive](https://sfedu-my.sharepoint.com/:f:/g/personal/abeliko_sfedu_ru/EvR_iCzuPWFDihBiFn365B0BdLzUFanLgNBfx2MAyf0S8w?e=qbamtG)
