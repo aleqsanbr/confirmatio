@@ -58,3 +58,8 @@
 ## Дополнительно
 - Черновой вариант макета приложения - [фигма](https://www.figma.com/file/Xol3m1zRsUHVUR8XWduHgU/Confirmatio?type=design&node-id=0%3A1&mode=design&t=y9kN1iMnQMTN9c0J-1)
 - Презентации - [папка на OneDrive](https://sfedu-my.sharepoint.com/:f:/g/personal/abeliko_sfedu_ru/EvR_iCzuPWFDihBiFn365B0BdLzUFanLgNBfx2MAyf0S8w?e=qbamtG)
+
+### Ссылки на используемые иконки:
+- [cake_icon.png](https://www.flaticon.com/ru/free-icon/cheesecake_1182219?related_id=1182219&origin=pack)
+- [note_icon.png](https://www.flaticon.com/ru/free-icon/notebook-and-pencil_91561?related_id=91561&origin=pack)
+- [question_icon.png](https://www.flaticon.com/ru/free-icon/question_91640?related_id=91640&origin=pack)
